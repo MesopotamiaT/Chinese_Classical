@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="HSK Trainer">
+    <title>HSK Trainer KI</title>
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+    <style>
+        :root { 
+            --bg: #f4f7f6; 
+            --card: #ffffff; 
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --primary: #4a90e2; 
+            --primary-hover: #357abd;
+            --box1: #ff6b6b; 
+            --box2: #feca57;
+            --box3: #54a0ff;
+            --box4: #5f27cd;
+            --box5: #1dd1a1; 
+            --dark-btn: #34495e;
+            --focus-color: #e67e22;
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, STHeiti, "Microsoft YaHei", New Gulim, sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            padding: 20px 15px; 
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container { max-width: 500px; margin: auto; }
+        
+        /* Header & Navigation */
+        .nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 10px; }
+        .nav h2 { margin: 0; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text-main); }
+        .nav-buttons { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+        
+        /* Statistik-Leiste */
+        .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 25px; }
+        .stat-box { 
+            background: #ffffff; 
+            padding: 10px 4px; 
+            border-radius: 12px; 
+            text-align: center; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            color: var(--text-muted);
+        }
+        
+        /* Die Hauptkarte */
+        .card { 
+            background: var(--card); 
+            padding: 30px 24px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06); 
+            text-align: center; 
+            border: 1px solid rgba(0,0,0,0.01);
+        }
+        
+        .hidden { display: none !important; }
+        
+        button { 
+            width: 100%; 
+            padding: 15px; 
+            border-radius: 14px; 
+            border: none; 
+            margin-top: 12px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        button:active { transform: scale(0.98); opacity: 0.9; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        
+        .btn-small { 
+            width: auto; 
+            padding: 8px 14px; 
+            font-size: 0.8rem; 
+            border-radius: 10px; 
+            margin-top: 0;
+            box-shadow: none;
+        }
+        
+        #v-box { 
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            color: var(--primary); 
+            margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 1px solid #f0f0f0; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #v-de {
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            color: var(--text-main); 
+            word-break: break-word; 
+            line-height: 1.3;
+        }
+        
+        #v-hz {
+            font-size: 7rem; 
+            color: var(--primary);
+            font-weight: 300;
+            letter-spacing: -2px;
+            margin: 15px 0;
+            line-height: 1.1;
+            word-break: break-all;
+        }
+
+        #v-hz.long-char { font-size: 4.5rem; }
+
+        #v-py {
+            font-size: 1.4rem; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            margin-bottom: 15px;
+        }
+        
+        /* Optimierte, responsive Schreibboxen */
+        .writer-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 25px 0; }
+        .char-box { 
+            width: 80vw; height: 80vw;
+            max-width: 300px; max-height: 300px; 
+            border: 2px dashed #dcdde1; 
+            border-radius: 16px; 
+            background: #fafbfc; 
+        }
+        
+        /* Overlay-Modal */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(44, 62, 80, 0.6); 
+            backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center; 
+            z-index: 1000; padding: 20px; box-sizing: border-box; 
+        }
+        .modal-content { 
+            background: white; padding: 30px 24px; border-radius: 24px; 
+            max-width: 450px; width: 100%; max-height: 80vh; 
+            display: flex; flex-direction: column; 
+        }
+        .modal-scroll-area { overflow-y: auto; flex-grow: 1; margin-bottom: 20px; }
+        .modal-text { word-break: break-word; line-height: 1.6; margin-bottom: 18px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav">
+        <h2>HSK Trainer KI</h2>
+        <div class="nav-buttons">
+            <input type="file" id="csvFile" class="hidden" onchange="importCSV(this.files[0])" accept=".csv">
+            <button class="btn-small" style="background: var(--primary); color: white;" onclick="document.getElementById('csvFile').click()">+ CSV</button>
+            <button class="btn-small" style="background: #ffffff; color: var(--text-main); border: 1px solid #dcdde1;" onclick="exportBackup()">💾 Backup</button>
+            <button class="btn-small" style="background: #fff0f0; color: var(--box1);" onclick="resetSpeicher()">Löschen</button>
+        </div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="card">
+        <div id="v-box">Lade Modell...</div>
+        <div id="v-de">Bitte warten oder CSV laden.</div>
+        <div id="v-hz" class="hidden"></div>
+        <div id="v-py" class="hidden"></div>
+        
+        <button id="btn-example-trigger" class="hidden" style="background: #f1f2f6; color: var(--text-main); font-size: 0.95rem;" onclick="openModal()">📖 Beispielsatz anzeigen</button>
+        
+        <div id="writer-container" class="writer-grid hidden"></div>
+        
+        <button id="btn-clear" class="btn-small hidden" style="background: #eee; color: var(--text-muted); margin: 0 auto 15px;" onclick="clearCanvas()">Zeichen neu versuchen</button>
+        <button id="btn-show" class="hidden" style="background: var(--primary); color: white;" onclick="flip()">Lösung anzeigen</button>
+        <button id="btn-audio" class="hidden" style="background: #f5f6fa; color: var(--primary);" onclick="speak()">🔊 Aussprache anhören</button>
+        
+        <!-- Controls wurden um den neuen Button erweitert -->
+        <div id="controls" class="hidden" style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%; margin-top: 15px;">
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <button style="background: var(--box1); color: white; margin-top: 0;" onclick="move(-1)">Falsch</button>
+                <button style="background: var(--box2); color: var(--text-main); margin-top: 0;" onclick="move(0)">Halten</button>
+                <button style="background: var(--box5); color: white; margin-top: 0;" onclick="move(1)">Richtig</button>
+            </div>
+            <button style="background: var(--dark-btn); color: white; margin-top: 0; width: 100%;" onclick="moveToBox5()">Direkt in Box 5</button>
+        </div>
+    </div>
+</div>
+
+<div id="exampleModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <h3 style="margin-top: 0; color: var(--text-main); border-bottom: 1px solid #f0f0f0; padding-bottom: 12px;">Beispielsatz</h3>
+        <div class="modal-scroll-area">
+            <div id="ex-hz" class="modal-text" style="font-size: 1.7rem; font-weight: 700; color: var(--text-main);"></div>
+            <div id="ex-py" class="modal-text" style="font-style: italic; color: var(--text-muted); font-size: 1.1rem; margin-top: -8px;"></div>
+            <div id="ex-de" class="modal-text" style="color: var(--text-main); font-size: 1.05rem; background: #fafbfc; padding: 16px; border-radius: 14px; border-left: 4px solid var(--primary);"></div>
+        </div>
+        <button style="background: #f1f2f6; color: var(--text-main); padding: 12px;" onclick="closeModal()">Schließen</button>
+    </div>
+</div>
+
+<script>
+const TOP_RADICALS = ['亻', '氵', '口', '女', '木', '土', '心', '日', '讠', '扌'];
+let state = JSON.parse(localStorage.getItem('hsk_data_v4')) || { pool: [] };
+let userHistory = JSON.parse(localStorage.getItem('user_profile_v4')) || { radicalSuccess: new Array(10).fill(0.5) };
+let currentCard = null;
+let model;
+let writers = [];
+let charsToDrawCount = 0;
+let charsCompletedCount = 0;
+
+function updateUI() {
+    let boxCounts = [0, 0, 0, 0, 0];
+    state.pool.forEach(c => {
+        let interval = c.interval || 0;
+        if (interval === 0) boxCounts[0]++;
+        else if (interval < 3) boxCounts[1]++;
+        else if (interval < 10) boxCounts[2]++;
+        else if (interval < 21) boxCounts[3]++;
+        else boxCounts[4]++;
+    });
+
+    document.getElementById('stats').innerHTML = boxCounts.map((count, i) => 
+        `<div class="stat-box" style="color: var(--box${i+1}); border-bottom: 2px solid var(--box${i+1})">B${i+1}<br>${count}</div>`
+    ).join('');
+}
+
+function countRadicals(hz) { return TOP_RADICALS.map(r => hz.includes(r) ? 1 : 0); }
+
+function extractFeatures(card, qualityScore) {
+    let interval = card.interval || 0;
+    let reps = card.repetitions || 0;
+    let length = card.hz.replace(/\s/g, '').length;
+    let hskLevel = parseInt((card.level || "").match(/\d+/)?.[0] || 4);
+    let radicals = countRadicals(card.hz);
+    let isVertical = /[\u4e00-\u9fa5]/.test(card.hz) ? 1 : 0; 
+    let toneComplexity = (card.py.match(/[1234]/g) || []).length > 1 ? 1 : 0;
+    let radicalProfile = radicals.map((r, i) => r * (userHistory.radicalSuccess[i] || 0.5));
+    
+    return [
+        Math.min(interval / 365, 1), 
+        Math.min(reps / 50, 1), 
+        qualityScore, 
+        Math.min(length / 5, 1), 
+        hskLevel / 6, 
+        ...radicals, 
+        isVertical, 
+        toneComplexity, 
+        ...radicalProfile
+    ];
+}
+
+async function initModel() {
+    try {
+        model = await tf.loadLayersModel('indexeddb://hsk-model');
+    } catch (e) {
+        model = tf.sequential();
+        model.add(tf.layers.dense({units: 32, inputShape: [27], activation: 'relu'}));
+        model.add(tf.layers.dense({units: 16, activation: 'relu'}));
+        model.add(tf.layers.dense({units: 1, activation: 'linear'}));
+        model.compile({optimizer: 'adam', loss: 'meanSquaredError'});
+    }
+    
+    if (state.pool.length > 0) {
+        updateUI(); next();
+    } else {
+        document.getElementById('v-box').innerText = "Bereit";
+    }
+}
+
+function importCSV(file) {
+    if(!file) return;
+    
+    // NEU: Abfrage, ob Vokabeln direkt in Box 5 sollen
+    const toBox5 = confirm("Sollen die neuen Vokabeln direkt in Box 5 einsortiert werden (als bereits bekannt)?");
+    const initInterval = toBox5 ? 21 : 0;
+    const initDueDate = toBox5 ? new Date().getTime() + (21 * 86400000) : 0;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            e.target.result.split('\n').forEach(r => {
+                if(!r.trim()) return;
+                let inQuotes = false;
+                let fields = []; let field = "";
+                for (let i = 0; i < r.length; i++) {
+                    if (r[i] === '"') inQuotes = !inQuotes;
+                    else if (r[i] === ',' && !inQuotes) { fields.push(field.trim()); field = ""; }
+                    else field += r[i];
+                }
+                fields.push(field.trim());
+                
+                if(fields.length >= 3) {
+                    state.pool.push({
+                        hz: fields[0].replace(/"/g, ''), 
+                        py: fields[1].replace(/"/g, ''), 
+                        de: fields[2].replace(/"/g, ''),
+                        sentenceHz: fields[3] ? fields[3].replace(/"/g, '') : '',
+                        sentencePy: fields[4] ? fields[4].replace(/"/g, '') : '',
+                        sentenceDe: fields[5] ? fields[5].replace(/"/g, '') : '',
+                        level: fields[6] ? fields[6].replace(/"/g, '') : '4', 
+                        interval: initInterval, repetitions: toBox5 ? 1 : 0, dueDate: initDueDate
+                    });
+                }
+            });
+            localStorage.setItem('hsk_data_v4', JSON.stringify(state));
+            alert("Import erfolgreich!");
+            updateUI(); next();
+        } catch(error) {
+            alert("Fehler beim Import. Bitte überprüfen Sie das CSV-Format.");
+            console.error(error);
+        }
+    };
+    reader.readAsText(file);
+}
+
+async function next() {
+    if(state.pool.length === 0) return;
+    
+    let now = new Date().getTime();
+    let dueCards = state.pool.filter(c => c.dueDate <= now);
+    if (dueCards.length === 0) {
+        document.getElementById('v-box').innerText = "PAUSE";
+        document.getElementById('v-de').innerText = "Alle fälligen Vokabeln gelernt!";
+        document.getElementById('writer-container').classList.add('hidden');
+        return;
+    }
+
+    try {
+        let predictions = model.predict(tf.tensor2d(dueCards.map(c => extractFeatures(c, 1.0)))).dataSync();
+        dueCards.forEach((c, i) => c.ai_score = predictions[i]);
+        dueCards.sort((a,b) => b.ai_score - a.ai_score);
+    } catch(e) {
+        console.log("Sortierung übersprungen", e);
+    }
+
+    currentCard = dueCards[0];
+    
+    document.getElementById('v-box').innerText = "Zeichne das Zeichen";
+    document.getElementById('v-de').innerText = currentCard.de;
+    
+    document.getElementById('v-hz').classList.add('hidden');
+    document.getElementById('v-hz').classList.remove('long-char');
+    document.getElementById('v-py').classList.add('hidden');
+    document.getElementById('btn-example-trigger').classList.add('hidden');
+    document.getElementById('controls').classList.add('hidden');
+    document.getElementById('btn-show').classList.remove('hidden');
+    document.getElementById('btn-audio').classList.add('hidden');
+    
+    document.getElementById('writer-container').innerHTML = '';
+    document.getElementById('writer-container').classList.remove('hidden');
+    document.getElementById('btn-clear').classList.remove('hidden');
+    writers = [];
+    charsCompletedCount = 0;
+    
+    let charsToDraw = currentCard.hz.replace(/\s/g, '').split('').filter(char => /[\u4e00-\u9fa5]/.test(char));
+    charsToDrawCount = charsToDraw.length;
+    
+    charsToDraw.forEach(char => {
+        let div = document.createElement('div'); div.className = 'char-box';
+        document.getElementById('writer-container').appendChild(div);
+        
+        let boxSize = Math.min(300, window.innerWidth * 0.8);
+        let writer = HanziWriter.create(div, char, { 
+            width: boxSize, height: boxSize, 
+            showCharacter: false, showOutline: false, 
+            padding: Math.floor(boxSize * 0.04), strokeColor: '#4a90e2' 
+        });
+        
+        writer.quiz({
+            onComplete: function() {
+                charsCompletedCount++;
+            }
+        });
+        writers.push(writer);
+    });
+}
+
+function clearCanvas() {
+    charsCompletedCount = 0;
+    document.getElementById('btn-show').classList.remove('hidden'); 
+    
+    writers.forEach(w => { 
+        w.cancelQuiz(); 
+        w.quiz({
+            onComplete: function() {
+                charsCompletedCount++;
+            }
+        }); 
+    });
+}
+
+function flip() {
+    document.getElementById('v-box').innerText = "Bewertung";
+    
+    let hzElement = document.getElementById('v-hz');
+    if (currentCard.hz.length > 3) hzElement.classList.add('long-char');
+    
+    hzElement.innerText = currentCard.hz;
+    document.getElementById('v-py').innerText = currentCard.py;
+    
+    document.getElementById('v-hz').classList.remove('hidden');
+    document.getElementById('v-py').classList.remove('hidden');
+    document.getElementById('writer-container').classList.add('hidden');
+    document.getElementById('btn-show').classList.add('hidden');
+    document.getElementById('btn-clear').classList.add('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    document.getElementById('btn-audio').classList.remove('hidden');
+    
+    if (currentCard.sentenceHz) {
+        document.getElementById('ex-hz').innerText = currentCard.sentenceHz;
+        document.getElementById('ex-py').innerText = currentCard.sentencePy;
+        document.getElementById('ex-de').innerText = currentCard.sentenceDe;
+        document.getElementById('btn-example-trigger').classList.remove('hidden');
+    }
+}
+
+async function move(quality) {
+    const controlBtns = document.querySelectorAll('#controls button');
+    controlBtns.forEach(btn => btn.disabled = true);
+
+    let q = quality === -1 ? 0 : (quality === 0 ? 0.5 : 1);
+    
+    countRadicals(currentCard.hz).forEach((r, i) => { if(r) userHistory.radicalSuccess[i] = (userHistory.radicalSuccess[i]*0.9) + (q*0.1); });
+    localStorage.setItem('user_profile_v4', JSON.stringify(userHistory));
+
+    try {
+        await model.fit(tf.tensor2d([extractFeatures(currentCard, q)]), tf.tensor2d([[quality === -1 ? 0 : (currentCard.interval || 1) * 2.5]]), { epochs: 1 });
+        await model.save('indexeddb://hsk-model'); 
+    } catch(e) {
+        console.log("Lern-Update übersprungen", e);
+    }
+    
+    if (quality === -1) {
+        currentCard.interval = 0; 
+    } else if (!currentCard.interval) {
+        currentCard.interval = quality === 1 ? 2 : 1; 
+    } else {
+        let multiplier = quality === 1 ? 2.5 : 1.5;
+        currentCard.interval = Math.floor(currentCard.interval * multiplier);
+    }
+
+    if (currentCard.interval === 0 && quality !== -1) {
+        currentCard.interval = 1; 
+    }
+
+    currentCard.repetitions = (currentCard.repetitions || 0) + 1;
+    currentCard.dueDate = new Date().getTime() + (currentCard.interval * 86400000);
+    
+    state.pool = state.pool.filter(c => c !== currentCard);
+    state.pool.push(currentCard);
+    
+    localStorage.setItem('hsk_data_v4', JSON.stringify(state));
+    
+    controlBtns.forEach(btn => btn.disabled = false);
+    
+    updateUI(); next();
+}
+
+// NEU: Funktion um eine Karte direkt in Box 5 zu verschieben
+async function moveToBox5() {
+    const controlBtns = document.querySelectorAll('#controls button');
+    controlBtns.forEach(btn => btn.disabled = true);
+
+    // Box 5 erfordert ein Intervall von >= 21
+    currentCard.interval = 21; 
+    currentCard.repetitions = (currentCard.repetitions || 0) + 1;
+    currentCard.dueDate = new Date().getTime() + (currentCard.interval * 86400000);
+    
+    state.pool = state.pool.filter(c => c !== currentCard);
+    state.pool.push(currentCard);
+    
+    localStorage.setItem('hsk_data_v4', JSON.stringify(state));
+    
+    controlBtns.forEach(btn => btn.disabled = false);
+    
+    updateUI(); next();
+}
+
+async function exportBackup() {
+    const backupData = {
+        state: state,
+        userHistory: userHistory
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
+    const dl = document.createElement('a');
+    dl.setAttribute("href", dataStr);
+    dl.setAttribute("download", "hsk_backup_data.json");
+    dl.click();
+
+    if (model) {
+        await model.save('downloads://hsk_ki_modell');
+    }
+    
+    alert("Backup erfolgreich heruntergeladen!");
+}
+
+function openModal() { document.getElementById('exampleModal').classList.remove('hidden'); }
+function closeModal() { document.getElementById('exampleModal').classList.add('hidden'); }
+function resetSpeicher() { if(confirm("Alles löschen?")) { localStorage.clear(); indexedDB.deleteDatabase('tensorflowjs'); location.reload(); } }
+function speak() { if(!currentCard) return; const u = new SpeechSynthesisUtterance(currentCard.hz); u.lang = 'zh-CN'; window.speechSynthesis.speak(u); }
+
+initModel();
+</script>
+</body>
+</html>
