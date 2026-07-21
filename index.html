@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="HSK Trainer">
-    <title>HSK Trainer</title>
+    <title>HSK Trainer SRS</title>
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
     <style>
         :root { 
@@ -17,8 +17,6 @@
             --primary-hover: #357abd;
             --box1: #ff6b6b; 
             --box2: #feca57;
-            --box3: #54a0ff;
-            --box4: #5f27cd;
             --box5: #1dd1a1; 
             --dark-btn: #34495e;
             --focus-color: #e67e22;
@@ -48,26 +46,20 @@
             border-radius: 12px; 
             text-align: center; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
-            font-size: 0.75rem; 
+            font-size: 0.70rem; 
             font-weight: 700; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            border: 2px solid transparent;
             color: var(--text-muted);
         }
         
-        #stat-box-1 { color: var(--box1); }
-        #stat-box-2 { color: var(--box2); }
-        #stat-box-3 { color: var(--box3); }
-        #stat-box-4 { color: var(--box4); }
-        #stat-box-5 { color: var(--box5); }
+        #stat-due { color: var(--box1); border: 2px solid transparent; }
+        #stat-new { color: var(--primary); }
+        #stat-focus { color: var(--focus-color); }
+        #stat-learned { color: var(--box5); }
         
         .stat-box.active-box { 
-            border-color: var(--primary); 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.2); 
-            background: #ffffff;
+            border-color: var(--box1); 
+            background: #fffafa;
         }
-        .stat-box.inactive-box { opacity: 0.4; transform: scale(0.96); }
 
         /* Die Hauptkarte */
         .card { 
@@ -114,6 +106,8 @@
             border-bottom: 1px solid #f0f0f0; 
             text-transform: uppercase;
             letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
         }
 
         #v-de {
@@ -137,9 +131,7 @@
             word-break: break-all;
         }
 
-        #v-hz.long-char {
-            font-size: 4.5rem;
-        }
+        #v-hz.long-char { font-size: 4.5rem; }
 
         #v-py {
             font-size: 1.4rem; 
@@ -148,13 +140,10 @@
             margin-bottom: 15px;
         }
         
-        /* Optimierte, responsive Schreibboxen */
         .writer-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 25px 0; }
         .char-box { 
-            width: 80vw;
-            height: 80vw;
-            max-width: 300px; 
-            max-height: 300px; 
+            width: 80vw; height: 80vw;
+            max-width: 300px; max-height: 300px; 
             border: 2px dashed #dcdde1; 
             border-radius: 16px; 
             background: #fafbfc; 
@@ -164,25 +153,17 @@
         
         /* Overlay-Modal */
         .modal-overlay { 
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%; 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(44, 62, 80, 0.6); 
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
             display: flex; justify-content: center; align-items: center; 
             z-index: 1000; padding: 20px; box-sizing: border-box; 
         }
         .modal-content { 
-            background: white; 
-            padding: 30px 24px; 
-            border-radius: 24px; 
-            max-width: 450px; 
-            width: 100%; 
-            max-height: 80vh; 
-            display: flex; 
-            flex-direction: column; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2); 
-            box-sizing: border-box; 
+            background: white; padding: 30px 24px; border-radius: 24px; 
+            max-width: 450px; width: 100%; max-height: 80vh; 
+            display: flex; flex-direction: column; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2); box-sizing: border-box; 
         }
         .modal-scroll-area { overflow-y: auto; flex-grow: 1; margin-bottom: 20px; padding-right: 5px; }
         .modal-text { word-break: break-word; line-height: 1.6; margin-bottom: 18px; }
@@ -195,7 +176,7 @@
         <h2>HSK Trainer</h2>
         <div class="nav-buttons">
             <button id="btn-toggle-only-focus" class="btn-small" style="background: #fff; color: var(--focus-color); border: 1px solid var(--focus-color);" onclick="toggleOnlyFocusMode()">🎯 Alle anzeigen</button>
-            <button id="btn-toggle-box5-mode" class="btn-small" style="background: #fff; color: var(--box5); border: 1px solid var(--box5);" onclick="toggleBox5Mode()">⭐ Box 5 Aus</button>
+            <button id="btn-toggle-force-all" class="btn-small" style="background: #fff; color: var(--primary); border: 1px solid var(--primary);" onclick="toggleForceAllMode()">⏳ Vorauslernen Aus</button>
             <input type="file" id="csvFile" class="hidden" onchange="importCSV(this.files[0])" accept=".csv">
             <button class="btn-small" style="background: var(--primary); color: white;" onclick="document.getElementById('csvFile').click()">+ CSV</button>
             <button class="btn-small" style="background: #ffffff; color: var(--text-main); border: 1px solid #dcdde1;" onclick="exportProgress()">💾 Backup</button>
@@ -205,11 +186,17 @@
         </div>
     </div>
 
-    <div class="stats" id="stats"></div>
+    <div class="stats" id="stats">
+        <div id="stat-due" class="stat-box">Fällig<br>0</div>
+        <div id="stat-new" class="stat-box">Neu<br>0</div>
+        <div id="stat-focus" class="stat-box">Fokus<br>0</div>
+        <div id="stat-learned" class="stat-box">Erlernt<br>0</div>
+        <div id="stat-total" class="stat-box">Gesamt<br>0</div>
+    </div>
 
     <div class="card">
         <div id="v-box"></div>
-        <div id="v-de">Bitte CSV laden...</div>
+        <div id="v-de">Lade Daten...</div>
         <div id="v-hz" class="hidden"></div>
         <div id="v-py" class="hidden"></div>
         
@@ -223,13 +210,12 @@
         
         <div id="special-actions" class="hidden" style="display: flex; gap: 10px; width: 100%;">
             <button id="btn-focus" style="background: var(--focus-color); color: white;" onclick="toggleFocus()">🎯 Fokus</button>
-            <button id="btn-to-box5" style="background: var(--dark-btn); color: white;" onclick="moveToBox5()">⭐ Box 5</button>
         </div>
         
         <div id="controls" class="hidden" style="display: flex; gap: 10px; width: 100%; margin-top: 15px;">
-            <button style="background: var(--box1); color: white; margin-top: 0;" onclick="move(-1)">Falsch</button>
-            <button style="background: var(--box2); color: var(--text-main); margin-top: 0;" onclick="move(0)">Halten</button>
-            <button style="background: var(--box5); color: white; margin-top: 0;" onclick="move(1)">Richtig</button>
+            <button style="background: var(--box1); color: white; margin-top: 0;" onclick="move(-1)">Falsch (0d)</button>
+            <button id="btn-hard" style="background: var(--box2); color: var(--text-main); margin-top: 0;" onclick="move(0)">Schwer</button>
+            <button id="btn-easy" style="background: var(--box5); color: white; margin-top: 0;" onclick="move(1)">Leicht</button>
         </div>
     </div>
 </div>
@@ -237,43 +223,62 @@
 <div id="exampleModal" class="modal-overlay hidden">
     <div class="modal-content">
         <h3 style="margin-top: 0; color: var(--text-main); font-weight: 800; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; flex-shrink: 0;">Beispielsatz</h3>
-        
         <div class="modal-scroll-area">
             <div id="ex-hz" class="modal-text" style="font-size: 1.7rem; font-weight: 700; color: var(--text-main);"></div>
             <div id="ex-py" class="modal-text" style="font-style: italic; color: var(--text-muted); font-size: 1.1rem; margin-top: -8px;"></div>
             <div id="ex-de" class="modal-text" style="color: var(--text-main); font-size: 1.05rem; background: #fafbfc; padding: 16px; border-radius: 14px; border-left: 4px solid var(--primary); font-weight: 500;"></div>
         </div>
-        
         <button style="background: #f1f2f6; color: var(--text-main); margin-top: 0; padding: 12px; flex-shrink: 0;" onclick="closeModal()">Schließen</button>
     </div>
 </div>
 
 <script>
-let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [] };
-let currentCard = null;
-let currentBoxName = ""; 
-let writers = [];
-let onlyFocusMode = false; // Zustand für den Fokus-Filtermodus
-let box5Mode = false;       // Zustand für den neuen Box 5 Filtermodus
+// INITIALISIERUNG & DATENMIGRATION
+let state = JSON.parse(localStorage.getItem('hsk_data')) || { vocab: [] };
 
-function updateUI() {
-    document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box">B${i}<br>${state['box'+i].length}</div>`).join('');
-    localStorage.setItem('hsk_data', JSON.stringify(state));
-    highlightActiveBox(); 
-}
-
-function highlightActiveBox() {
-    [1,2,3,4,5].forEach(i => {
-        let element = document.getElementById(`stat-box-${i}`);
-        if (element) {
-            element.classList.remove('active-box', 'inactive-box');
-            if (currentBoxName === 'box' + i) {
-                element.classList.add('active-box');
-            } else if (currentBoxName !== "") {
-                element.classList.add('inactive-box');
-            }
+// Migrations-Logik: Falls noch alte Boxen existieren, konvertieren wir sie in SRS-Vokabeln
+if (state.box1) {
+    let newVocab = [];
+    let now = Date.now();
+    [1, 2, 3, 4, 5].forEach(i => {
+        if (state['box' + i]) {
+            state['box' + i].forEach(c => {
+                c.interval = i === 1 ? 0 : (i === 2 ? 1 : (i === 3 ? 3 : (i === 4 ? 7 : 21)));
+                c.ease = 2.5;
+                c.nextReview = i === 1 ? now : now + (c.interval * 86400000); 
+                newVocab.push(c);
+            });
         }
     });
+    state = { vocab: newVocab };
+    localStorage.setItem('hsk_data', JSON.stringify(state));
+}
+
+let currentCard = null;
+let writers = [];
+let onlyFocusMode = false; 
+let forceAllMode = false; // Ignoriert Fälligkeit und fragt alles ab
+
+function updateUI() {
+    let now = Date.now();
+    let dueCount = state.vocab.filter(c => c.nextReview <= now).length;
+    let newCount = state.vocab.filter(c => c.interval === 0).length;
+    let focusCount = state.vocab.filter(c => c.inFocus).length;
+    let learnedCount = state.vocab.filter(c => c.interval >= 21).length; // Vokabeln mit >21 Tagen Intervall gelten als gelernt
+
+    document.getElementById('stat-due').innerHTML = `Fällig<br>${dueCount}`;
+    document.getElementById('stat-new').innerHTML = `Neu<br>${newCount}`;
+    document.getElementById('stat-focus').innerHTML = `Fokus<br>${focusCount}`;
+    document.getElementById('stat-learned').innerHTML = `Erlernt<br>${learnedCount}`;
+    document.getElementById('stat-total').innerHTML = `Gesamt<br>${state.vocab.length}`;
+
+    if (dueCount > 0 && !forceAllMode) {
+        document.getElementById('stat-due').classList.add('active-box');
+    } else {
+        document.getElementById('stat-due').classList.remove('active-box');
+    }
+
+    localStorage.setItem('hsk_data', JSON.stringify(state));
 }
 
 function toggleOnlyFocusMode() {
@@ -283,11 +288,6 @@ function toggleOnlyFocusMode() {
         btn.innerText = "🎯 Nur Fokus";
         btn.style.background = "var(--focus-color)";
         btn.style.color = "white";
-        
-        // Deaktiviere Box 5 Modus, wenn Fokus aktiviert wird, um Konflikte zu vermeiden
-        if(box5Mode) {
-            toggleBox5Mode();
-        }
     } else {
         btn.innerText = "🎯 Alle anzeigen";
         btn.style.background = "#fff";
@@ -296,42 +296,28 @@ function toggleOnlyFocusMode() {
     next();
 }
 
-function toggleBox5Mode() {
-    box5Mode = !box5Mode;
-    let btn = document.getElementById('btn-toggle-box5-mode');
-    if (box5Mode) {
-        btn.innerText = "⭐ Nur Box 5";
-        btn.style.background = "var(--box5)";
+function toggleForceAllMode() {
+    forceAllMode = !forceAllMode;
+    let btn = document.getElementById('btn-toggle-force-all');
+    if (forceAllMode) {
+        btn.innerText = "⏳ Vorauslernen An";
+        btn.style.background = "var(--primary)";
         btn.style.color = "white";
-        
-        // Deaktiviere Fokus-Modus, wenn Box 5 aktiviert wird, um Konflikte zu vermeiden
-        if(onlyFocusMode) {
-            toggleOnlyFocusMode();
-        }
     } else {
-        btn.innerText = "⭐ Box 5 Aus";
+        btn.innerText = "⏳ Vorauslernen Aus";
         btn.style.background = "#fff";
-        btn.style.color = "var(--box5)";
+        btn.style.color = "var(--primary)";
     }
     next();
 }
 
 function parseCSVLine(text) {
-    let fields = [];
-    let field = "";
-    let inQuotes = false;
-    
+    let fields = []; let field = ""; let inQuotes = false;
     for (let i = 0; i < text.length; i++) {
         let char = text[i];
-        
-        if (char === '"' || char === '„' || char === '“' || char === '”') {
-            inQuotes = !inQuotes; 
-        } else if (char === ',' && !inQuotes) {
-            fields.push(cleanField(field));
-            field = "";
-        } else {
-            field += char;
-        }
+        if (char === '"' || char === '„' || char === '“' || char === '”') { inQuotes = !inQuotes; } 
+        else if (char === ',' && !inQuotes) { fields.push(cleanField(field)); field = ""; } 
+        else { field += char; }
     }
     fields.push(cleanField(field));
     return fields;
@@ -347,33 +333,30 @@ function cleanField(str) {
 
 function importCSV(file) {
     if(!file) return;
-    const targetBox = confirm("Sollen die neuen Vokabeln direkt in Box 5 (bekannt) einsortiert werden?\nKlicke 'Abbrechen' für Box 1 (neu lernen).") ? 'box5' : 'box1';
-    
     let detectedLevel = "Import";
     let match = file.name.toLowerCase().match(/hsk\s*([1-6])/);
-    if (match) {
-        detectedLevel = "HSK " + match[1];
-    }
+    if (match) { detectedLevel = "HSK " + match[1]; }
     
     const reader = new FileReader();
     reader.onload = (e) => {
         const rows = e.target.result.replace(/\r/g, "").split('\n');
         rows.forEach(r => {
             if(!r.trim()) return;
-            
             const p = parseCSVLine(r);
-            
             if(p.length >= 3) {
-                state[targetBox].push({
-                    hz: p[0], 
-                    py: p[1], 
-                    de: p[2], 
-                    sentenceHz: p[3] || '', 
-                    sentencePy: p[4] || '', 
-                    sentenceDe: p[5] || '',
-                    level: p[6] ? p[6].trim() : detectedLevel,
-                    inFocus: false
-                });
+                // Check if card already exists to avoid duplicates
+                let exists = state.vocab.find(c => c.hz === p[0] && c.py === p[1]);
+                if (!exists) {
+                    state.vocab.push({
+                        hz: p[0], py: p[1], de: p[2], 
+                        sentenceHz: p[3] || '', sentencePy: p[4] || '', sentenceDe: p[5] || '',
+                        level: p[6] ? p[6].trim() : detectedLevel,
+                        inFocus: false,
+                        interval: 0,
+                        ease: 2.5,
+                        nextReview: Date.now()
+                    });
+                }
             }
         });
         updateUI(); next();
@@ -382,49 +365,27 @@ function importCSV(file) {
 }
 
 function next() {
-    let pool = [];
-    
-    // Stark abnehmende Gewichtung: 
-    // Box 1 (16x) > Box 2 (8x) > Box 3 (4x) > Box 4 (2x) > Box 5 (1x)
-    const boxWeights = [0, 16, 8, 4, 2, 1]; 
-    
-    for(let i=1; i<=5; i++) {
-        for(let j=0; j<boxWeights[i]; j++) {
-            state['box'+i].forEach(c => {
-                // Wenn Box 5 Modus aktiv ist, überspringe alle Karten außerhalb von Box 5
-                if (box5Mode && i !== 5) {
-                    return;
-                }
+    let now = Date.now();
+    let pool = state.vocab;
 
-                // Wenn Fokus-Modus aktiv ist, überspringe Karten ohne Fokus ODER Karten in Box 5
-                if (onlyFocusMode && (!c.inFocus || i === 5)) {
-                    return; 
-                }
-
-                pool.push({c, box: 'box'+i});
-                
-                // Erhöhter Fokus-Bonus für Box 1 bis 4
-                if (c.inFocus && i < 5) {
-                    for (let f = 0; f < 7; f++) {
-                        pool.push({c, box: 'box'+i});
-                    }
-                }
-            });
-        }
+    // Filter anwenden
+    if (onlyFocusMode) {
+        pool = pool.filter(c => c.inFocus);
     }
     
-    if(pool.length === 0) {
-        currentBoxName = "";
+    if (!forceAllMode) {
+        pool = pool.filter(c => c.nextReview <= now);
+    }
+
+    if (pool.length === 0) {
         currentCard = null;
+        document.getElementById('v-box').innerHTML = "<span>🎉 FERTIG</span>";
         if (onlyFocusMode) {
-            document.getElementById('v-box').innerText = "FILTER AKTIV";
-            document.getElementById('v-de').innerText = "Keine Fokus-Karten in Box 1-4 vorhanden!";
-        } else if (box5Mode) {
-            document.getElementById('v-box').innerText = "FILTER AKTIV";
-            document.getElementById('v-de').innerText = "Keine Vokabeln in Box 5 vorhanden!";
-        } else {
-            document.getElementById('v-box').innerText = "LEER";
+            document.getElementById('v-de').innerText = "Keine Fokus-Karten mehr fällig!";
+        } else if (state.vocab.length === 0) {
             document.getElementById('v-de').innerText = "Bitte CSV laden...";
+        } else {
+            document.getElementById('v-de').innerText = "Alles für heute gelernt! Gut gemacht.";
         }
         document.getElementById('writer-container').classList.add('hidden');
         document.getElementById('btn-show').classList.add('hidden');
@@ -432,16 +393,24 @@ function next() {
         return;
     }
     
-    let selection = pool[Math.floor(Math.random() * pool.length)];
-    currentCard = selection.c;
-    currentBoxName = selection.box; 
+    // Sortieren: Fokus zuerst, danach am längsten überfällig
+    pool.sort((a, b) => {
+        if (a.inFocus !== b.inFocus) return a.inFocus ? -1 : 1;
+        return a.nextReview - b.nextReview; 
+    });
+
+    // Wähle eine der obersten (fälligsten) Karten, ein bisschen Zufall um Monotonie zu vermeiden
+    let topCandidates = pool.slice(0, Math.min(5, pool.length));
+    currentCard = topCandidates[Math.floor(Math.random() * topCandidates.length)];
     
     let cardLevel = currentCard.level || "Unbekannt";
-    let focusTag = currentCard.inFocus ? " [FOKUS]" : "";
-    document.getElementById('v-box').innerText = "Stufe: " + cardLevel + focusTag;
+    let focusTag = currentCard.inFocus ? "<span style='color: var(--focus-color);'>[FOKUS]</span>" : "";
+    let intText = currentCard.interval === 0 ? "Neu" : `${currentCard.interval}d`;
+    
+    document.getElementById('v-box').innerHTML = `<span>Stufe: ${cardLevel} ${focusTag}</span><span>(Aktuelles Intervall: ${intText})</span>`;
     document.getElementById('v-de').innerText = currentCard.de;
     
-    highlightActiveBox();
+    updateUI();
     
     // UI Reset
     document.getElementById('writer-container').classList.remove('hidden');
@@ -463,16 +432,11 @@ function next() {
         if(/[\u4e00-\u9fa5]/.test(char)) {
             let div = document.createElement('div'); div.className = 'char-box';
             document.getElementById('writer-container').appendChild(div);
-            
             let boxSize = Math.min(300, window.innerWidth * 0.8);
-            
             let writer = HanziWriter.create(div, char, { 
-                width: boxSize, 
-                height: boxSize, 
-                showCharacter: false, 
-                showOutline: false, 
-                padding: Math.floor(boxSize * 0.04), 
-                strokeColor: '#4a90e2' 
+                width: boxSize, height: boxSize, 
+                showCharacter: false, showOutline: false, 
+                padding: Math.floor(boxSize * 0.04), strokeColor: '#4a90e2' 
             });
             writer.quiz(); 
             writers.push(writer);
@@ -482,18 +446,11 @@ function next() {
 
 function flip() {
     if (!currentCard) return;
-    let cardLevel = currentCard.level || "Unbekannt";
-    let focusTag = currentCard.inFocus ? " [FOKUS]" : "";
-    document.getElementById('v-box').innerText = "Stufe: " + cardLevel + focusTag;
 
     let hzElement = document.getElementById('v-hz');
     let cleanHz = currentCard.hz.replace(/\s/g, '');
-    
-    if (cleanHz.length > 3) {
-        hzElement.classList.add('long-char');
-    } else {
-        hzElement.classList.remove('long-char');
-    }
+    if (cleanHz.length > 3) { hzElement.classList.add('long-char'); } 
+    else { hzElement.classList.remove('long-char'); }
 
     hzElement.innerText = currentCard.hz;
     document.getElementById('v-py').innerText = currentCard.py;
@@ -509,6 +466,13 @@ function flip() {
     
     document.getElementById('btn-focus').innerText = currentCard.inFocus ? "🎯 Fokus aktiv" : "🎯 Fokus";
     
+    // Berechne Vorschauen für Buttons
+    let hardInterval = currentCard.interval === 0 ? 1 : Math.ceil(currentCard.interval * 1.2);
+    let easyInterval = currentCard.interval === 0 ? 1 : Math.ceil(currentCard.interval * currentCard.ease);
+    
+    document.getElementById('btn-hard').innerText = `Schwer (${hardInterval}d)`;
+    document.getElementById('btn-easy').innerText = `Leicht (${easyInterval}d)`;
+
     document.getElementById('writer-container').classList.add('hidden');
     document.getElementById('btn-show').classList.add('hidden');
     document.getElementById('btn-clear').classList.add('hidden');
@@ -524,61 +488,61 @@ function toggleFocus() {
     if (!currentCard) return;
     currentCard.inFocus = !currentCard.inFocus;
     document.getElementById('btn-focus').innerText = currentCard.inFocus ? "🎯 Fokus aktiv" : "🎯 Fokus";
-    let cardLevel = currentCard.level || "Unbekannt";
-    let focusTag = currentCard.inFocus ? " [FOKUS]" : "";
-    document.getElementById('v-box').innerText = "Stufe: " + cardLevel + focusTag;
-    localStorage.setItem('hsk_data', JSON.stringify(state));
+    updateUI(); // speichert auch
 }
 
-function move(step) {
+function move(rating) {
     if (!currentCard) return;
-    let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
-    let level = parseInt(oldBox.replace('box',''));
-    
-    state[oldBox] = state[oldBox].filter(c => c !== currentCard);
-    
-    // --- NEUE LOGIK: Eine Vokabel darf pro Tag nur einmal die Box wechseln ---
-    let today = new Date().toDateString();
-    let effectiveStep = step;
-    
-    if (currentCard.lastMovedDate === today) {
-        // Karte wurde heute schon verschoben, also bleibt sie in der aktuellen Box
-        effectiveStep = 0; 
-    } else if (step !== 0) {
-        // Karte wird heute zum ersten Mal verschoben, wir speichern das Datum
-        currentCard.lastMovedDate = today;
-    }
-    // --------------------------------------------------------------------------
 
-    let newLevel = Math.min(Math.max(level + effectiveStep, 1), 5);
-    
-    if (newLevel === 5) {
+    // SRS Logik
+    if (rating === -1) {
+        // Falsch
+        currentCard.interval = 0;
+        currentCard.ease = Math.max(1.3, currentCard.ease - 0.2);
+        currentCard.nextReview = Date.now(); // Sofort wieder fällig
+    } 
+    else if (rating === 0) {
+        // Schwer
+        currentCard.interval = currentCard.interval === 0 ? 1 : Math.ceil(currentCard.interval * 1.2);
+        currentCard.ease = Math.max(1.3, currentCard.ease - 0.15);
+        currentCard.nextReview = Date.now() + (currentCard.interval * 86400000);
+    } 
+    else if (rating === 1) {
+        // Leicht / Richtig
+        currentCard.interval = currentCard.interval === 0 ? 1 : Math.ceil(currentCard.interval * currentCard.ease);
+        currentCard.nextReview = Date.now() + (currentCard.interval * 86400000);
+    }
+
+    // Wenn etwas gemeistert wurde (z.B. > 21 Tage), Fokus automatisch entfernen
+    if (currentCard.interval >= 21) {
         currentCard.inFocus = false;
     }
-    
-    state['box' + newLevel].push(currentCard);
-    
+
     updateUI(); next();
 }
 
-function moveToBox5() {
-    if (!currentCard) return;
-    let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
-    if (oldBox) {
-        state[oldBox] = state[oldBox].filter(c => c !== currentCard);
-    }
-    currentCard.inFocus = false;
-    
-    // Auch hier das Datum abspeichern, falls sie an einem Tag manuell nach Box 5 geschickt wird
-    currentCard.lastMovedDate = new Date().toDateString();
-    
-    state['box5'].push(currentCard);
-    updateUI(); next();
+function resetSpeicher() { 
+    if(confirm("Bist du sicher? Alle Vokabeln und Lernfortschritte werden unwiderruflich gelöscht!")) { 
+        state = { vocab: [] }; 
+        updateUI(); 
+        location.reload(); 
+    } 
 }
-
-function resetSpeicher() { if(confirm("Alles löschen?")) { state = { box1: [], box2: [], box3: [], box4: [], box5: [] }; updateUI(); location.reload(); } }
-function exportProgress() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "hsk_backup.json"); dl.click(); }
-function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); updateUI(); next(); }; reader.readAsText(file); }
+function exportProgress() { 
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); 
+    const dl = document.createElement('a'); 
+    dl.setAttribute("href", dataStr); 
+    dl.setAttribute("download", `hsk_srs_backup_${new Date().toISOString().split('T')[0]}.json`); 
+    dl.click(); 
+}
+function importProgress(file) { 
+    const reader = new FileReader(); 
+    reader.onload = (e) => { 
+        state = JSON.parse(e.target.result); 
+        updateUI(); next(); 
+    }; 
+    reader.readAsText(file); 
+}
 function clearCanvas() { writers.forEach(w => { w.cancelQuiz(); w.quiz(); }); }
 function speak() { if(!currentCard) return; const u = new SpeechSynthesisUtterance(currentCard.hz); u.lang = 'zh-CN'; window.speechSynthesis.speak(u); }
 
