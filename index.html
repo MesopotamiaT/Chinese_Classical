@@ -396,15 +396,15 @@ function next() {
                     return;
                 }
 
-                // Wenn Fokus-Modus aktiv ist, überspringe Karten ohne Fokus ODER Karten in Box 5
-                if (onlyFocusMode && (!c.inFocus || i === 5)) {
+                // Wenn Fokus-Modus aktiv ist, überspringe Karten ohne Fokus
+                if (onlyFocusMode && !c.inFocus) {
                     return; 
                 }
 
                 pool.push({c, box: 'box'+i});
                 
-                // Erhöhter Fokus-Bonus für Box 1 bis 4
-                if (c.inFocus && i < 5) {
+                // Erhöhter Fokus-Bonus nun für alle Boxen (inklusive Box 5)
+                if (c.inFocus) {
                     for (let f = 0; f < 7; f++) {
                         pool.push({c, box: 'box'+i});
                     }
@@ -418,7 +418,7 @@ function next() {
         currentCard = null;
         if (onlyFocusMode) {
             document.getElementById('v-box').innerText = "FILTER AKTIV";
-            document.getElementById('v-de').innerText = "Keine Fokus-Karten in Box 1-4 vorhanden!";
+            document.getElementById('v-de').innerText = "Keine Fokus-Karten vorhanden!";
         } else if (box5Mode) {
             document.getElementById('v-box').innerText = "FILTER AKTIV";
             document.getElementById('v-de').innerText = "Keine Vokabeln in Box 5 vorhanden!";
@@ -552,10 +552,6 @@ function move(step) {
 
     let newLevel = Math.min(Math.max(level + effectiveStep, 1), 5);
     
-    if (newLevel === 5) {
-        currentCard.inFocus = false;
-    }
-    
     state['box' + newLevel].push(currentCard);
     
     updateUI(); next();
@@ -567,7 +563,6 @@ function moveToBox5() {
     if (oldBox) {
         state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     }
-    currentCard.inFocus = false;
     
     // Auch hier das Datum abspeichern, falls sie an einem Tag manuell nach Box 5 geschickt wird
     currentCard.lastMovedDate = new Date().toDateString();
