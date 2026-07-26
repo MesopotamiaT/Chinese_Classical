@@ -524,10 +524,13 @@ function flip() {
 function retryCurrentWordWriting() {
     if (!currentCard) return;
     
-    // Richtige Lösung (Schriftzeichen, Pinyin, Beispielsatz) wieder verstecken
+    // Richtige Lösung wieder verstecken
     document.getElementById('v-hz').classList.add('hidden');
     document.getElementById('v-py').classList.add('hidden');
     document.getElementById('btn-example-trigger').classList.add('hidden');
+    
+    // "Lösung anzeigen"-Button wieder einblenden, damit man erneut prüfen kann
+    document.getElementById('btn-show').classList.remove('hidden');
     
     // Schreib-Container leeren und wieder sichtbar machen
     const container = document.getElementById('writer-container');
