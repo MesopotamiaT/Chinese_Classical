@@ -524,12 +524,17 @@ function flip() {
 function retryCurrentWordWriting() {
     if (!currentCard) return;
     
+    // Richtige Lösung (Schriftzeichen, Pinyin, Beispielsatz) wieder verstecken
+    document.getElementById('v-hz').classList.add('hidden');
+    document.getElementById('v-py').classList.add('hidden');
+    document.getElementById('btn-example-trigger').classList.add('hidden');
+    
     // Schreib-Container leeren und wieder sichtbar machen
     const container = document.getElementById('writer-container');
     container.innerHTML = '';
     container.classList.remove('hidden');
     
-    // "Neu versuchen"-Button für die Zeichenboxen temporär wieder anzeigen
+    // "Neu versuchen"-Button für die Zeichenboxen wieder anzeigen
     document.getElementById('btn-clear').classList.remove('hidden');
     
     writers = [];
@@ -557,6 +562,7 @@ function retryCurrentWordWriting() {
     });
 }
 
+/* Modals & Aktionen */
 function openModal() { document.getElementById('exampleModal').classList.remove('hidden'); }
 function closeModal() { document.getElementById('exampleModal').classList.add('hidden'); }
 
