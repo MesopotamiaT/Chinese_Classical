@@ -220,6 +220,7 @@
         <button id="btn-clear" class="btn-small hidden" style="background: #eee; color: var(--text-muted); margin: 0 auto 15px;" onclick="clearCanvas()">Neu versuchen</button>
         <button id="btn-show" class="hidden" style="background: var(--primary); color: white;" onclick="flip()">Lösung anzeigen</button>
         <button id="btn-audio" class="hidden" style="background: #f5f6fa; color: var(--primary);" onclick="speak()">🔊 Aussprache anhören</button>
+        <button id="btn-retry-writing" class="hidden" style="background: #fff; color: var(--primary); border: 2px solid var(--primary);" onclick="retryCurrentWordWriting()">✍️ Noch mal schreiben üben</button>
         
         <div id="special-actions" class="hidden" style="display: flex; gap: 10px; width: 100%;">
             <button id="btn-focus" style="background: var(--focus-color); color: white;" onclick="toggleFocus()">🎯 Fokus</button>
@@ -429,6 +430,7 @@ function next() {
         document.getElementById('writer-container').classList.add('hidden');
         document.getElementById('btn-show').classList.add('hidden');
         document.getElementById('btn-clear').classList.add('hidden');
+        document.getElementById('btn-retry-writing').classList.add('hidden');
         return;
     }
     
@@ -455,6 +457,7 @@ function next() {
     document.getElementById('btn-show').classList.remove('hidden');
     document.getElementById('btn-clear').classList.remove('hidden');
     document.getElementById('btn-audio').classList.add('hidden');
+    document.getElementById('btn-retry-writing').classList.add('hidden');
     document.getElementById('controls').classList.add('hidden');
     closeModal();
 
@@ -513,8 +516,45 @@ function flip() {
     document.getElementById('btn-show').classList.add('hidden');
     document.getElementById('btn-clear').classList.add('hidden');
     document.getElementById('btn-audio').classList.remove('hidden');
+    document.getElementById('btn-retry-writing').classList.remove('hidden');
     document.getElementById('special-actions').classList.remove('hidden');
     document.getElementById('controls').classList.remove('hidden');
+}
+
+function retryCurrentWordWriting() {
+    if (!currentCard) return;
+    
+    // Schreib-Container leeren und wieder sichtbar machen
+    const container = document.getElementById('writer-container');
+    container.innerHTML = '';
+    container.classList.remove('hidden');
+    
+    // "Neu versuchen"-Button für die Zeichenboxen temporär wieder anzeigen
+    document.getElementById('btn-clear').classList.remove('hidden');
+    
+    writers = [];
+    let cleanHz = currentCard.hz.replace(/\s/g, '');
+    
+    cleanHz.split('').forEach(char => {
+        if(/[\u4e00-\u9fa5]/.test(char)) {
+            let div = document.createElement('div'); 
+            div.className = 'char-box';
+            container.appendChild(div);
+            
+            let boxSize = Math.min(300, window.innerWidth * 0.8);
+            
+            let writer = HanziWriter.create(div, char, { 
+                width: boxSize, 
+                height: boxSize, 
+                showCharacter: false, 
+                showOutline: false, 
+                padding: Math.floor(boxSize * 0.04), 
+                strokeColor: '#4a90e2' 
+            });
+            writer.quiz(); 
+            writers.push(writer);
+        }
+    });
 }
 
 function openModal() { document.getElementById('exampleModal').classList.remove('hidden'); }
