@@ -194,7 +194,7 @@
     <div class="nav">
         <h2>HSK Trainer</h2>
         <div class="nav-buttons">
-            <button id="btn-toggle-only-focus" class="btn-small" style="background: #fff; color: var(--focus-color); border: 1px solid var(--focus-color);" onclick="toggleOnlyFocusMode()">🎯 Alle anzeigen</button>
+            <button id="btn-toggle-only-focus" class="btn-small" style="background: #fff; color: var(--focus-color); border: 1px solid var(--focus-color);" onclick="toggleOnlyFocusMode()">🎯 Alle anzeigen (0)</button>
             <button id="btn-toggle-box5-mode" class="btn-small" style="background: #fff; color: var(--box5); border: 1px solid var(--box5);" onclick="toggleBox5Mode()">⭐ Box 5 Aus</button>
             <input type="file" id="csvFile" class="hidden" onchange="importCSV(this.files[0])" accept=".csv">
             <button class="btn-small" style="background: var(--primary); color: white;" onclick="document.getElementById('csvFile').click()">+ CSV</button>
@@ -261,6 +261,7 @@ function updateUI() {
     document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box">B${i}<br>${state['box'+i].length}</div>`).join('');
     localStorage.setItem('hsk_data', JSON.stringify(state));
     highlightActiveBox(); 
+    updateFocusButtonText();
 }
 
 function highlightActiveBox() {
@@ -277,11 +278,26 @@ function highlightActiveBox() {
     });
 }
 
+function updateFocusButtonText() {
+    let focusCount = 0;
+    for (let i = 1; i <= 5; i++) {
+        state['box' + i].forEach(c => {
+            if (c.inFocus) focusCount++;
+        });
+    }
+    
+    let btn = document.getElementById('btn-toggle-only-focus');
+    if (onlyFocusMode) {
+        btn.innerText = "🎯 Nur Fokus (" + focusCount + ")";
+    } else {
+        btn.innerText = "🎯 Alle anzeigen (" + focusCount + ")";
+    }
+}
+
 function toggleOnlyFocusMode() {
     onlyFocusMode = !onlyFocusMode;
     let btn = document.getElementById('btn-toggle-only-focus');
     if (onlyFocusMode) {
-        btn.innerText = "🎯 Nur Fokus";
         btn.style.background = "var(--focus-color)";
         btn.style.color = "white";
         
@@ -290,10 +306,10 @@ function toggleOnlyFocusMode() {
             toggleBox5Mode();
         }
     } else {
-        btn.innerText = "🎯 Alle anzeigen";
         btn.style.background = "#fff";
         btn.style.color = "var(--focus-color)";
     }
+    updateFocusButtonText();
     next();
 }
 
@@ -580,7 +596,7 @@ function toggleFocus() {
     let cardLevel = currentCard.level || "Unbekannt";
     let focusTag = currentCard.inFocus ? " [FOKUS]" : "";
     document.getElementById('v-box').innerText = "Stufe: " + cardLevel + focusTag;
-    localStorage.setItem('hsk_data', JSON.stringify(state));
+    updateUI();
 }
 
 function move(step) {
