@@ -572,6 +572,10 @@ function closeModal() { document.getElementById('exampleModal').classList.add('h
 function toggleFocus() {
     if (!currentCard) return;
     currentCard.inFocus = !currentCard.inFocus;
+    // Setze den Zähler zurück, falls Fokus manuell wieder eingeschaltet wird
+    if (currentCard.inFocus) {
+        currentCard.correctCount = 0;
+    }
     document.getElementById('btn-focus').innerText = currentCard.inFocus ? "🎯 Fokus aktiv" : "🎯 Fokus";
     let cardLevel = currentCard.level || "Unbekannt";
     let focusTag = currentCard.inFocus ? " [FOKUS]" : "";
@@ -598,6 +602,19 @@ function move(step) {
         currentCard.lastMovedDate = today;
     }
     // --------------------------------------------------------------------------
+
+    // --- LOGIK FÜR FOKUS-DEAKTIVIERUNG NACH 20x RICHTIG ---
+    if (effectiveStep === 1 && currentCard.inFocus) {
+        if (!currentCard.correctCount) {
+            currentCard.correctCount = 0;
+        }
+        currentCard.correctCount++;
+        if (currentCard.correctCount >= 20) {
+            currentCard.inFocus = false;
+            currentCard.correctCount = 0; // Zurücksetzen für eventuelle spätere Reaktivierung
+        }
+    }
+    // -------------------------------------------------------
 
     let newLevel = Math.min(Math.max(level + effectiveStep, 1), 5);
     
