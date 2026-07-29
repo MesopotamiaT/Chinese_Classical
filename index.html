@@ -9,50 +9,85 @@
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
     <style>
         :root { 
-            --bg: #f4f7f6; 
+            /* Moderne, professionelle Farbpalette */
+            --bg: #f8fafc; /* Sehr helles, kühles Grau */
             --card: #ffffff; 
-            --text-main: #2c3e50;
-            --text-muted: #7f8c8d;
-            --primary: #4a90e2; 
-            --primary-hover: #357abd;
-            --box1: #ff6b6b; 
-            --box2: #feca57;
-            --box3: #54a0ff;
-            --box4: #5f27cd;
-            --box5: #1dd1a1; 
-            --dark-btn: #34495e;
-            --focus-color: #e67e22;
+            --text-main: #0f172a; /* Tiefes Schiefergrau */
+            --text-muted: #64748b;
+            --primary: #2563eb; /* Kräftiges, seriöses Blau */
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            
+            /* Box-Farben (sanfter & professioneller) */
+            --box1: #ef4444; /* Rot */
+            --box2: #f59e0b; /* Bernstein */
+            --box3: #3b82f6; /* Blau */
+            --box4: #8b5cf6; /* Violett */
+            --box5: #10b981; /* Smaragdgrün */
+            
+            --dark-btn: #334155;
+            --focus-color: #ea580c; /* Kräftiges Orange */
+            --border-light: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, STHeiti, "Microsoft YaHei", New Gulim, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; 
             background: var(--bg); 
             margin: 0; 
-            padding: 20px 15px; 
+            padding: 2vh 15px; 
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
-        .container { max-width: 500px; margin: auto; }
+        .container { max-width: 540px; margin: auto; }
         
         /* Header & Navigation */
-        .nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 10px; }
-        .nav h2 { margin: 0; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text-main); }
-        .nav-buttons { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+        .nav { 
+            display: flex; 
+            flex-direction: column;
+            margin-bottom: 24px; 
+            gap: 16px; 
+        }
+        .nav h2 { 
+            margin: 0; 
+            font-size: 1.75rem; 
+            font-weight: 800; 
+            letter-spacing: -0.025em; 
+            color: var(--text-main); 
+        }
+        .nav-buttons { 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+        }
         
         /* Statistik-Leiste */
-        .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 25px; }
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 8px; 
+            margin-bottom: 24px; 
+            background: var(--card);
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
         .stat-box { 
-            background: #ffffff; 
             padding: 10px 4px; 
-            border-radius: 12px; 
+            border-radius: 8px; 
             text-align: center; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
             font-size: 0.75rem; 
             font-weight: 700; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: all 0.2s ease-in-out; 
             border: 2px solid transparent;
             color: var(--text-muted);
+            background: var(--bg);
+            cursor: default;
         }
         
         #stat-box-1 { color: var(--box1); }
@@ -62,58 +97,71 @@
         #stat-box-5 { color: var(--box5); }
         
         .stat-box.active-box { 
-            border-color: var(--primary); 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.2); 
-            background: #ffffff;
+            border-color: currentColor; 
+            background: var(--card);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-sm);
         }
-        .stat-box.inactive-box { opacity: 0.4; transform: scale(0.96); }
+        .stat-box.inactive-box { 
+            opacity: 0.5; 
+        }
 
         /* Die Hauptkarte */
         .card { 
             background: var(--card); 
-            padding: 30px 24px; 
-            border-radius: 24px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.06); 
+            padding: 32px 24px; 
+            border-radius: 16px; 
+            box-shadow: var(--shadow-md); 
             text-align: center; 
-            border: 1px solid rgba(0,0,0,0.01);
+            border: 1px solid var(--border-light);
             transition: all 0.3s ease;
         }
         
         .hidden { display: none !important; }
         
+        /* Buttons generell */
         button { 
             width: 100%; 
-            padding: 15px; 
-            border-radius: 14px; 
+            padding: 14px; 
+            border-radius: 10px; 
             border: none; 
             margin-top: 12px; 
-            font-weight: 700; 
+            font-weight: 600; 
             cursor: pointer; 
             font-size: 1rem; 
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            font-family: inherit;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        button:active { transform: scale(0.98); opacity: 0.9; }
+        button:hover { filter: brightness(0.95); }
+        button:active { transform: translateY(1px); filter: brightness(0.9); }
         
+        /* Kleine Buttons in der Nav */
         .btn-small { 
             width: auto; 
-            padding: 8px 14px; 
-            font-size: 0.8rem; 
-            border-radius: 10px; 
+            padding: 8px 12px; 
+            font-size: 0.85rem; 
+            border-radius: 8px; 
             margin-top: 0;
-            box-shadow: none;
+            flex: 1 1 auto;
+            border: 1px solid var(--border-light);
         }
         
+        /* Typografie in der Karte */
         #v-box { 
-            font-size: 0.85rem; 
+            font-size: 0.75rem; 
             font-weight: 700; 
-            color: var(--primary); 
-            margin-bottom: 20px; 
-            padding-bottom: 10px; 
-            border-bottom: 1px solid #f0f0f0; 
+            color: var(--text-muted); 
+            margin-bottom: 24px; 
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--bg);
+            border-radius: 20px;
         }
 
         #v-de {
@@ -121,71 +169,78 @@
             font-weight: 700; 
             color: var(--text-main); 
             word-break: break-word; 
-            line-height: 1.3;
+            line-height: 1.4;
         }
         
         #v-hz {
-            font-size: 7rem; 
-            color: var(--primary);
-            font-weight: 300;
-            letter-spacing: -2px;
-            opacity: 0.95;
-            -webkit-text-stroke: 1px transparent; 
-            text-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            margin: 15px 0;
+            font-size: 6.5rem; 
+            color: var(--text-main);
+            font-weight: 500;
+            margin: 20px 0;
             line-height: 1.1;
             word-break: break-all;
         }
 
         #v-hz.long-char {
-            font-size: 4.5rem;
+            font-size: 4rem;
         }
 
         #v-py {
-            font-size: 1.4rem; 
-            color: var(--text-muted); 
-            font-weight: 600; 
-            margin-bottom: 15px;
+            font-size: 1.25rem; 
+            color: var(--primary); 
+            font-weight: 500; 
+            margin-bottom: 20px;
+            font-family: "Helvetica Neue", sans-serif;
+            letter-spacing: 0.02em;
         }
         
-        /* Optimierte, responsive Schreibboxen */
-        .writer-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 25px 0; }
+        /* Schreibboxen */
+        .writer-grid { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin: 30px 0; }
         .char-box { 
             width: 80vw;
             height: 80vw;
-            max-width: 300px; 
-            max-height: 300px; 
-            border: 2px dashed #dcdde1; 
-            border-radius: 16px; 
-            background: #fafbfc; 
+            max-width: 280px; 
+            max-height: 280px; 
+            border: 2px dashed #cbd5e1; 
+            border-radius: 12px; 
+            background: #f8fafc; 
             transition: border-color 0.2s ease;
         }
         .char-box:hover { border-color: var(--primary); }
         
-        /* Overlay-Modal */
+        /* Modal */
         .modal-overlay { 
             position: fixed; 
             top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(44, 62, 80, 0.6); 
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.5); 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             display: flex; justify-content: center; align-items: center; 
             z-index: 1000; padding: 20px; box-sizing: border-box; 
         }
         .modal-content { 
-            background: white; 
-            padding: 30px 24px; 
-            border-radius: 24px; 
+            background: var(--card); 
+            padding: 32px; 
+            border-radius: 16px; 
             max-width: 450px; 
             width: 100%; 
-            max-height: 80vh; 
+            max-height: 85vh; 
             display: flex; 
             flex-direction: column; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2); 
+            box-shadow: var(--shadow-lg); 
             box-sizing: border-box; 
         }
-        .modal-scroll-area { overflow-y: auto; flex-grow: 1; margin-bottom: 20px; padding-right: 5px; }
-        .modal-text { word-break: break-word; line-height: 1.6; margin-bottom: 18px; }
+        .modal-scroll-area { overflow-y: auto; flex-grow: 1; margin-bottom: 24px; }
+        .modal-text { word-break: break-word; line-height: 1.6; margin-bottom: 16px; }
+        
+        /* Spezifische Action-Buttons (Controls unten) */
+        #controls button {
+            margin-top: 0;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            padding: 16px 12px;
+            box-shadow: var(--shadow-sm);
+        }
     </style>
 </head>
 <body>
@@ -194,14 +249,14 @@
     <div class="nav">
         <h2>HSK Trainer</h2>
         <div class="nav-buttons">
-            <button id="btn-toggle-only-focus" class="btn-small" style="background: #fff; color: var(--focus-color); border: 1px solid var(--focus-color);" onclick="toggleOnlyFocusMode()">🎯 Alle anzeigen (0)</button>
-            <button id="btn-toggle-box5-mode" class="btn-small" style="background: #fff; color: var(--box5); border: 1px solid var(--box5);" onclick="toggleBox5Mode()">⭐ Box 5 Aus</button>
+            <button id="btn-toggle-only-focus" class="btn-small" style="background: #fff; color: var(--focus-color); border-color: var(--focus-color);" onclick="toggleOnlyFocusMode()">🎯 Alle anzeigen (0)</button>
+            <button id="btn-toggle-box5-mode" class="btn-small" style="background: #fff; color: var(--box5); border-color: var(--box5);" onclick="toggleBox5Mode()">⭐ Box 5 Aus</button>
             <input type="file" id="csvFile" class="hidden" onchange="importCSV(this.files[0])" accept=".csv">
-            <button class="btn-small" style="background: var(--primary); color: white;" onclick="document.getElementById('csvFile').click()">+ CSV</button>
-            <button class="btn-small" style="background: #ffffff; color: var(--text-main); border: 1px solid #dcdde1;" onclick="exportProgress()">💾 Backup</button>
+            <button class="btn-small" style="background: var(--primary); color: white; border: none;" onclick="document.getElementById('csvFile').click()">+ CSV</button>
+            <button class="btn-small" style="background: #ffffff; color: var(--text-main);" onclick="exportProgress()">💾 Backup</button>
             <input type="file" id="jsonFile" class="hidden" onchange="importProgress(this.files[0])" accept=".json">
-            <button class="btn-small" style="background: #ffffff; color: var(--text-main); border: 1px solid #dcdde1;" onclick="document.getElementById('jsonFile').click()">📂 Laden</button>
-            <button class="btn-small" style="background: #fff0f0; color: var(--box1);" onclick="resetSpeicher()">Löschen</button>
+            <button class="btn-small" style="background: #ffffff; color: var(--text-main);" onclick="document.getElementById('jsonFile').click()">📂 Laden</button>
+            <button class="btn-small" style="background: #fef2f2; color: var(--box1); border-color: #fecaca;" onclick="resetSpeicher()">Löschen</button>
         </div>
     </div>
 
@@ -213,39 +268,39 @@
         <div id="v-hz" class="hidden"></div>
         <div id="v-py" class="hidden"></div>
         
-        <button id="btn-example-trigger" class="hidden" style="background: #f1f2f6; color: var(--text-main); font-size: 0.95rem;" onclick="openModal()">📖 Beispielsatz anzeigen</button>
+        <button id="btn-example-trigger" class="hidden" style="background: var(--primary-light); color: var(--primary); font-size: 0.95rem;" onclick="openModal()">📖 Beispielsatz anzeigen</button>
         
         <div id="writer-container" class="writer-grid hidden"></div>
         
-        <button id="btn-clear" class="btn-small hidden" style="background: #eee; color: var(--text-muted); margin: 0 auto 15px;" onclick="clearCanvas()">Neu versuchen</button>
-        <button id="btn-show" class="hidden" style="background: var(--primary); color: white;" onclick="flip()">Lösung anzeigen</button>
-        <button id="btn-audio" class="hidden" style="background: #f5f6fa; color: var(--primary);" onclick="speak()">🔊 Aussprache anhören</button>
+        <button id="btn-clear" class="btn-small hidden" style="background: var(--bg); color: var(--text-muted); margin: 0 auto 20px; display: block; max-width: 200px;" onclick="clearCanvas()">Neu versuchen</button>
+        <button id="btn-show" class="hidden" style="background: var(--primary); color: white; box-shadow: var(--shadow-md);" onclick="flip()">Lösung anzeigen</button>
+        <button id="btn-audio" class="hidden" style="background: var(--primary-light); color: var(--primary);" onclick="speak()">🔊 Aussprache anhören</button>
         <button id="btn-retry-writing" class="hidden" style="background: #fff; color: var(--primary); border: 2px solid var(--primary);" onclick="retryCurrentWordWriting()">✍️ Noch mal schreiben üben</button>
         
-        <div id="special-actions" class="hidden" style="display: flex; gap: 10px; width: 100%;">
-            <button id="btn-focus" style="background: var(--focus-color); color: white;" onclick="toggleFocus()">🎯 Fokus</button>
-            <button id="btn-to-box5" style="background: var(--dark-btn); color: white;" onclick="moveToBox5()">⭐ Box 5</button>
+        <div id="special-actions" class="hidden" style="display: flex; gap: 12px; width: 100%; margin-top: 12px;">
+            <button id="btn-focus" style="background: var(--focus-color); color: white; margin-top: 0;" onclick="toggleFocus()">🎯 Fokus</button>
+            <button id="btn-to-box5" style="background: var(--dark-btn); color: white; margin-top: 0;" onclick="moveToBox5()">⭐ Box 5</button>
         </div>
         
-        <div id="controls" class="hidden" style="display: flex; gap: 10px; width: 100%; margin-top: 15px;">
-            <button style="background: var(--box1); color: white; margin-top: 0;" onclick="move(-1)">Falsch</button>
-            <button style="background: var(--box2); color: var(--text-main); margin-top: 0;" onclick="move(0)">Halten</button>
-            <button style="background: var(--box5); color: white; margin-top: 0;" onclick="move(1)">Richtig</button>
+        <div id="controls" class="hidden" style="display: flex; gap: 12px; width: 100%; margin-top: 24px;">
+            <button style="background: var(--box1); color: white;" onclick="move(-1)">Falsch</button>
+            <button style="background: var(--box2); color: white;" onclick="move(0)">Halten</button>
+            <button style="background: var(--box5); color: white;" onclick="move(1)">Richtig</button>
         </div>
     </div>
 </div>
 
 <div id="exampleModal" class="modal-overlay hidden">
     <div class="modal-content">
-        <h3 style="margin-top: 0; color: var(--text-main); font-weight: 800; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; flex-shrink: 0;">Beispielsatz</h3>
+        <h3 style="margin-top: 0; color: var(--text-main); font-weight: 700; border-bottom: 1px solid var(--border-light); padding-bottom: 16px; margin-bottom: 20px; flex-shrink: 0;">Beispielsatz</h3>
         
         <div class="modal-scroll-area">
-            <div id="ex-hz" class="modal-text" style="font-size: 1.7rem; font-weight: 700; color: var(--text-main);"></div>
-            <div id="ex-py" class="modal-text" style="font-style: italic; color: var(--text-muted); font-size: 1.1rem; margin-top: -8px;"></div>
-            <div id="ex-de" class="modal-text" style="color: var(--text-main); font-size: 1.05rem; background: #fafbfc; padding: 16px; border-radius: 14px; border-left: 4px solid var(--primary); font-weight: 500;"></div>
+            <div id="ex-hz" class="modal-text" style="font-size: 1.75rem; font-weight: 500; color: var(--text-main);"></div>
+            <div id="ex-py" class="modal-text" style="color: var(--primary); font-size: 1.1rem; margin-top: -10px; font-weight: 500;"></div>
+            <div id="ex-de" class="modal-text" style="color: var(--text-main); font-size: 1.05rem; background: var(--bg); padding: 16px; border-radius: 12px; border-left: 4px solid var(--primary); font-weight: 400; margin-top: 24px;"></div>
         </div>
         
-        <button style="background: #f1f2f6; color: var(--text-main); margin-top: 0; padding: 12px; flex-shrink: 0;" onclick="closeModal()">Schließen</button>
+        <button style="background: var(--bg); color: var(--text-main); margin-top: 0; padding: 14px; flex-shrink: 0; border: 1px solid var(--border-light);" onclick="closeModal()">Schließen</button>
     </div>
 </div>
 
@@ -483,7 +538,7 @@ function next() {
             let div = document.createElement('div'); div.className = 'char-box';
             document.getElementById('writer-container').appendChild(div);
             
-            let boxSize = Math.min(300, window.innerWidth * 0.8);
+            let boxSize = Math.min(280, window.innerWidth * 0.8);
             
             let writer = HanziWriter.create(div, char, { 
                 width: boxSize, 
@@ -491,7 +546,7 @@ function next() {
                 showCharacter: false, 
                 showOutline: false, 
                 padding: Math.floor(boxSize * 0.04), 
-                strokeColor: '#4a90e2' 
+                strokeColor: '#2563eb' 
             });
             writer.quiz(); 
             writers.push(writer);
@@ -565,7 +620,7 @@ function retryCurrentWordWriting() {
             div.className = 'char-box';
             container.appendChild(div);
             
-            let boxSize = Math.min(300, window.innerWidth * 0.8);
+            let boxSize = Math.min(280, window.innerWidth * 0.8);
             
             let writer = HanziWriter.create(div, char, { 
                 width: boxSize, 
@@ -573,7 +628,7 @@ function retryCurrentWordWriting() {
                 showCharacter: false, 
                 showOutline: false, 
                 padding: Math.floor(boxSize * 0.04), 
-                strokeColor: '#4a90e2' 
+                strokeColor: '#2563eb' 
             });
             writer.quiz(); 
             writers.push(writer);
