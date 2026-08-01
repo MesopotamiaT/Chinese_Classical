@@ -475,9 +475,12 @@ function next() {
 
                 pool.push({c, box: 'box'+i});
                 
-                // Erhöhter Fokus-Bonus nun für alle Boxen (inklusive Box 5)
+                // Modifizierter Fokus-Bonus
                 if (c.inFocus) {
-                    for (let f = 0; f < 7; f++) {
+                    // Wenn der Box 5 Modus aktiv ist, fügen wir die Karte nur 2 zusätzliche Male hinzu (insgesamt 3x)
+                    // Sonst wie gewohnt 7 zusätzliche Male (insgesamt 8x)
+                    let additionalTickets = box5Mode ? 2 : 7;
+                    for (let f = 0; f < additionalTickets; f++) {
                         pool.push({c, box: 'box'+i});
                     }
                 }
