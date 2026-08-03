@@ -321,6 +321,7 @@ let writers = [];
 let onlyFocusMode = false; // Zustand für den Fokus-Filtermodus
 let box5Mode = false;       // Zustand für den neuen Box 5 Filtermodus
 let dictMode = false;       // Zustand für den neuen Wörterbuch-Modus
+let currentDictResults = []; // Speichert die aktuellen Suchergebnisse
 
 // NEU: Wörterbuch Funktionen
 function toggleDictMode() {
@@ -374,29 +375,37 @@ function searchDict() {
     }
 
     // Nach Deutsch oder Pinyin suchen (Groß-/Kleinschreibung ignorieren)
-    let results = allCards.filter(item => 
+    currentDictResults = allCards.filter(item => 
         item.card.de.toLowerCase().includes(query) || 
         item.card.py.toLowerCase().includes(query) ||
         item.card.hz.includes(query)
     );
 
-    if (results.length === 0) {
+    if (currentDictResults.length === 0) {
         resultsContainer.innerHTML = "<p style='color: var(--text-muted); text-align: center;'>Keine Ergebnisse gefunden.</p>";
         return;
     }
 
     // Ergebnisse rendern
-    results.forEach(item => {
+    currentDictResults.forEach((item, index) => {
         let c = item.card;
         let boxNum = item.boxNum;
         let div = document.createElement('div');
         div.style.cssText = "background: var(--bg); padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border-light);";
         
-        // HTML mit der Box-Anzeige in der Farbe der jeweiligen Box
+        let focusBtnBg = c.inFocus ? "var(--focus-color)" : "var(--card)";
+        let focusBtnColor = c.inFocus ? "white" : "var(--text-muted)";
+        let focusBtnBorder = c.inFocus ? "var(--focus-color)" : "var(--border-light)";
+        let focusText = c.inFocus ? "Fokus aktiv" : "Fokus";
+
+        // HTML mit Fokus-Button und der Box-Anzeige in der Farbe der jeweiligen Box
         let html = `
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                 <div style="font-size: 2rem; color: var(--text-main); font-weight: 500;">${c.hz}</div>
-                <div style="background: var(--box${boxNum}); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Box ${boxNum}</div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button onclick="toggleDictFocus(${index})" style="margin: 0; padding: 4px 10px; width: auto; font-size: 0.75rem; border-radius: 20px; background: ${focusBtnBg}; color: ${focusBtnColor}; border: 1px solid ${focusBtnBorder}; font-weight: bold; font-family: inherit;">🎯 ${focusText}</button>
+                    <div style="background: var(--box${boxNum}); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Box ${boxNum}</div>
+                </div>
             </div>
             <div style="color: var(--primary); font-size: 1.1rem; margin-bottom: 8px;">${c.py}</div>
             <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">${c.de}</div>
@@ -415,6 +424,16 @@ function searchDict() {
         div.innerHTML = html;
         resultsContainer.appendChild(div);
     });
+}
+
+function toggleDictFocus(index) {
+    let item = currentDictResults[index];
+    item.card.inFocus = !item.card.inFocus;
+    if (item.card.inFocus) {
+        item.card.correctCount = 0; // Zähler zurücksetzen wie bei der normalen Funktion
+    }
+    updateUI(); // Speichert state in localStorage und aktualisiert Statistik
+    searchDict(); // UI der Suchergebnisse sofort neu zeichnen, um Button-Farbe anzupassen
 }
 
 // Bisheriger Code ab hier (unverändert)
