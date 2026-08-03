@@ -365,17 +365,19 @@ function searchDict() {
     
     if (!query) return;
 
-    // Alle Vokabeln aus allen Boxen sammeln
+    // Alle Vokabeln aus allen Boxen sammeln und sich dabei die Box merken
     let allCards = [];
     for (let i = 1; i <= 5; i++) {
-        allCards = allCards.concat(state['box' + i]);
+        state['box' + i].forEach(c => {
+            allCards.push({ card: c, boxNum: i });
+        });
     }
 
     // Nach Deutsch oder Pinyin suchen (Groß-/Kleinschreibung ignorieren)
-    let results = allCards.filter(c => 
-        c.de.toLowerCase().includes(query) || 
-        c.py.toLowerCase().includes(query) ||
-        c.hz.includes(query)
+    let results = allCards.filter(item => 
+        item.card.de.toLowerCase().includes(query) || 
+        item.card.py.toLowerCase().includes(query) ||
+        item.card.hz.includes(query)
     );
 
     if (results.length === 0) {
@@ -384,12 +386,18 @@ function searchDict() {
     }
 
     // Ergebnisse rendern
-    results.forEach(c => {
+    results.forEach(item => {
+        let c = item.card;
+        let boxNum = item.boxNum;
         let div = document.createElement('div');
         div.style.cssText = "background: var(--bg); padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border-light);";
         
+        // HTML mit der Box-Anzeige in der Farbe der jeweiligen Box
         let html = `
-            <div style="font-size: 2rem; color: var(--text-main); font-weight: 500;">${c.hz}</div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="font-size: 2rem; color: var(--text-main); font-weight: 500;">${c.hz}</div>
+                <div style="background: var(--box${boxNum}); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Box ${boxNum}</div>
+            </div>
             <div style="color: var(--primary); font-size: 1.1rem; margin-bottom: 8px;">${c.py}</div>
             <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">${c.de}</div>
         `;
