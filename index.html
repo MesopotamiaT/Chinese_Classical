@@ -398,13 +398,19 @@ function searchDict() {
         let focusBtnBorder = c.inFocus ? "var(--focus-color)" : "var(--border-light)";
         let focusText = c.inFocus ? "Fokus aktiv" : "Fokus";
 
-        // HTML mit Fokus-Button und der Box-Anzeige in der Farbe der jeweiligen Box
+        // HTML mit Fokus-Button und neuem Box-Dropdown
         let html = `
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                 <div style="font-size: 2rem; color: var(--text-main); font-weight: 500;">${c.hz}</div>
                 <div style="display: flex; gap: 8px; align-items: center;">
                     <button onclick="toggleDictFocus(${index})" style="margin: 0; padding: 4px 10px; width: auto; font-size: 0.75rem; border-radius: 20px; background: ${focusBtnBg}; color: ${focusBtnColor}; border: 1px solid ${focusBtnBorder}; font-weight: bold; font-family: inherit;">🎯 ${focusText}</button>
-                    <div style="background: var(--box${boxNum}); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Box ${boxNum}</div>
+                    <select onchange="changeDictBox(${index}, this.value)" style="background: var(--box${boxNum}); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase; border: none; cursor: pointer; outline: none;">
+                        <option value="1" style="color: black; background: white;" ${boxNum == 1 ? 'selected' : ''}>Box 1</option>
+                        <option value="2" style="color: black; background: white;" ${boxNum == 2 ? 'selected' : ''}>Box 2</option>
+                        <option value="3" style="color: black; background: white;" ${boxNum == 3 ? 'selected' : ''}>Box 3</option>
+                        <option value="4" style="color: black; background: white;" ${boxNum == 4 ? 'selected' : ''}>Box 4</option>
+                        <option value="5" style="color: black; background: white;" ${boxNum == 5 ? 'selected' : ''}>Box 5</option>
+                    </select>
                 </div>
             </div>
             <div style="color: var(--primary); font-size: 1.1rem; margin-bottom: 8px;">${c.py}</div>
@@ -434,6 +440,27 @@ function toggleDictFocus(index) {
     }
     updateUI(); // Speichert state in localStorage und aktualisiert Statistik
     searchDict(); // UI der Suchergebnisse sofort neu zeichnen, um Button-Farbe anzupassen
+}
+
+// NEU: Funktion um Box im Wörterbuch zu wechseln
+function changeDictBox(index, newBoxLevel) {
+    let item = currentDictResults[index];
+    let oldBox = 'box' + item.boxNum;
+    let newBox = 'box' + newBoxLevel;
+    
+    if (oldBox === newBox) return; // Nichts zu tun
+
+    // Vokabel aus alter Box entfernen
+    state[oldBox] = state[oldBox].filter(c => c !== item.card);
+    
+    // Datum aktualisieren (analog zum normalen move-Verhalten)
+    item.card.lastMovedDate = new Date().toDateString();
+    
+    // In neue Box einfügen
+    state[newBox].push(item.card);
+    
+    updateUI(); // Statistik und LocalStorage aktualisieren
+    searchDict(); // Wörterbuch UI neu laden (Aktualisiert die Farbe des Dropdowns)
 }
 
 // Bisheriger Code ab hier (unverändert)
