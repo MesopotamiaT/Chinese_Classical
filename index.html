@@ -251,6 +251,7 @@
         <div class="nav-buttons">
             <button id="btn-toggle-only-focus" class="btn-small" style="background: #fff; color: var(--focus-color); border-color: var(--focus-color);" onclick="toggleOnlyFocusMode()">🎯 Alle anzeigen (0)</button>
             <button id="btn-toggle-box5-mode" class="btn-small" style="background: #fff; color: var(--box5); border-color: var(--box5);" onclick="toggleBox5Mode()">⭐ Box 5 Aus</button>
+            <button id="btn-toggle-dict" class="btn-small" style="background: #fff; color: var(--text-main);" onclick="toggleDictMode()">🔍 Wörterbuch</button>
             <input type="file" id="csvFile" class="hidden" onchange="importCSV(this.files[0])" accept=".csv">
             <button class="btn-small" style="background: var(--primary); color: white; border: none;" onclick="document.getElementById('csvFile').click()">+ CSV</button>
             <button class="btn-small" style="background: #ffffff; color: var(--text-main);" onclick="exportProgress()">💾 Backup</button>
@@ -263,6 +264,14 @@
     <div class="stats" id="stats"></div>
 
     <div class="card">
+        <!-- NEU: Wörterbuch View -->
+        <div id="dict-view" class="hidden" style="text-align: left;">
+            <input type="text" id="dict-search-input" placeholder="Nach Deutsch oder Pinyin suchen..." onkeypress="if(event.key === 'Enter') searchDict()" style="width: 100%; padding: 14px; border-radius: 8px; border: 1px solid var(--border-light); margin-bottom: 12px; box-sizing: border-box; font-size: 1rem; font-family: inherit;">
+            <button onclick="searchDict()" style="background: var(--primary); color: white; margin-top: 0; margin-bottom: 24px;">Suchen</button>
+            <div id="dict-results" style="max-height: 50vh; overflow-y: auto; padding-right: 4px;"></div>
+        </div>
+
+        <!-- Bestehende Karte -->
         <div id="v-box"></div>
         <div id="v-de">Bitte CSV laden...</div>
         <div id="v-hz" class="hidden"></div>
@@ -311,6 +320,96 @@ let currentBoxName = "";
 let writers = [];
 let onlyFocusMode = false; // Zustand für den Fokus-Filtermodus
 let box5Mode = false;       // Zustand für den neuen Box 5 Filtermodus
+let dictMode = false;       // Zustand für den neuen Wörterbuch-Modus
+
+// NEU: Wörterbuch Funktionen
+function toggleDictMode() {
+    dictMode = !dictMode;
+    let btn = document.getElementById('btn-toggle-dict');
+    let dictView = document.getElementById('dict-view');
+    let flashcardElements = ['v-box', 'v-de', 'v-hz', 'v-py', 'writer-container', 'btn-example-trigger', 'btn-clear', 'btn-show', 'btn-audio', 'btn-retry-writing', 'special-actions', 'controls'];
+    
+    if (dictMode) {
+        btn.style.background = "var(--primary)";
+        btn.style.color = "white";
+        dictView.classList.remove('hidden');
+        
+        // Alle Lernkarten-Elemente verstecken
+        flashcardElements.forEach(id => {
+            let el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        });
+        
+        // Felder leeren und Fokus setzen
+        document.getElementById('dict-search-input').value = "";
+        document.getElementById('dict-results').innerHTML = "";
+        document.getElementById('dict-search-input').focus();
+    } else {
+        btn.style.background = "#fff";
+        btn.style.color = "var(--text-main)";
+        dictView.classList.add('hidden');
+        
+        // Grund-Elemente der Karte wieder anzeigen
+        document.getElementById('v-box').classList.remove('hidden');
+        document.getElementById('v-de').classList.remove('hidden');
+        
+        // Lernmodus fortsetzen
+        next(); 
+    }
+}
+
+function searchDict() {
+    let query = document.getElementById('dict-search-input').value.trim().toLowerCase();
+    let resultsContainer = document.getElementById('dict-results');
+    resultsContainer.innerHTML = "";
+    
+    if (!query) return;
+
+    // Alle Vokabeln aus allen Boxen sammeln
+    let allCards = [];
+    for (let i = 1; i <= 5; i++) {
+        allCards = allCards.concat(state['box' + i]);
+    }
+
+    // Nach Deutsch oder Pinyin suchen (Groß-/Kleinschreibung ignorieren)
+    let results = allCards.filter(c => 
+        c.de.toLowerCase().includes(query) || 
+        c.py.toLowerCase().includes(query) ||
+        c.hz.includes(query)
+    );
+
+    if (results.length === 0) {
+        resultsContainer.innerHTML = "<p style='color: var(--text-muted); text-align: center;'>Keine Ergebnisse gefunden.</p>";
+        return;
+    }
+
+    // Ergebnisse rendern
+    results.forEach(c => {
+        let div = document.createElement('div');
+        div.style.cssText = "background: var(--bg); padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border-light);";
+        
+        let html = `
+            <div style="font-size: 2rem; color: var(--text-main); font-weight: 500;">${c.hz}</div>
+            <div style="color: var(--primary); font-size: 1.1rem; margin-bottom: 8px;">${c.py}</div>
+            <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">${c.de}</div>
+        `;
+        
+        if (c.sentenceHz) {
+            html += `
+                <div style="border-top: 1px solid var(--border-light); padding-top: 12px; margin-top: 12px;">
+                    <div style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 4px;">${c.sentenceHz}</div>
+                    <div style="color: var(--primary); font-size: 0.9rem; margin-bottom: 4px;">${c.sentencePy}</div>
+                    <div style="color: var(--text-muted); font-size: 0.9rem;">${c.sentenceDe}</div>
+                </div>
+            `;
+        }
+        
+        div.innerHTML = html;
+        resultsContainer.appendChild(div);
+    });
+}
+
+// Bisheriger Code ab hier (unverändert)
 
 function updateUI() {
     document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box">B${i}<br>${state['box'+i].length}</div>`).join('');
@@ -454,6 +553,8 @@ function importCSV(file) {
 }
 
 function next() {
+    if (dictMode) return; // Stoppe next() wenn wir im Wörterbuch-Modus sind
+
     let pool = [];
     
     // Stark abnehmende Gewichtung: 
