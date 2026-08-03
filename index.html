@@ -323,6 +323,17 @@ let box5Mode = false;       // Zustand für den neuen Box 5 Filtermodus
 let dictMode = false;       // Zustand für den neuen Wörterbuch-Modus
 let currentDictResults = []; // Speichert die aktuellen Suchergebnisse
 
+// NEU: Hilfsfunktion, um zu zählen, wie viele Vokabeln aktuell im Fokus sind
+function getFocusCount() {
+    let count = 0;
+    for (let i = 1; i <= 5; i++) {
+        state['box' + i].forEach(c => {
+            if (c.inFocus) count++;
+        });
+    }
+    return count;
+}
+
 // NEU: Wörterbuch Funktionen
 function toggleDictMode() {
     dictMode = !dictMode;
@@ -434,6 +445,13 @@ function searchDict() {
 
 function toggleDictFocus(index) {
     let item = currentDictResults[index];
+    
+    // NEU: Maximale Anzahl von 150 beim Aktivieren prüfen
+    if (!item.card.inFocus && getFocusCount() >= 150) {
+        alert("Du kannst maximal 150 Vokabeln in den Fokus setzen!");
+        return;
+    }
+
     item.card.inFocus = !item.card.inFocus;
     if (item.card.inFocus) {
         item.card.correctCount = 0; // Zähler zurücksetzen wie bei der normalen Funktion
@@ -463,7 +481,7 @@ function changeDictBox(index, newBoxLevel) {
     searchDict(); // Wörterbuch UI neu laden (Aktualisiert die Farbe des Dropdowns)
 }
 
-// Bisheriger Code ab hier (unverändert)
+// Bisheriger Code ab hier
 
 function updateUI() {
     document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box">B${i}<br>${state['box'+i].length}</div>`).join('');
@@ -487,12 +505,8 @@ function highlightActiveBox() {
 }
 
 function updateFocusButtonText() {
-    let focusCount = 0;
-    for (let i = 1; i <= 5; i++) {
-        state['box' + i].forEach(c => {
-            if (c.inFocus) focusCount++;
-        });
-    }
+    // Die Zählfunktion für den Fokus greift jetzt auf die neue Hilfsfunktion zu
+    let focusCount = getFocusCount();
     
     let btn = document.getElementById('btn-toggle-only-focus');
     if (onlyFocusMode) {
@@ -800,6 +814,13 @@ function closeModal() { document.getElementById('exampleModal').classList.add('h
 
 function toggleFocus() {
     if (!currentCard) return;
+
+    // NEU: Maximale Anzahl von 150 beim Aktivieren prüfen
+    if (!currentCard.inFocus && getFocusCount() >= 150) {
+        alert("Du kannst maximal 150 Vokabeln in den Fokus setzen!");
+        return;
+    }
+
     currentCard.inFocus = !currentCard.inFocus;
     // Setze den Zähler zurück, falls Fokus manuell wieder eingeschaltet wird
     if (currentCard.inFocus) {
