@@ -74,16 +74,16 @@
             margin: 0 auto; 
             display: flex;
             flex-direction: column;
-            padding: 8px 12px; 
+            padding: 12px; /* Etwas mehr Seitenrand */
         }
         
-        /* Navigations-Bereich (Nochmals vergrößert & weiter) */
+        /* Navigations-Bereich (Stark vergrößert, bis zur blauen Linie) */
         .header {
             display: flex;
             flex-direction: column;
-            gap: 10px; 
+            gap: 14px; /* Mehr Abstand zwischen den Reihen */
             flex-shrink: 0;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         
         .header-top {
@@ -94,18 +94,18 @@
         
         .header-top h2 {
             margin: 0;
-            font-size: 1.35rem; /* Etwas größer */
+            font-size: 1.5rem; /* Größere Überschrift */
             font-weight: 800;
         }
         
         .system-buttons {
             display: flex;
-            gap: 6px; /* Mehr Platz zwischen den Buttons */
+            gap: 8px; /* Mehr Platz zwischen den oberen Knöpfen */
         }
         
         .system-buttons button {
-            font-size: 0.9rem; /* Größere Schrift */
-            padding: 10px 12px; /* Deutlich breiter und höher */
+            font-size: 0.95rem; /* Größere Schrift */
+            padding: 12px 14px; /* Sehr dicke, fette Buttons */
             border-radius: 10px;
             background: var(--card);
             color: var(--text-main);
@@ -117,13 +117,13 @@
 
         .filter-buttons {
             display: flex;
-            gap: 8px; /* Mehr Luft zwischen den Filter-Buttons */
+            gap: 10px; /* Breite Lücken */
         }
         
         .filter-buttons button {
-            flex: 1; /* Nimmt gleichmäßig den ganzen Raum ein */
-            font-size: 1.05rem; /* Größere Schrift */
-            padding: 12px; /* Deutlich höhere Buttons */
+            flex: 1; 
+            font-size: 1.1rem; /* Sehr große Schrift für gute Lesbarkeit */
+            padding: 16px; /* Massive Höhe für die Filter-Buttons */
             border-radius: 12px;
             border: 1px solid var(--border-light);
             background: var(--card);
@@ -131,24 +131,24 @@
             font-weight: 600;
         }
         
-        /* Statistik */
+        /* Statistik (Ebenfalls vergrößert) */
         .stats { 
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
-            gap: 6px; 
+            gap: 8px; 
             background: var(--card);
-            padding: 6px; 
+            padding: 10px; /* Dickerer Rahmen */
             border-radius: 12px;
             border: 1px solid var(--border-light);
             flex-shrink: 0;
-            margin-bottom: 10px; 
+            margin-bottom: 14px; /* Mehr Platz zur Hauptkarte */
             box-shadow: var(--shadow);
         }
         .stat-box { 
-            padding: 6px 2px; 
+            padding: 8px 4px; /* Größere Trefferfläche, sieht edler aus */
             border-radius: 8px; 
             text-align: center; 
-            font-size: 0.8rem; 
+            font-size: 0.85rem; /* Etwas größer */
             font-weight: 700; 
             border: 2px solid transparent;
             color: var(--text-muted);
@@ -176,7 +176,7 @@
             flex-direction: column;
             flex-grow: 1;
             overflow: hidden;
-            padding: 16px 20px; /* Etwas breiterer Innenabstand */
+            padding: 16px 20px; 
         }
         
         /* Zentraler Bereich für Vokabel & Zeichenbox */
@@ -185,7 +185,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 12px; /* Etwas mehr Luft in der Mitte */
+            gap: 12px; 
             flex-grow: 1;
             text-align: center;
         }
@@ -227,7 +227,7 @@
             margin: 0;
         }
         
-        /* Zeichenbox (Drastisch vergrößertes Maximum) */
+        /* Zeichenbox (Drastisch vergrößertes Maximum - füllt die rote Box) */
         .writer-grid { 
             display: flex; 
             justify-content: center; 
@@ -238,8 +238,8 @@
         .char-box { 
             width: 100%;
             height: 100%;
-            max-width: 280px;  /* Vorher 190px - jetzt massiv größer */
-            max-height: 280px; /* Vorher 190px - jetzt massiv größer */
+            max-width: 400px;  /* Von 280px auf fast Vollbild-Breite erhöht */
+            max-height: 400px; /* Quadratisch */
             aspect-ratio: 1/1; 
             border: 2px dashed var(--border-light); 
             border-radius: 16px; 
@@ -421,8 +421,8 @@ function startQuizForCurrentChar() {
     singleCharBox.innerHTML = ''; 
     let char = currentQuizChars[currentQuizCharIndex];
     
-    // JS-Brechnung für optimale Größe - nimmt jetzt bis zu 40% der Screen-Höhe ein, maximal 280px
-    let boxSize = Math.min(window.innerHeight * 0.4, window.innerWidth * 0.8, 280);
+    // JS-Berechnung: Erlaubt der Box jetzt, bis zu 90% der Bildschirmbreite oder 50% der Höhe einzunehmen (Maximal 400px)
+    let boxSize = Math.min(window.innerHeight * 0.5, window.innerWidth * 0.9, 400);
     
     currentWriter = HanziWriter.create(singleCharBox, char, { 
         width: boxSize, 
