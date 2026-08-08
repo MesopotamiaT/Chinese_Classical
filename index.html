@@ -9,85 +9,106 @@
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
     <style>
         :root { 
-            /* Moderne, professionelle Farbpalette */
-            --bg: #f8fafc; /* Sehr helles, kühles Grau */
+            --bg: #f8fafc; 
             --card: #ffffff; 
-            --text-main: #0f172a; /* Tiefes Schiefergrau */
+            --text-main: #0f172a; 
             --text-muted: #64748b;
-            --primary: #2563eb; /* Kräftiges, seriöses Blau */
+            --primary: #2563eb; 
             --primary-hover: #1d4ed8;
             --primary-light: #eff6ff;
             
-            /* Box-Farben (sanfter & professioneller) */
-            --box1: #ef4444; /* Rot */
-            --box2: #f59e0b; /* Bernstein */
-            --box3: #3b82f6; /* Blau */
-            --box4: #8b5cf6; /* Violett */
-            --box5: #10b981; /* Smaragdgrün */
+            --box1: #ef4444; 
+            --box2: #f59e0b; 
+            --box3: #3b82f6; 
+            --box4: #8b5cf6; 
+            --box5: #10b981; 
             
             --dark-btn: #334155;
-            --focus-color: #ea580c; /* Kräftiges Orange */
+            --focus-color: #ea580c; 
             --border-light: #e2e8f0;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         
+        html, body {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; 
             background: var(--bg); 
-            margin: 0; 
-            padding: 2vh 15px; 
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
-        .container { max-width: 540px; margin: auto; }
+        .container { 
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            max-height: 100vh;
+            margin: auto; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8px 12px;
+            box-sizing: border-box;
+        }
         
-        /* Header & Navigation */
+        /* Header & Navigation Kompakt */
         .nav { 
             display: flex; 
             flex-direction: column;
-            margin-bottom: 24px; 
-            gap: 16px; 
+            gap: 6px; 
+            flex-shrink: 0;
+        }
+        .nav-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .nav h2 { 
             margin: 0; 
-            font-size: 1.75rem; 
+            font-size: 1.15rem; 
             font-weight: 800; 
             letter-spacing: -0.025em; 
             color: var(--text-main); 
         }
         .nav-buttons { 
             display: flex; 
-            gap: 8px; 
+            gap: 4px; 
             flex-wrap: wrap; 
         }
         
-        /* Statistik-Leiste */
+        /* Statistik-Leiste Kompakt */
         .stats { 
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
-            gap: 8px; 
-            margin-bottom: 24px; 
+            gap: 4px; 
             background: var(--card);
-            padding: 8px;
-            border-radius: 12px;
+            padding: 4px;
+            border-radius: 8px;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-light);
+            flex-shrink: 0;
         }
         .stat-box { 
-            padding: 10px 4px; 
-            border-radius: 8px; 
+            padding: 4px 2px; 
+            border-radius: 6px; 
             text-align: center; 
-            font-size: 0.75rem; 
+            font-size: 0.7rem; 
             font-weight: 700; 
-            transition: all 0.2s ease-in-out; 
             border: 2px solid transparent;
             color: var(--text-muted);
             background: var(--bg);
-            cursor: default;
         }
         
         #stat-box-1 { color: var(--box1); }
@@ -99,42 +120,47 @@
         .stat-box.active-box { 
             border-color: currentColor; 
             background: var(--card);
-            transform: scale(1.05);
             box-shadow: var(--shadow-sm);
         }
         .stat-box.inactive-box { 
             opacity: 0.5; 
         }
 
-        /* Die Hauptkarte */
+        /* Die Hauptkartefüllung */
         .card { 
             background: var(--card); 
-            padding: 32px 24px; 
-            border-radius: 16px; 
+            padding: 12px 16px; 
+            border-radius: 14px; 
             box-shadow: var(--shadow-md); 
             text-align: center; 
             border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: center;
+            overflow: hidden;
+            margin: 6px 0;
+            box-sizing: border-box;
         }
         
         .hidden { display: none !important; }
         
-        /* Buttons generell */
+        /* Buttons generell optimiert */
         button { 
             width: 100%; 
-            padding: 14px; 
-            border-radius: 10px; 
+            padding: 10px; 
+            border-radius: 8px; 
             border: none; 
-            margin-top: 12px; 
+            margin-top: 6px; 
             font-weight: 600; 
             cursor: pointer; 
-            font-size: 1rem; 
+            font-size: 0.9rem; 
             font-family: inherit;
-            transition: all 0.15s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
+            flex-shrink: 0;
         }
         button:hover { filter: brightness(0.95); }
         button:active { transform: translateY(1px); filter: brightness(0.9); }
@@ -142,9 +168,9 @@
         /* Kleine Buttons in der Nav */
         .btn-small { 
             width: auto; 
-            padding: 8px 12px; 
-            font-size: 0.85rem; 
-            border-radius: 8px; 
+            padding: 4px 8px; 
+            font-size: 0.75rem; 
+            border-radius: 6px; 
             margin-top: 0;
             flex: 1 1 auto;
             border: 1px solid var(--border-light);
@@ -152,62 +178,66 @@
         
         /* Typografie in der Karte */
         #v-box { 
-            font-size: 0.75rem; 
+            font-size: 0.7rem; 
             font-weight: 700; 
             color: var(--text-muted); 
-            margin-bottom: 24px; 
+            margin-bottom: 8px; 
             text-transform: uppercase;
             letter-spacing: 0.05em;
             display: inline-block;
-            padding: 4px 12px;
+            padding: 2px 8px;
             background: var(--bg);
-            border-radius: 20px;
+            border-radius: 12px;
+            align-self: center;
         }
 
         #v-de {
-            font-size: 1.5rem; 
+            font-size: 1.25rem; 
             font-weight: 700; 
             color: var(--text-main); 
             word-break: break-word; 
-            line-height: 1.4;
+            line-height: 1.3;
+            margin-bottom: 8px;
         }
         
         #v-hz {
-            font-size: 6.5rem; 
+            font-size: 4.5rem; 
             color: var(--text-main);
             font-weight: 500;
-            margin: 20px 0;
-            line-height: 1.1;
-            word-break: break-all;
+            margin: 8px 0;
+            line-height: 1;
         }
 
         #v-hz.long-char {
-            font-size: 4rem;
+            font-size: 3rem;
         }
 
         #v-py {
-            font-size: 1.25rem; 
+            font-size: 1.1rem; 
             color: var(--primary); 
             font-weight: 500; 
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             font-family: "Helvetica Neue", sans-serif;
-            letter-spacing: 0.02em;
         }
         
-        /* Schreibboxen */
-        .writer-grid { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin: 30px 0; }
+        /* Schreibbox Container angepasst */
+        .writer-grid { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            margin: 4px auto; 
+            flex-grow: 1;
+            width: 100%;
+        }
         .char-box { 
-            width: 80vw;
-            height: 80vw;
-            max-width: 280px; 
-            max-height: 280px; 
+            width: 52vh;
+            height: 52vh;
+            max-width: 230px; 
+            max-height: 230px; 
             border: 2px dashed #cbd5e1; 
             border-radius: 12px; 
             background: #f8fafc; 
-            transition: border-color 0.2s ease;
-            position: relative;
         }
-        .char-box:hover { border-color: var(--primary); }
         
         /* Modal */
         .modal-overlay { 
@@ -217,30 +247,28 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             display: flex; justify-content: center; align-items: center; 
-            z-index: 1000; padding: 20px; box-sizing: border-box; 
+            z-index: 1000; padding: 12px; box-sizing: border-box; 
         }
         .modal-content { 
             background: var(--card); 
-            padding: 32px; 
+            padding: 20px; 
             border-radius: 16px; 
-            max-width: 450px; 
+            max-width: 400px; 
             width: 100%; 
-            max-height: 85vh; 
+            max-height: 80vh; 
             display: flex; 
             flex-direction: column; 
             box-shadow: var(--shadow-lg); 
             box-sizing: border-box; 
         }
-        .modal-scroll-area { overflow-y: auto; flex-grow: 1; margin-bottom: 24px; }
-        .modal-text { word-break: break-word; line-height: 1.6; margin-bottom: 16px; }
+        .modal-scroll-area { overflow-y: auto; flex-grow: 1; margin-bottom: 12px; }
+        .modal-text { word-break: break-word; line-height: 1.5; margin-bottom: 10px; }
         
-        /* Spezifische Action-Buttons (Controls unten) */
         #controls button {
             margin-top: 0;
-            border-radius: 10px;
-            font-size: 1.05rem;
-            padding: 16px 12px;
-            box-shadow: var(--shadow-sm);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            padding: 12px 8px;
         }
     </style>
 </head>
@@ -248,51 +276,57 @@
 
 <div class="container">
     <div class="nav">
-        <h2>HSK Trainer</h2>
+        <div class="nav-top-row">
+            <h2>HSK Trainer</h2>
+            <div style="display: flex; gap: 4px;">
+                <input type="file" id="csvFile" class="hidden" onchange="importCSV(this.files[0])" accept=".csv">
+                <button class="btn-small" style="background: var(--primary); color: white; border: none;" onclick="document.getElementById('csvFile').click()">+ CSV</button>
+                <button class="btn-small" style="background: #ffffff; color: var(--text-main);" onclick="exportProgress()">💾 Backup</button>
+                <input type="file" id="jsonFile" class="hidden" onchange="importProgress(this.files[0])" accept=".json">
+                <button class="btn-small" style="background: #ffffff; color: var(--text-main);" onclick="document.getElementById('jsonFile').click()">📂 Laden</button>
+                <button class="btn-small" style="background: #fef2f2; color: var(--box1); border-color: #fecaca;" onclick="resetSpeicher()">Löschen</button>
+            </div>
+        </div>
         <div class="nav-buttons">
-            <button id="btn-toggle-only-focus" class="btn-small" style="background: #fff; color: var(--focus-color); border-color: var(--focus-color);" onclick="toggleOnlyFocusMode()">🎯 Alle anzeigen (0)</button>
-            <button id="btn-toggle-box5-mode" class="btn-small" style="background: #fff; color: var(--box5); border-color: var(--box5);" onclick="toggleBox5Mode()">⭐ Box 5 Aus</button>
+            <button id="btn-toggle-only-focus" class="btn-small" style="background: #fff; color: var(--focus-color); border-color: var(--focus-color);" onclick="toggleOnlyFocusMode()">🎯 Alle (0)</button>
+            <button id="btn-toggle-box5-mode" class="btn-small" style="background: #fff; color: var(--box5); border-color: var(--box5);" onclick="toggleBox5Mode()">⭐ B5 Aus</button>
             <button id="btn-toggle-dict" class="btn-small" style="background: #fff; color: var(--text-main);" onclick="toggleDictMode()">🔍 Wörterbuch</button>
-            <input type="file" id="csvFile" class="hidden" onchange="importCSV(this.files[0])" accept=".csv">
-            <button class="btn-small" style="background: var(--primary); color: white; border: none;" onclick="document.getElementById('csvFile').click()">+ CSV</button>
-            <button class="btn-small" style="background: #ffffff; color: var(--text-main);" onclick="exportProgress()">💾 Backup</button>
-            <input type="file" id="jsonFile" class="hidden" onchange="importProgress(this.files[0])" accept=".json">
-            <button class="btn-small" style="background: #ffffff; color: var(--text-main);" onclick="document.getElementById('jsonFile').click()">📂 Laden</button>
-            <button class="btn-small" style="background: #fef2f2; color: var(--box1); border-color: #fecaca;" onclick="resetSpeicher()">Löschen</button>
         </div>
     </div>
 
     <div class="stats" id="stats"></div>
 
     <div class="card">
-        <!-- NEU: Wörterbuch View -->
-        <div id="dict-view" class="hidden" style="text-align: left;">
-            <input type="text" id="dict-search-input" placeholder="Nach Deutsch oder Pinyin suchen..." onkeypress="if(event.key === 'Enter') searchDict()" style="width: 100%; padding: 14px; border-radius: 8px; border: 1px solid var(--border-light); margin-bottom: 12px; box-sizing: border-box; font-size: 1rem; font-family: inherit;">
-            <button onclick="searchDict()" style="background: var(--primary); color: white; margin-top: 0; margin-bottom: 24px;">Suchen</button>
-            <div id="dict-results" style="max-height: 50vh; overflow-y: auto; padding-right: 4px;"></div>
+        <!-- Wörterbuch View -->
+        <div id="dict-view" class="hidden" style="text-align: left; display: flex; flex-direction: column; height: 100%;">
+            <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-shrink: 0;">
+                <input type="text" id="dict-search-input" placeholder="Suchbegriff..." onkeypress="if(event.key === 'Enter') searchDict()" style="flex-grow: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-light); font-size: 0.9rem; font-family: inherit; box-sizing: border-box;">
+                <button onclick="searchDict()" style="background: var(--primary); color: white; margin-top: 0; width: auto; padding: 10px 16px;">Suchen</button>
+            </div>
+            <div id="dict-results" style="overflow-y: auto; flex-grow: 1; padding-right: 2px;"></div>
         </div>
 
-        <!-- Bestehende Karte -->
+        <!-- Lernkarte Ansicht -->
         <div id="v-box"></div>
         <div id="v-de">Bitte CSV laden...</div>
         <div id="v-hz" class="hidden"></div>
         <div id="v-py" class="hidden"></div>
         
-        <button id="btn-example-trigger" class="hidden" style="background: var(--primary-light); color: var(--primary); font-size: 0.95rem;" onclick="openModal()">📖 Beispielsatz anzeigen</button>
+        <button id="btn-example-trigger" class="hidden" style="background: var(--primary-light); color: var(--primary); font-size: 0.85rem; padding: 8px;" onclick="openModal()">📖 Beispielsatz</button>
         
         <div id="writer-container" class="writer-grid hidden"></div>
         
-        <button id="btn-clear" class="btn-small hidden" style="background: var(--bg); color: var(--text-muted); margin: 0 auto 20px; display: block; max-width: 200px;" onclick="clearCanvas()">Neu versuchen</button>
+        <button id="btn-clear" class="btn-small hidden" style="background: var(--bg); color: var(--text-muted); margin: 4px auto 0; display: block; max-width: 160px; padding: 6px 10px;" onclick="clearCanvas()">Neu versuchen</button>
         <button id="btn-show" class="hidden" style="background: var(--primary); color: white; box-shadow: var(--shadow-md);" onclick="flip()">Lösung anzeigen</button>
         <button id="btn-audio" class="hidden" style="background: var(--primary-light); color: var(--primary);" onclick="speak()">🔊 Aussprache anhören</button>
         <button id="btn-retry-writing" class="hidden" style="background: #fff; color: var(--primary); border: 2px solid var(--primary);" onclick="retryCurrentWordWriting()">✍️ Noch mal schreiben üben</button>
         
-        <div id="special-actions" class="hidden" style="display: flex; gap: 12px; width: 100%; margin-top: 12px;">
+        <div id="special-actions" class="hidden" style="display: flex; gap: 8px; width: 100%; margin-top: 4px;">
             <button id="btn-focus" style="background: var(--focus-color); color: white; margin-top: 0;" onclick="toggleFocus()">🎯 Fokus</button>
             <button id="btn-to-box5" style="background: var(--dark-btn); color: white; margin-top: 0;" onclick="moveToBox5()">⭐ Box 5</button>
         </div>
         
-        <div id="controls" class="hidden" style="display: flex; gap: 12px; width: 100%; margin-top: 24px;">
+        <div id="controls" class="hidden" style="display: flex; gap: 8px; width: 100%; margin-top: 8px;">
             <button style="background: var(--box1); color: white;" onclick="move(-1)">Falsch</button>
             <button style="background: var(--box2); color: white;" onclick="move(0)">Halten</button>
             <button style="background: var(--box5); color: white;" onclick="move(1)">Richtig</button>
@@ -302,15 +336,13 @@
 
 <div id="exampleModal" class="modal-overlay hidden">
     <div class="modal-content">
-        <h3 style="margin-top: 0; color: var(--text-main); font-weight: 700; border-bottom: 1px solid var(--border-light); padding-bottom: 16px; margin-bottom: 20px; flex-shrink: 0;">Beispielsatz</h3>
-        
+        <h3 style="margin-top: 0; color: var(--text-main); font-size: 1.1rem; font-weight: 700; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; margin-bottom: 12px; flex-shrink: 0;">Beispielsatz</h3>
         <div class="modal-scroll-area">
-            <div id="ex-hz" class="modal-text" style="font-size: 1.75rem; font-weight: 500; color: var(--text-main);"></div>
-            <div id="ex-py" class="modal-text" style="color: var(--primary); font-size: 1.1rem; margin-top: -10px; font-weight: 500;"></div>
-            <div id="ex-de" class="modal-text" style="color: var(--text-main); font-size: 1.05rem; background: var(--bg); padding: 16px; border-radius: 12px; border-left: 4px solid var(--primary); font-weight: 400; margin-top: 24px;"></div>
+            <div id="ex-hz" class="modal-text" style="font-size: 1.4rem; font-weight: 500; color: var(--text-main);"></div>
+            <div id="ex-py" class="modal-text" style="color: var(--primary); font-size: 1rem; margin-top: -6px; font-weight: 500;"></div>
+            <div id="ex-de" class="modal-text" style="color: var(--text-main); font-size: 0.95rem; background: var(--bg); padding: 10px; border-radius: 8px; border-left: 3px solid var(--primary);"></div>
         </div>
-        
-        <button style="background: var(--bg); color: var(--text-main); margin-top: 0; padding: 14px; flex-shrink: 0; border: 1px solid var(--border-light);" onclick="closeModal()">Schließen</button>
+        <button style="background: var(--bg); color: var(--text-main); margin-top: 0; padding: 10px; flex-shrink: 0; border: 1px solid var(--border-light);" onclick="closeModal()">Schließen</button>
     </div>
 </div>
 
@@ -319,7 +351,6 @@ let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: []
 let currentCard = null;
 let currentBoxName = ""; 
 
-// NEU: Globale Variablen für das einzelne Eingabefeld
 let currentQuizChars = [];
 let currentQuizCharIndex = 0;
 let currentWriter = null;
@@ -330,15 +361,13 @@ let box5Mode = false;
 let dictMode = false;       
 let currentDictResults = []; 
 
-// NEU: Funktion zur Abfrage eines Zeichens in der einzelnen Box
 function startQuizForCurrentChar() {
     if (!singleCharBox || currentQuizCharIndex >= currentQuizChars.length) return;
     
-    // Leere das Element für das neue Zeichen
     singleCharBox.innerHTML = ''; 
     
     let char = currentQuizChars[currentQuizCharIndex];
-    let boxSize = Math.min(280, window.innerWidth * 0.8);
+    let boxSize = Math.min(window.innerHeight * 0.38, window.innerWidth * 0.7, 230);
     
     currentWriter = HanziWriter.create(singleCharBox, char, { 
         width: boxSize, 
@@ -351,14 +380,12 @@ function startQuizForCurrentChar() {
     
     currentWriter.quiz({
         onComplete: function() {
-            // Eine kleine Verzögerung (400ms), damit man das geschriebene Zeichen noch kurz sieht,
-            // bevor das Feld geleert wird und das nächste Zeichen abgefragt wird.
             setTimeout(() => {
                 currentQuizCharIndex++;
                 if (currentQuizCharIndex < currentQuizChars.length) {
                     startQuizForCurrentChar();
                 }
-            }, 400); 
+            }, 300); 
         }
     });
 }
@@ -425,7 +452,7 @@ function searchDict() {
     );
 
     if (currentDictResults.length === 0) {
-        resultsContainer.innerHTML = "<p style='color: var(--text-muted); text-align: center;'>Keine Ergebnisse gefunden.</p>";
+        resultsContainer.innerHTML = "<p style='color: var(--text-muted); text-align: center; font-size: 0.9rem;'>Keine Ergebnisse gefunden.</p>";
         return;
     }
 
@@ -433,7 +460,7 @@ function searchDict() {
         let c = item.card;
         let boxNum = item.boxNum;
         let div = document.createElement('div');
-        div.style.cssText = "background: var(--bg); padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border-light);";
+        div.style.cssText = "background: var(--bg); padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border-light);";
         
         let focusBtnBg = c.inFocus ? "var(--focus-color)" : "var(--card)";
         let focusBtnColor = c.inFocus ? "white" : "var(--text-muted)";
@@ -441,11 +468,11 @@ function searchDict() {
         let focusText = c.inFocus ? "Fokus aktiv" : "Fokus";
 
         let html = `
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div style="font-size: 2rem; color: var(--text-main); font-weight: 500;">${c.hz}</div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <button onclick="toggleDictFocus(${index})" style="margin: 0; padding: 4px 10px; width: auto; font-size: 0.75rem; border-radius: 20px; background: ${focusBtnBg}; color: ${focusBtnColor}; border: 1px solid ${focusBtnBorder}; font-weight: bold; font-family: inherit;">🎯 ${focusText}</button>
-                    <select onchange="changeDictBox(${index}, this.value)" style="background: var(--box${boxNum}); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase; border: none; cursor: pointer; outline: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 1.5rem; color: var(--text-main); font-weight: 500;">${c.hz}</div>
+                <div style="display: flex; gap: 4px; align-items: center;">
+                    <button onclick="toggleDictFocus(${index})" style="margin: 0; padding: 2px 6px; width: auto; font-size: 0.7rem; border-radius: 14px; background: ${focusBtnBg}; color: ${focusBtnColor}; border: 1px solid ${focusBtnBorder}; font-weight: bold; font-family: inherit;">🎯 ${focusText}</button>
+                    <select onchange="changeDictBox(${index}, this.value)" style="background: var(--box${boxNum}); color: white; padding: 2px 6px; border-radius: 14px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; border: none; cursor: pointer; outline: none;">
                         <option value="1" style="color: black; background: white;" ${boxNum == 1 ? 'selected' : ''}>Box 1</option>
                         <option value="2" style="color: black; background: white;" ${boxNum == 2 ? 'selected' : ''}>Box 2</option>
                         <option value="3" style="color: black; background: white;" ${boxNum == 3 ? 'selected' : ''}>Box 3</option>
@@ -454,16 +481,16 @@ function searchDict() {
                     </select>
                 </div>
             </div>
-            <div style="color: var(--primary); font-size: 1.1rem; margin-bottom: 8px;">${c.py}</div>
-            <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">${c.de}</div>
+            <div style="color: var(--primary); font-size: 0.9rem;">${c.py}</div>
+            <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-main);">${c.de}</div>
         `;
         
         if (c.sentenceHz) {
             html += `
-                <div style="border-top: 1px solid var(--border-light); padding-top: 12px; margin-top: 12px;">
-                    <div style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 4px;">${c.sentenceHz}</div>
-                    <div style="color: var(--primary); font-size: 0.9rem; margin-bottom: 4px;">${c.sentencePy}</div>
-                    <div style="color: var(--text-muted); font-size: 0.9rem;">${c.sentenceDe}</div>
+                <div style="border-top: 1px solid var(--border-light); padding-top: 6px; margin-top: 6px; font-size: 0.85rem;">
+                    <div style="color: var(--text-main);">${c.sentenceHz}</div>
+                    <div style="color: var(--primary);">${c.sentencePy}</div>
+                    <div style="color: var(--text-muted);">${c.sentenceDe}</div>
                 </div>
             `;
         }
@@ -475,16 +502,12 @@ function searchDict() {
 
 function toggleDictFocus(index) {
     let item = currentDictResults[index];
-    
     if (!item.card.inFocus && getFocusCount() >= 150) {
         alert("Du kannst maximal 150 Vokabeln in den Fokus setzen!");
         return;
     }
-
     item.card.inFocus = !item.card.inFocus;
-    if (item.card.inFocus) {
-        item.card.correctCount = 0; 
-    }
+    if (item.card.inFocus) item.card.correctCount = 0;
     updateUI(); 
     searchDict(); 
 }
@@ -493,13 +516,10 @@ function changeDictBox(index, newBoxLevel) {
     let item = currentDictResults[index];
     let oldBox = 'box' + item.boxNum;
     let newBox = 'box' + newBoxLevel;
-    
     if (oldBox === newBox) return; 
-
     state[oldBox] = state[oldBox].filter(c => c !== item.card);
     item.card.lastMovedDate = new Date().toDateString();
     state[newBox].push(item.card);
-    
     updateUI(); 
     searchDict(); 
 }
@@ -529,9 +549,9 @@ function updateFocusButtonText() {
     let focusCount = getFocusCount();
     let btn = document.getElementById('btn-toggle-only-focus');
     if (onlyFocusMode) {
-        btn.innerText = "🎯 Nur Fokus (" + focusCount + ")";
+        btn.innerText = "🎯 Fokus (" + focusCount + ")";
     } else {
-        btn.innerText = "🎯 Alle anzeigen (" + focusCount + ")";
+        btn.innerText = "🎯 Alle (" + focusCount + ")";
     }
 }
 
@@ -541,10 +561,7 @@ function toggleOnlyFocusMode() {
     if (onlyFocusMode) {
         btn.style.background = "var(--focus-color)";
         btn.style.color = "white";
-        
-        if(box5Mode) {
-            toggleBox5Mode();
-        }
+        if(box5Mode) toggleBox5Mode();
     } else {
         btn.style.background = "#fff";
         btn.style.color = "var(--focus-color)";
@@ -557,15 +574,12 @@ function toggleBox5Mode() {
     box5Mode = !box5Mode;
     let btn = document.getElementById('btn-toggle-box5-mode');
     if (box5Mode) {
-        btn.innerText = "⭐ Nur Box 5";
+        btn.innerText = "⭐ Nur B5";
         btn.style.background = "var(--box5)";
         btn.style.color = "white";
-        
-        if(onlyFocusMode) {
-            toggleOnlyFocusMode();
-        }
+        if(onlyFocusMode) toggleOnlyFocusMode();
     } else {
-        btn.innerText = "⭐ Box 5 Aus";
+        btn.innerText = "⭐ B5 Aus";
         btn.style.background = "#fff";
         btn.style.color = "var(--box5)";
     }
@@ -576,10 +590,8 @@ function parseCSVLine(text) {
     let fields = [];
     let field = "";
     let inQuotes = false;
-    
     for (let i = 0; i < text.length; i++) {
         let char = text[i];
-        
         if (char === '"' || char === '„' || char === '“' || char === '”') {
             inQuotes = !inQuotes; 
         } else if (char === ',' && !inQuotes) {
@@ -604,31 +616,21 @@ function cleanField(str) {
 function importCSV(file) {
     if(!file) return;
     const targetBox = confirm("Sollen die neuen Vokabeln direkt in Box 5 (bekannt) einsortiert werden?\nKlicke 'Abbrechen' für Box 1 (neu lernen).") ? 'box5' : 'box1';
-    
     let detectedLevel = "Import";
     let match = file.name.toLowerCase().match(/hsk\s*([1-6])/);
-    if (match) {
-        detectedLevel = "HSK " + match[1];
-    }
+    if (match) detectedLevel = "HSK " + match[1];
     
     const reader = new FileReader();
     reader.onload = (e) => {
         const rows = e.target.result.replace(/\r/g, "").split('\n');
         rows.forEach(r => {
             if(!r.trim()) return;
-            
             const p = parseCSVLine(r);
-            
             if(p.length >= 3) {
                 state[targetBox].push({
-                    hz: p[0], 
-                    py: p[1], 
-                    de: p[2], 
-                    sentenceHz: p[3] || '', 
-                    sentencePy: p[4] || '', 
-                    sentenceDe: p[5] || '',
-                    level: p[6] ? p[6].trim() : detectedLevel,
-                    inFocus: false
+                    hz: p[0], py: p[1], de: p[2], 
+                    sentenceHz: p[3] || '', sentencePy: p[4] || '', sentenceDe: p[5] || '',
+                    level: p[6] ? p[6].trim() : detectedLevel, inFocus: false
                 });
             }
         });
@@ -648,14 +650,10 @@ function next() {
             state['box'+i].forEach(c => {
                 if (box5Mode && i !== 5) return;
                 if (onlyFocusMode && !c.inFocus) return; 
-
                 pool.push({c, box: 'box'+i});
-                
                 if (c.inFocus) {
                     let additionalTickets = box5Mode ? 2 : 7;
-                    for (let f = 0; f < additionalTickets; f++) {
-                        pool.push({c, box: 'box'+i});
-                    }
+                    for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
                 }
             });
         }
@@ -664,16 +662,8 @@ function next() {
     if(pool.length === 0) {
         currentBoxName = "";
         currentCard = null;
-        if (onlyFocusMode) {
-            document.getElementById('v-box').innerText = "FILTER AKTIV";
-            document.getElementById('v-de').innerText = "Keine Fokus-Karten vorhanden!";
-        } else if (box5Mode) {
-            document.getElementById('v-box').innerText = "FILTER AKTIV";
-            document.getElementById('v-de').innerText = "Keine Vokabeln in Box 5 vorhanden!";
-        } else {
-            document.getElementById('v-box').innerText = "LEER";
-            document.getElementById('v-de').innerText = "Bitte CSV laden...";
-        }
+        document.getElementById('v-box').innerText = "STATUS";
+        document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten!" : (box5Mode ? "Box 5 leer!" : "Bitte CSV laden...");
         document.getElementById('writer-container').classList.add('hidden');
         document.getElementById('btn-show').classList.add('hidden');
         document.getElementById('btn-clear').classList.add('hidden');
@@ -692,7 +682,6 @@ function next() {
     
     highlightActiveBox();
     
-    // UI Reset für das Zeichnen
     document.getElementById('writer-container').classList.remove('hidden');
     document.getElementById('writer-container').innerHTML = '';
     
@@ -716,12 +705,10 @@ function next() {
     currentQuizChars = cleanHz.split('').filter(char => /[\u4e00-\u9fa5]/.test(char));
     currentQuizCharIndex = 0;
 
-    // Nur ein Element erstellen, das dann nacheinander befüllt wird
     if (currentQuizChars.length > 0) {
         singleCharBox = document.createElement('div'); 
         singleCharBox.className = 'char-box';
         document.getElementById('writer-container').appendChild(singleCharBox);
-        
         startQuizForCurrentChar();
     }
 }
@@ -789,7 +776,6 @@ function retryCurrentWordWriting() {
         singleCharBox = document.createElement('div'); 
         singleCharBox.className = 'char-box';
         container.appendChild(singleCharBox);
-        
         startQuizForCurrentChar();
     }
 }
@@ -799,16 +785,12 @@ function closeModal() { document.getElementById('exampleModal').classList.add('h
 
 function toggleFocus() {
     if (!currentCard) return;
-
     if (!currentCard.inFocus && getFocusCount() >= 150) {
         alert("Du kannst maximal 150 Vokabeln in den Fokus setzen!");
         return;
     }
-
     currentCard.inFocus = !currentCard.inFocus;
-    if (currentCard.inFocus) {
-        currentCard.correctCount = 0;
-    }
+    if (currentCard.inFocus) currentCard.correctCount = 0;
     document.getElementById('btn-focus').innerText = currentCard.inFocus ? "🎯 Fokus aktiv" : "🎯 Fokus";
     let cardLevel = currentCard.level || "Unbekannt";
     let focusTag = currentCard.inFocus ? " [FOKUS]" : "";
@@ -820,7 +802,6 @@ function move(step) {
     if (!currentCard) return;
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
     let level = parseInt(oldBox.replace('box',''));
-    
     state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     
     let today = new Date().toDateString();
@@ -833,9 +814,7 @@ function move(step) {
     }
 
     if (effectiveStep === 1 && currentCard.inFocus) {
-        if (!currentCard.correctCount) {
-            currentCard.correctCount = 0;
-        }
+        if (!currentCard.correctCount) currentCard.correctCount = 0;
         currentCard.correctCount++;
         if (currentCard.correctCount >= 20) {
             currentCard.inFocus = false;
@@ -845,17 +824,13 @@ function move(step) {
 
     let newLevel = Math.min(Math.max(level + effectiveStep, 1), 5);
     state['box' + newLevel].push(currentCard);
-    
     updateUI(); next();
 }
 
 function moveToBox5() {
     if (!currentCard) return;
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
-    if (oldBox) {
-        state[oldBox] = state[oldBox].filter(c => c !== currentCard);
-    }
-    
+    if (oldBox) state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     currentCard.lastMovedDate = new Date().toDateString();
     state['box5'].push(currentCard);
     updateUI(); next();
@@ -865,11 +840,8 @@ function resetSpeicher() { if(confirm("Alles löschen?")) { state = { box1: [], 
 function exportProgress() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "hsk_backup.json"); dl.click(); }
 function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); updateUI(); next(); }; reader.readAsText(file); }
 
-// NEU: Clear-Funktion bricht das Quiz ab und startet beim allerersten Zeichen (Index 0) im selben Feld
 function clearCanvas() { 
-    if (currentWriter) {
-        currentWriter.cancelQuiz();
-    }
+    if (currentWriter) currentWriter.cancelQuiz();
     currentQuizCharIndex = 0;
     startQuizForCurrentChar();
 }
