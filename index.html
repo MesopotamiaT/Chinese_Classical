@@ -205,6 +205,7 @@
             border-radius: 12px; 
             background: #f8fafc; 
             transition: border-color 0.2s ease;
+            position: relative;
         }
         .char-box:hover { border-color: var(--primary); }
         
@@ -317,24 +318,51 @@
 let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [] };
 let currentCard = null;
 let currentBoxName = ""; 
-let writers = [];
+
+// NEU: Globale Variablen für das einzelne Eingabefeld
+let currentQuizChars = [];
+let currentQuizCharIndex = 0;
+let currentWriter = null;
+let singleCharBox = null;
+
 let onlyFocusMode = false; 
 let box5Mode = false;       
 let dictMode = false;       
 let currentDictResults = []; 
 
-// NEU: Globale Funktion für sequenzielle Abfrage der Zeichen
-function runQuizSequence(index) {
-    if (index < writers.length) {
-        writers[index].quiz({
-            onComplete: function() {
-                runQuizSequence(index + 1);
-            }
-        });
-    }
+// NEU: Funktion zur Abfrage eines Zeichens in der einzelnen Box
+function startQuizForCurrentChar() {
+    if (!singleCharBox || currentQuizCharIndex >= currentQuizChars.length) return;
+    
+    // Leere das Element für das neue Zeichen
+    singleCharBox.innerHTML = ''; 
+    
+    let char = currentQuizChars[currentQuizCharIndex];
+    let boxSize = Math.min(280, window.innerWidth * 0.8);
+    
+    currentWriter = HanziWriter.create(singleCharBox, char, { 
+        width: boxSize, 
+        height: boxSize, 
+        showCharacter: false, 
+        showOutline: false, 
+        padding: Math.floor(boxSize * 0.04), 
+        strokeColor: '#2563eb' 
+    });
+    
+    currentWriter.quiz({
+        onComplete: function() {
+            // Eine kleine Verzögerung (400ms), damit man das geschriebene Zeichen noch kurz sieht,
+            // bevor das Feld geleert wird und das nächste Zeichen abgefragt wird.
+            setTimeout(() => {
+                currentQuizCharIndex++;
+                if (currentQuizCharIndex < currentQuizChars.length) {
+                    startQuizForCurrentChar();
+                }
+            }, 400); 
+        }
+    });
 }
 
-// NEU: Hilfsfunktion, um zu zählen, wie viele Vokabeln aktuell im Fokus sind
 function getFocusCount() {
     let count = 0;
     for (let i = 1; i <= 5; i++) {
@@ -345,7 +373,6 @@ function getFocusCount() {
     return count;
 }
 
-// NEU: Wörterbuch Funktionen
 function toggleDictMode() {
     dictMode = !dictMode;
     let btn = document.getElementById('btn-toggle-dict');
@@ -357,13 +384,11 @@ function toggleDictMode() {
         btn.style.color = "white";
         dictView.classList.remove('hidden');
         
-        // Alle Lernkarten-Elemente verstecken
         flashcardElements.forEach(id => {
             let el = document.getElementById(id);
             if (el) el.classList.add('hidden');
         });
         
-        // Felder leeren und Fokus setzen
         document.getElementById('dict-search-input').value = "";
         document.getElementById('dict-results').innerHTML = "";
         document.getElementById('dict-search-input').focus();
@@ -372,11 +397,9 @@ function toggleDictMode() {
         btn.style.color = "var(--text-main)";
         dictView.classList.add('hidden');
         
-        // Grund-Elemente der Karte wieder anzeigen
         document.getElementById('v-box').classList.remove('hidden');
         document.getElementById('v-de').classList.remove('hidden');
         
-        // Lernmodus fortsetzen
         next(); 
     }
 }
@@ -388,7 +411,6 @@ function searchDict() {
     
     if (!query) return;
 
-    // Alle Vokabeln aus allen Boxen sammeln und sich dabei die Box merken
     let allCards = [];
     for (let i = 1; i <= 5; i++) {
         state['box' + i].forEach(c => {
@@ -396,7 +418,6 @@ function searchDict() {
         });
     }
 
-    // Nach Deutsch oder Pinyin suchen (Groß-/Kleinschreibung ignorieren)
     currentDictResults = allCards.filter(item => 
         item.card.de.toLowerCase().includes(query) || 
         item.card.py.toLowerCase().includes(query) ||
@@ -408,7 +429,6 @@ function searchDict() {
         return;
     }
 
-    // Ergebnisse rendern
     currentDictResults.forEach((item, index) => {
         let c = item.card;
         let boxNum = item.boxNum;
@@ -420,7 +440,6 @@ function searchDict() {
         let focusBtnBorder = c.inFocus ? "var(--focus-color)" : "var(--border-light)";
         let focusText = c.inFocus ? "Fokus aktiv" : "Fokus";
 
-        // HTML mit Fokus-Button und neuem Box-Dropdown
         let html = `
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                 <div style="font-size: 2rem; color: var(--text-main); font-weight: 500;">${c.hz}</div>
@@ -457,7 +476,6 @@ function searchDict() {
 function toggleDictFocus(index) {
     let item = currentDictResults[index];
     
-    // NEU: Maximale Anzahl von 150 beim Aktivieren prüfen
     if (!item.card.inFocus && getFocusCount() >= 150) {
         alert("Du kannst maximal 150 Vokabeln in den Fokus setzen!");
         return;
@@ -465,34 +483,26 @@ function toggleDictFocus(index) {
 
     item.card.inFocus = !item.card.inFocus;
     if (item.card.inFocus) {
-        item.card.correctCount = 0; // Zähler zurücksetzen wie bei der normalen Funktion
+        item.card.correctCount = 0; 
     }
-    updateUI(); // Speichert state in localStorage und aktualisiert Statistik
-    searchDict(); // UI der Suchergebnisse sofort neu zeichnen, um Button-Farbe anzupassen
+    updateUI(); 
+    searchDict(); 
 }
 
-// NEU: Funktion um Box im Wörterbuch zu wechseln
 function changeDictBox(index, newBoxLevel) {
     let item = currentDictResults[index];
     let oldBox = 'box' + item.boxNum;
     let newBox = 'box' + newBoxLevel;
     
-    if (oldBox === newBox) return; // Nichts zu tun
+    if (oldBox === newBox) return; 
 
-    // Vokabel aus alter Box entfernen
     state[oldBox] = state[oldBox].filter(c => c !== item.card);
-    
-    // Datum aktualisieren (analog zum normalen move-Verhalten)
     item.card.lastMovedDate = new Date().toDateString();
-    
-    // In neue Box einfügen
     state[newBox].push(item.card);
     
-    updateUI(); // Statistik und LocalStorage aktualisieren
-    searchDict(); // Wörterbuch UI neu laden (Aktualisiert die Farbe des Dropdowns)
+    updateUI(); 
+    searchDict(); 
 }
-
-// Bisheriger Code ab hier
 
 function updateUI() {
     document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box">B${i}<br>${state['box'+i].length}</div>`).join('');
@@ -516,9 +526,7 @@ function highlightActiveBox() {
 }
 
 function updateFocusButtonText() {
-    // Die Zählfunktion für den Fokus greift jetzt auf die neue Hilfsfunktion zu
     let focusCount = getFocusCount();
-    
     let btn = document.getElementById('btn-toggle-only-focus');
     if (onlyFocusMode) {
         btn.innerText = "🎯 Nur Fokus (" + focusCount + ")";
@@ -534,7 +542,6 @@ function toggleOnlyFocusMode() {
         btn.style.background = "var(--focus-color)";
         btn.style.color = "white";
         
-        // Deaktiviere Box 5 Modus, wenn Fokus aktiviert wird, um Konflikte zu vermeiden
         if(box5Mode) {
             toggleBox5Mode();
         }
@@ -554,7 +561,6 @@ function toggleBox5Mode() {
         btn.style.background = "var(--box5)";
         btn.style.color = "white";
         
-        // Deaktiviere Fokus-Modus, wenn Box 5 aktiviert wird, um Konflikte zu vermeiden
         if(onlyFocusMode) {
             toggleOnlyFocusMode();
         }
@@ -632,33 +638,20 @@ function importCSV(file) {
 }
 
 function next() {
-    if (dictMode) return; // Stoppe next() wenn wir im Wörterbuch-Modus sind
+    if (dictMode) return; 
 
     let pool = [];
-    
-    // Stark abnehmende Gewichtung: 
-    // Box 1 (16x) > Box 2 (8x) > Box 3 (4x) > Box 4 (2x) > Box 5 (1x)
     const boxWeights = [0, 16, 8, 4, 2, 1]; 
     
     for(let i=1; i<=5; i++) {
         for(let j=0; j<boxWeights[i]; j++) {
             state['box'+i].forEach(c => {
-                // Wenn Box 5 Modus aktiv ist, überspringe alle Karten außerhalb von Box 5
-                if (box5Mode && i !== 5) {
-                    return;
-                }
-
-                // Wenn Fokus-Modus aktiv ist, überspringe Karten ohne Fokus
-                if (onlyFocusMode && !c.inFocus) {
-                    return; 
-                }
+                if (box5Mode && i !== 5) return;
+                if (onlyFocusMode && !c.inFocus) return; 
 
                 pool.push({c, box: 'box'+i});
                 
-                // Modifizierter Fokus-Bonus
                 if (c.inFocus) {
-                    // Wenn der Box 5 Modus aktiv ist, fügen wir die Karte nur 2 zusätzliche Male hinzu (insgesamt 3x)
-                    // Sonst wie gewohnt 7 zusätzliche Male (insgesamt 8x)
                     let additionalTickets = box5Mode ? 2 : 7;
                     for (let f = 0; f < additionalTickets; f++) {
                         pool.push({c, box: 'box'+i});
@@ -699,10 +692,14 @@ function next() {
     
     highlightActiveBox();
     
-    // UI Reset
+    // UI Reset für das Zeichnen
     document.getElementById('writer-container').classList.remove('hidden');
     document.getElementById('writer-container').innerHTML = '';
-    writers = []; 
+    
+    currentWriter = null; 
+    singleCharBox = null;
+    currentQuizChars = [];
+    
     document.getElementById('v-hz').classList.add('hidden');
     document.getElementById('v-hz').classList.remove('long-char');
     document.getElementById('v-py').classList.add('hidden');
@@ -716,27 +713,16 @@ function next() {
     closeModal();
 
     let cleanHz = currentCard.hz.replace(/\s/g, '');
-    cleanHz.split('').forEach(char => {
-        if(/[\u4e00-\u9fa5]/.test(char)) {
-            let div = document.createElement('div'); div.className = 'char-box';
-            document.getElementById('writer-container').appendChild(div);
-            
-            let boxSize = Math.min(280, window.innerWidth * 0.8);
-            
-            let writer = HanziWriter.create(div, char, { 
-                width: boxSize, 
-                height: boxSize, 
-                showCharacter: false, 
-                showOutline: false, 
-                padding: Math.floor(boxSize * 0.04), 
-                strokeColor: '#2563eb' 
-            });
-            writers.push(writer);
-        }
-    });
+    currentQuizChars = cleanHz.split('').filter(char => /[\u4e00-\u9fa5]/.test(char));
+    currentQuizCharIndex = 0;
 
-    if (writers.length > 0) {
-        runQuizSequence(0);
+    // Nur ein Element erstellen, das dann nacheinander befüllt wird
+    if (currentQuizChars.length > 0) {
+        singleCharBox = document.createElement('div'); 
+        singleCharBox.className = 'char-box';
+        document.getElementById('writer-container').appendChild(singleCharBox);
+        
+        startQuizForCurrentChar();
     }
 }
 
@@ -781,65 +767,45 @@ function flip() {
 function retryCurrentWordWriting() {
     if (!currentCard) return;
     
-    // Richtige Lösung wieder verstecken
     document.getElementById('v-hz').classList.add('hidden');
     document.getElementById('v-py').classList.add('hidden');
     document.getElementById('btn-example-trigger').classList.add('hidden');
-    
-    // "Lösung anzeigen"-Button wieder einblenden, damit man erneut prüfen kann
     document.getElementById('btn-show').classList.remove('hidden');
+    document.getElementById('btn-clear').classList.remove('hidden');
     
-    // Schreib-Container leeren und wieder sichtbar machen
     const container = document.getElementById('writer-container');
     container.innerHTML = '';
     container.classList.remove('hidden');
     
-    // "Neu versuchen"-Button für die Zeichenboxen wieder anzeigen
-    document.getElementById('btn-clear').classList.remove('hidden');
+    currentWriter = null;
+    singleCharBox = null;
+    currentQuizChars = [];
     
-    writers = [];
     let cleanHz = currentCard.hz.replace(/\s/g, '');
-    
-    cleanHz.split('').forEach(char => {
-        if(/[\u4e00-\u9fa5]/.test(char)) {
-            let div = document.createElement('div'); 
-            div.className = 'char-box';
-            container.appendChild(div);
-            
-            let boxSize = Math.min(280, window.innerWidth * 0.8);
-            
-            let writer = HanziWriter.create(div, char, { 
-                width: boxSize, 
-                height: boxSize, 
-                showCharacter: false, 
-                showOutline: false, 
-                padding: Math.floor(boxSize * 0.04), 
-                strokeColor: '#2563eb' 
-            });
-            writers.push(writer);
-        }
-    });
+    currentQuizChars = cleanHz.split('').filter(char => /[\u4e00-\u9fa5]/.test(char));
+    currentQuizCharIndex = 0;
 
-    if (writers.length > 0) {
-        runQuizSequence(0);
+    if (currentQuizChars.length > 0) {
+        singleCharBox = document.createElement('div'); 
+        singleCharBox.className = 'char-box';
+        container.appendChild(singleCharBox);
+        
+        startQuizForCurrentChar();
     }
 }
 
-/* Modals & Aktionen */
 function openModal() { document.getElementById('exampleModal').classList.remove('hidden'); }
 function closeModal() { document.getElementById('exampleModal').classList.add('hidden'); }
 
 function toggleFocus() {
     if (!currentCard) return;
 
-    // NEU: Maximale Anzahl von 150 beim Aktivieren prüfen
     if (!currentCard.inFocus && getFocusCount() >= 150) {
         alert("Du kannst maximal 150 Vokabeln in den Fokus setzen!");
         return;
     }
 
     currentCard.inFocus = !currentCard.inFocus;
-    // Setze den Zähler zurück, falls Fokus manuell wieder eingeschaltet wird
     if (currentCard.inFocus) {
         currentCard.correctCount = 0;
     }
@@ -857,20 +823,15 @@ function move(step) {
     
     state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     
-    // --- NEUE LOGIK: Eine Vokabel darf pro Tag nur einmal die Box wechseln ---
     let today = new Date().toDateString();
     let effectiveStep = step;
     
     if (currentCard.lastMovedDate === today) {
-        // Karte wurde heute schon verschoben, also bleibt sie in der aktuellen Box
         effectiveStep = 0; 
     } else if (step !== 0) {
-        // Karte wird heute zum ersten Mal verschoben, wir speichern das Datum
         currentCard.lastMovedDate = today;
     }
-    // --------------------------------------------------------------------------
 
-    // --- LOGIK FÜR FOKUS-DEAKTIVIERUNG NACH 20x RICHTIG ---
     if (effectiveStep === 1 && currentCard.inFocus) {
         if (!currentCard.correctCount) {
             currentCard.correctCount = 0;
@@ -878,13 +839,11 @@ function move(step) {
         currentCard.correctCount++;
         if (currentCard.correctCount >= 20) {
             currentCard.inFocus = false;
-            currentCard.correctCount = 0; // Zurücksetzen für eventuelle spätere Reaktivierung
+            currentCard.correctCount = 0; 
         }
     }
-    // -------------------------------------------------------
 
     let newLevel = Math.min(Math.max(level + effectiveStep, 1), 5);
-    
     state['box' + newLevel].push(currentCard);
     
     updateUI(); next();
@@ -897,9 +856,7 @@ function moveToBox5() {
         state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     }
     
-    // Auch hier das Datum abspeichern, falls sie an einem Tag manuell nach Box 5 geschickt wird
     currentCard.lastMovedDate = new Date().toDateString();
-    
     state['box5'].push(currentCard);
     updateUI(); next();
 }
@@ -908,12 +865,13 @@ function resetSpeicher() { if(confirm("Alles löschen?")) { state = { box1: [], 
 function exportProgress() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "hsk_backup.json"); dl.click(); }
 function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); updateUI(); next(); }; reader.readAsText(file); }
 
-// NEU: Clear-Funktion bricht das Quiz ab und startet die Sequenz für das aktuelle Wort neu
+// NEU: Clear-Funktion bricht das Quiz ab und startet beim allerersten Zeichen (Index 0) im selben Feld
 function clearCanvas() { 
-    writers.forEach(w => w.cancelQuiz()); 
-    if(writers.length > 0) {
-        runQuizSequence(0);
+    if (currentWriter) {
+        currentWriter.cancelQuiz();
     }
+    currentQuizCharIndex = 0;
+    startQuizForCurrentChar();
 }
 
 function speak() { if(!currentCard) return; const u = new SpeechSynthesisUtterance(currentCard.hz); u.lang = 'zh-CN'; window.speechSynthesis.speak(u); }
