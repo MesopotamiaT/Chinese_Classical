@@ -34,7 +34,7 @@
             --radius-card: 16px;
         }
 
-        /* Eleganter Dark Mode (wie in deinem Screenshot) */
+        /* Eleganter Dark Mode */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg: #121212; 
@@ -81,7 +81,7 @@
             padding: 12px; 
         }
         
-        /* HEADER (Gleiche Maße, professioneller Look) */
+        /* HEADER */
         .header {
             display: flex;
             flex-direction: column;
@@ -134,7 +134,7 @@
             box-shadow: var(--shadow-subtle);
         }
         
-        /* STATISTIK */
+        /* STATISTIK / BOXEN-FILTER */
         .stats { 
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
@@ -153,11 +153,12 @@
             text-align: center; 
             font-size: 0.8rem; 
             font-weight: 600; 
-            border: 1px solid transparent;
+            border: 2px solid transparent;
             color: var(--text-muted);
             background: transparent;
             transition: all 0.2s ease;
             cursor: pointer;
+            user-select: none;
         }
         #stat-box-1 { color: var(--box1); }
         #stat-box-2 { color: var(--box2); }
@@ -165,10 +166,12 @@
         #stat-box-4 { color: var(--box4); }
         #stat-box-5 { color: var(--box5); }
         
-        .stat-box.selected-box {
-            border-color: currentColor !important;
-            background: var(--bg);
-            box-shadow: 0 0 0 1px currentColor;
+        .stat-box.selected-box { 
+            border-color: currentColor !important; 
+            background: var(--bg) !important;
+            opacity: 1 !important;
+            transform: scale(1.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
         }
         
         .stat-box.active-box { 
@@ -239,7 +242,7 @@
             letter-spacing: 0.02em;
         }
         
-        /* ZEICHENBOX (Clean & Minimal) */
+        /* ZEICHENBOX */
         .writer-grid { 
             display: flex; 
             justify-content: center; 
@@ -261,7 +264,7 @@
         }
         .char-box:active { border-color: var(--primary); }
 
-        /* ACTION BUTTONS (Gleiche Maße, professionelles Styling) */
+        /* ACTION BUTTONS */
         .action-area {
             margin-top: auto; 
             padding-top: 16px;
@@ -433,6 +436,16 @@ let selectedBoxFilter = null;
 let dictMode = false;       
 let currentDictResults = []; 
 
+function selectBoxFilter(boxNum) {
+    if (selectedBoxFilter === boxNum) {
+        selectedBoxFilter = null; 
+    } else {
+        selectedBoxFilter = boxNum;
+    }
+    updateUI();
+    next();
+}
+
 function startQuizForCurrentChar() {
     if (!singleCharBox || currentQuizCharIndex >= currentQuizChars.length) return;
     
@@ -591,16 +604,6 @@ function changeDictBox(index, newBoxLevel) {
     updateUI(); searchDict(); 
 }
 
-function selectBoxFilter(boxNum) {
-    if (selectedBoxFilter === boxNum) {
-        selectedBoxFilter = null; 
-    } else {
-        selectedBoxFilter = boxNum;
-    }
-    updateUI();
-    next();
-}
-
 function updateUI() {
     document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box" onclick="selectBoxFilter(${i})">BOX ${i}<br>${state['box'+i].length}</div>`).join('');
     localStorage.setItem('hsk_data', JSON.stringify(state));
@@ -615,9 +618,11 @@ function highlightActiveBox() {
             element.classList.remove('active-box', 'inactive-box', 'selected-box');
             if (selectedBoxFilter === i) {
                 element.classList.add('selected-box');
+            } else if (selectedBoxFilter !== null) {
+                element.classList.add('inactive-box');
             } else if (currentBoxName === 'box' + i) {
                 element.classList.add('active-box');
-            } else if (currentBoxName !== "" || selectedBoxFilter !== null) {
+            } else if (currentBoxName !== "") {
                 element.classList.add('inactive-box');
             }
         }
@@ -715,17 +720,20 @@ function next() {
     
     for(let i=1; i<=5; i++) {
         if (selectedBoxFilter !== null && i !== selectedBoxFilter) continue;
-        for(let j=0; j<boxWeights[i]; j++) {
-            state['box'+i].forEach(c => {
-                if (selectedBoxFilter === null && box5Mode && i !== 5) return;
-                if (onlyFocusMode && !c.inFocus) return; 
+        
+        state['box'+i].forEach(c => {
+            if (selectedBoxFilter === null && box5Mode && i !== 5) return;
+            if (onlyFocusMode && !c.inFocus) return; 
+            
+            let weight = selectedBoxFilter !== null ? 1 : boxWeights[i];
+            for(let j=0; j<weight; j++) {
                 pool.push({c, box: 'box'+i});
-                if (c.inFocus) {
-                    let additionalTickets = box5Mode ? 2 : 7;
-                    for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
-                }
-            });
-        }
+            }
+            if (c.inFocus) {
+                let additionalTickets = box5Mode ? 2 : 7;
+                for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
+            }
+        });
     }
     
     if(pool.length === 0) {
