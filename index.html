@@ -318,10 +318,21 @@ let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: []
 let currentCard = null;
 let currentBoxName = ""; 
 let writers = [];
-let onlyFocusMode = false; // Zustand für den Fokus-Filtermodus
-let box5Mode = false;       // Zustand für den neuen Box 5 Filtermodus
-let dictMode = false;       // Zustand für den neuen Wörterbuch-Modus
-let currentDictResults = []; // Speichert die aktuellen Suchergebnisse
+let onlyFocusMode = false; 
+let box5Mode = false;       
+let dictMode = false;       
+let currentDictResults = []; 
+
+// NEU: Globale Funktion für sequenzielle Abfrage der Zeichen
+function runQuizSequence(index) {
+    if (index < writers.length) {
+        writers[index].quiz({
+            onComplete: function() {
+                runQuizSequence(index + 1);
+            }
+        });
+    }
+}
 
 // NEU: Hilfsfunktion, um zu zählen, wie viele Vokabeln aktuell im Fokus sind
 function getFocusCount() {
@@ -720,10 +731,13 @@ function next() {
                 padding: Math.floor(boxSize * 0.04), 
                 strokeColor: '#2563eb' 
             });
-            writer.quiz(); 
             writers.push(writer);
         }
     });
+
+    if (writers.length > 0) {
+        runQuizSequence(0);
+    }
 }
 
 function flip() {
@@ -802,10 +816,13 @@ function retryCurrentWordWriting() {
                 padding: Math.floor(boxSize * 0.04), 
                 strokeColor: '#2563eb' 
             });
-            writer.quiz(); 
             writers.push(writer);
         }
     });
+
+    if (writers.length > 0) {
+        runQuizSequence(0);
+    }
 }
 
 /* Modals & Aktionen */
@@ -890,7 +907,15 @@ function moveToBox5() {
 function resetSpeicher() { if(confirm("Alles löschen?")) { state = { box1: [], box2: [], box3: [], box4: [], box5: [] }; updateUI(); location.reload(); } }
 function exportProgress() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "hsk_backup.json"); dl.click(); }
 function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); updateUI(); next(); }; reader.readAsText(file); }
-function clearCanvas() { writers.forEach(w => { w.cancelQuiz(); w.quiz(); }); }
+
+// NEU: Clear-Funktion bricht das Quiz ab und startet die Sequenz für das aktuelle Wort neu
+function clearCanvas() { 
+    writers.forEach(w => w.cancelQuiz()); 
+    if(writers.length > 0) {
+        runQuizSequence(0);
+    }
+}
+
 function speak() { if(!currentCard) return; const u = new SpeechSynthesisUtterance(currentCard.hz); u.lang = 'zh-CN'; window.speechSynthesis.speak(u); }
 
 updateUI(); next();
