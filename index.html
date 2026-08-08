@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HSK Trainer">
     <title>HSK Trainer</title>
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
     <style>
-        /* Helles, professionelles Design (Clean & Minimalist) */
+        /* Hochwertiges, mattes Farbkonzept */
         :root { 
-            --bg: #F4F5F7; 
+            --bg: #F3F4F6; 
             --card: #FFFFFF; 
             --text-main: #111827; 
             --text-muted: #6B7280;
@@ -19,35 +20,32 @@
             --primary: #2563EB; 
             --primary-light: #EFF6FF;
             --focus-color: #4F46E5; 
-            --dark-btn: #374151;
             
-            /* Gedämpfte, seriöse Signalfarben */
+            /* Gedämpfte Status-Farben */
             --box1: #DC2626; 
             --box2: #D97706; 
-            --box3: #2563EB; 
+            --box3: #0284C7; 
             --box4: #7C3AED; 
             --box5: #059669; 
             
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            --radius-sm: 6px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
+            --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius-btn: 8px;
+            --radius-card: 16px;
         }
 
-        /* Nativer Dark Mode (Premium, kontrastreich, elegantes Grau) */
+        /* Eleganter Dark Mode (wie in deinem Screenshot) */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #111827; 
-                --card: #1F2937; 
+                --bg: #121212; 
+                --card: #1E1E1E; 
                 --text-main: #F9FAFB; 
                 --text-muted: #9CA3AF;
-                --border-light: #374151;
+                --border-light: #2C2C2C;
                 
                 --primary: #3B82F6; 
                 --primary-light: #1E3A8A;
                 --focus-color: #6366F1; 
-                --dark-btn: #4B5563;
                 
                 --box1: #EF4444; 
                 --box2: #F59E0B; 
@@ -55,7 +53,7 @@
                 --box4: #8B5CF6; 
                 --box5: #10B981; 
                 
-                --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+                --shadow-card: 0 8px 16px rgba(0, 0, 0, 0.4);
             }
         }
         
@@ -70,7 +68,7 @@
             background: var(--bg); 
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.015em;
         }
         
         .container { 
@@ -83,7 +81,7 @@
             padding: 12px; 
         }
         
-        /* Navigations-Bereich */
+        /* HEADER (Gleiche Maße, professioneller Look) */
         .header {
             display: flex;
             flex-direction: column;
@@ -100,62 +98,58 @@
         
         .header-top h2 {
             margin: 0;
-            font-size: 1.35rem; 
+            font-size: 1.4rem; 
             font-weight: 700;
             letter-spacing: -0.03em;
         }
         
-        .system-buttons {
-            display: flex;
-            gap: 8px; 
-        }
+        .system-buttons { display: flex; gap: 8px; }
         
         .system-buttons button {
             font-size: 0.85rem; 
             padding: 12px 14px; 
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-btn);
             background: var(--card);
             color: var(--text-main);
             border: 1px solid var(--border-light);
             font-weight: 500;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-subtle);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         .system-buttons .btn-danger { color: var(--box1); border-color: var(--border-light); }
         .system-buttons .btn-action { background: var(--primary); color: #FFFFFF; border: none; }
 
-        .filter-buttons {
-            display: flex;
-            gap: 10px; 
-        }
+        .filter-buttons { display: flex; gap: 10px; }
         
         .filter-buttons button {
             flex: 1; 
             font-size: 0.95rem; 
             padding: 16px; 
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-btn);
             border: 1px solid var(--border-light);
             background: var(--card);
             color: var(--text-main);
-            font-weight: 500;
-            box-shadow: var(--shadow-sm);
+            font-weight: 600;
+            box-shadow: var(--shadow-subtle);
         }
         
-        /* Statistik */
+        /* STATISTIK */
         .stats { 
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
             gap: 8px; 
             background: var(--card);
             padding: 10px; 
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-btn);
             border: 1px solid var(--border-light);
             flex-shrink: 0;
             margin-bottom: 14px; 
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-subtle);
         }
         .stat-box { 
             padding: 8px 4px; 
-            border-radius: var(--radius-sm); 
+            border-radius: 6px; 
             text-align: center; 
             font-size: 0.8rem; 
             font-weight: 600; 
@@ -176,11 +170,11 @@
         }
         .stat-box.inactive-box { opacity: 0.3; }
 
-        /* Hauptkarte */
+        /* HAUPTKARTE */
         .card { 
             background: var(--card); 
-            border-radius: var(--radius-lg); 
-            box-shadow: var(--shadow); 
+            border-radius: var(--radius-card); 
+            box-shadow: var(--shadow-card); 
             border: 1px solid var(--border-light);
             display: flex;
             flex-direction: column;
@@ -189,7 +183,6 @@
             padding: 16px 20px; 
         }
         
-        /* Zentraler Bereich für Vokabel & Zeichenbox */
         .card-content {
             display: flex;
             flex-direction: column;
@@ -202,10 +195,10 @@
 
         #v-box { 
             font-size: 0.75rem; 
-            font-weight: 600; 
+            font-weight: 700; 
             color: var(--text-muted); 
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             padding: 6px 14px;
             background: var(--bg);
             border-radius: 20px;
@@ -234,12 +227,12 @@
         #v-py {
             font-size: 1.25rem; 
             color: var(--primary); 
-            font-weight: 400; 
+            font-weight: 500; 
             margin: 0;
             letter-spacing: 0.02em;
         }
         
-        /* Zeichenbox (Professionelle Outline) */
+        /* ZEICHENBOX (Clean & Minimal) */
         .writer-grid { 
             display: flex; 
             justify-content: center; 
@@ -254,14 +247,14 @@
             max-height: 400px; 
             aspect-ratio: 1/1; 
             border: 1px solid var(--border-light); 
-            border-radius: var(--radius-lg); 
+            border-radius: var(--radius-card); 
             background: var(--bg); 
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
             transition: border-color 0.2s;
         }
         .char-box:active { border-color: var(--primary); }
 
-        /* Action Buttons Container */
+        /* ACTION BUTTONS (Gleiche Maße, professionelles Styling) */
         .action-area {
             margin-top: auto; 
             padding-top: 16px;
@@ -274,7 +267,7 @@
         button { 
             border: none; 
             margin: 0; 
-            font-weight: 500; 
+            font-weight: 600; 
             cursor: pointer; 
             font-family: inherit;
             display: flex;
@@ -286,15 +279,14 @@
         button:active { opacity: 0.8; transform: scale(0.98); }
         button:disabled { opacity: 0.4 !important; cursor: not-allowed; transform: none; }
         
-        /* Button Layouts */
         .row-2 { display: flex; gap: 8px; width: 100%; }
         .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
         
-        .btn-large { padding: 14px; border-radius: var(--radius-lg); font-size: 1rem; }
-        .btn-medium { padding: 12px; border-radius: var(--radius-md); font-size: 0.95rem; }
+        .btn-large { padding: 16px; border-radius: var(--radius-btn); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .btn-medium { padding: 14px; border-radius: var(--radius-btn); font-size: 0.95rem; }
         
-        .btn-primary { background: var(--primary); color: #FFFFFF; flex: 2; box-shadow: var(--shadow-sm); }
-        .btn-secondary { background: var(--bg); color: var(--text-main); border: 1px solid var(--border-light); flex: 1; }
+        .btn-primary { background: var(--primary); color: #FFFFFF; flex: 2; }
+        .btn-secondary { background: var(--card); color: var(--text-main); border: 1px solid var(--border-light); flex: 1; }
         
         .btn-tool { 
             background: var(--card); 
@@ -302,68 +294,72 @@
             border: 1px solid var(--border-light);
             padding: 14px 4px; 
             font-size: 0.9rem; 
-            border-radius: var(--radius-md); 
-            box-shadow: var(--shadow-sm);
+            border-radius: var(--radius-btn); 
+            box-shadow: var(--shadow-subtle);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
-        .btn-grade { color: #FFFFFF; padding: 14px 4px; font-size: 0.95rem; border-radius: var(--radius-lg); font-weight: 600; box-shadow: var(--shadow-sm); }
+        .btn-grade { color: #FFFFFF; padding: 16px 4px; font-size: 0.95rem; border-radius: var(--radius-btn); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
         
         .hidden { display: none !important; }
         
-        /* Modal */
+        /* MODAL */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px);
             display: flex; justify-content: center; align-items: center; 
             z-index: 1000; padding: 20px; 
         }
         .modal-content { 
-            background: var(--card); padding: 24px; border-radius: var(--radius-lg); 
+            background: var(--card); padding: 24px; border-radius: var(--radius-card); 
             width: 100%; max-width: 400px; max-height: 80vh; 
-            display: flex; flex-direction: column; box-shadow: var(--shadow); 
+            display: flex; flex-direction: column; box-shadow: var(--shadow-card); 
         }
         
+        /* Wörterbuch Styling */
+        #dict-search-input {
+            flex-grow: 1; padding: 14px; border-radius: var(--radius-btn); 
+            border: 1px solid var(--border-light); font-size: 1rem; 
+            background: var(--bg); color: var(--text-main); 
+            font-family: inherit; outline: none;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Header -->
     <div class="header">
         <div class="header-top">
             <h2>HSK Trainer</h2>
             <div class="system-buttons">
                 <input type="file" id="csvFile" class="hidden" onchange="importCSV(this.files[0])" accept=".csv">
-                <button class="btn-action" onclick="document.getElementById('csvFile').click()">Import CSV</button>
+                <button class="btn-action" onclick="document.getElementById('csvFile').click()">CSV</button>
                 <button onclick="exportProgress()">Backup</button>
                 <input type="file" id="jsonFile" class="hidden" onchange="importProgress(this.files[0])" accept=".json">
                 <button onclick="document.getElementById('jsonFile').click()">Laden</button>
-                <button class="btn-danger" onclick="resetSpeicher()">Daten löschen</button>
+                <button class="btn-danger" onclick="resetSpeicher()">Reset</button>
             </div>
         </div>
         <div class="filter-buttons">
-            <button id="btn-toggle-only-focus" onclick="toggleOnlyFocusMode()">Alle anzeigen (0)</button>
-            <button id="btn-toggle-box5-mode" onclick="toggleBox5Mode()">Box 5: Aus</button>
-            <button id="btn-toggle-dict" onclick="toggleDictMode()">Wörterbuch</button>
+            <button id="btn-toggle-only-focus" onclick="toggleOnlyFocusMode()">ALLE KARTEN (0)</button>
+            <button id="btn-toggle-box5-mode" onclick="toggleBox5Mode()">BOX 5 AUS</button>
+            <button id="btn-toggle-dict" onclick="toggleDictMode()">WÖRTERBUCH</button>
         </div>
     </div>
 
-    <!-- Stats -->
     <div class="stats" id="stats"></div>
 
-    <!-- Main Card -->
     <div class="card">
         
-        <!-- Wörterbuch View -->
         <div id="dict-view" class="hidden" style="display: flex; flex-direction: column; height: 100%;">
             <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-shrink: 0;">
-                <input type="text" id="dict-search-input" placeholder="Suchbegriff eingeben..." onkeypress="if(event.key === 'Enter') searchDict()" style="flex-grow: 1; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-light); font-size: 1rem; background: var(--bg); color: var(--text-main); font-family: inherit; outline: none;">
-                <button class="btn-primary btn-medium" style="flex: 0 1 auto; padding: 0 20px;" onclick="searchDict()">Suchen</button>
+                <input type="text" id="dict-search-input" placeholder="Nach Begriff suchen..." onkeypress="if(event.key === 'Enter') searchDict()">
+                <button class="btn-primary btn-medium" style="flex: 0 1 auto; padding: 0 20px;" onclick="searchDict()">SUCHEN</button>
             </div>
             <div id="dict-results" style="overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 8px;"></div>
         </div>
 
-        <!-- Lern-Ansicht -->
         <div id="flashcard-content" class="card-content">
             <div id="v-box"></div>
             <div id="v-de">Bitte CSV laden...</div>
@@ -374,49 +370,43 @@
             <div id="writer-container" class="writer-grid hidden"></div>
         </div>
         
-        <!-- Action Areas -->
         <div class="action-area">
             
-            <!-- Modus: Zeichnen -->
             <div id="drawing-controls" class="row-2 hidden">
-                <button id="btn-clear" class="btn-secondary btn-large" onclick="clearCanvas()">Eingabe löschen</button>
-                <button id="btn-show" class="btn-primary btn-large" onclick="flip()">Lösung anzeigen</button>
+                <button id="btn-clear" class="btn-secondary btn-large" onclick="clearCanvas()">LÖSCHEN</button>
+                <button id="btn-show" class="btn-primary btn-large" onclick="flip()">LÖSUNG</button>
             </div>
 
-            <!-- Modus: Lösung (Lern-Tools) -->
             <div id="learning-tools" class="row-3 hidden">
-                <button class="btn-tool" onclick="speak()">Aussprache</button>
-                <button class="btn-tool" onclick="retryCurrentWordWriting()">Erneut üben</button>
-                <button id="btn-example-trigger" class="btn-tool" onclick="openModal()">Beispielsatz</button>
+                <button class="btn-tool" onclick="speak()">AUDIO</button>
+                <button class="btn-tool" onclick="retryCurrentWordWriting()">ÜBEN</button>
+                <button id="btn-example-trigger" class="btn-tool" onclick="openModal()">BEISPIEL</button>
             </div>
             
-            <!-- Modus: Lösung (Fokus & B5) -->
             <div id="special-actions" class="row-2 hidden">
-                <button id="btn-focus" class="btn-secondary btn-medium" style="color: var(--focus-color); border-color: var(--focus-color);" onclick="toggleFocus()">Fokus aktivieren</button>
-                <button class="btn-secondary btn-medium" onclick="moveToBox5()">Zu Box 5 verschieben</button>
+                <button id="btn-focus" class="btn-secondary btn-medium" style="color: var(--focus-color); border-color: var(--focus-color);" onclick="toggleFocus()">FOKUS AKTIVIEREN</button>
+                <button class="btn-secondary btn-medium" onclick="moveToBox5()">ZU BOX 5</button>
             </div>
             
-            <!-- Modus: Lösung (Bewertung) -->
             <div id="controls" class="row-3 hidden">
-                <button class="btn-grade" style="background: var(--box1);" onclick="move(-1)">Falsch</button>
-                <button class="btn-grade" style="background: var(--box2);" onclick="move(0)">Wiederholen</button>
-                <button class="btn-grade" style="background: var(--box5);" onclick="move(1)">Richtig</button>
+                <button class="btn-grade" style="background: var(--box1);" onclick="move(-1)">FALSCH</button>
+                <button class="btn-grade" style="background: var(--box2);" onclick="move(0)">HALTEN</button>
+                <button class="btn-grade" style="background: var(--box5);" onclick="move(1)">RICHTIG</button>
             </div>
             
         </div>
     </div>
 </div>
 
-<!-- Modal Beispielsatz -->
 <div id="exampleModal" class="modal-overlay hidden">
     <div class="modal-content">
-        <h3 style="margin-top: 0; color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 16px; font-weight: 600;">Beispielsatz</h3>
+        <h3 style="margin-top: 0; color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Beispielsatz</h3>
         <div style="overflow-y: auto; flex-grow: 1; margin-bottom: 16px;">
-            <div id="ex-hz" style="font-size: 1.5rem; font-weight: 400; margin-bottom: 4px;"></div>
-            <div id="ex-py" style="color: var(--primary); margin-bottom: 12px; font-size: 1rem;"></div>
-            <div id="ex-de" style="background: var(--bg); padding: 16px; border-radius: var(--radius-md); border-left: 3px solid var(--primary); font-size: 0.95rem; line-height: 1.5; color: var(--text-main);"></div>
+            <div id="ex-hz" style="font-size: 1.6rem; font-weight: 400; margin-bottom: 6px;"></div>
+            <div id="ex-py" style="color: var(--primary); margin-bottom: 12px; font-size: 1.1rem;"></div>
+            <div id="ex-de" style="background: var(--bg); padding: 16px; border-radius: var(--radius-btn); border-left: 4px solid var(--primary); font-size: 1rem; line-height: 1.5; color: var(--text-main);"></div>
         </div>
-        <button class="btn-secondary btn-large" onclick="closeModal()">Schließen</button>
+        <button class="btn-secondary btn-large" onclick="closeModal()">SCHLIESSEN</button>
     </div>
 </div>
 
@@ -531,19 +521,19 @@ function searchDict() {
         let c = item.card;
         let boxNum = item.boxNum;
         let div = document.createElement('div');
-        div.style.cssText = "background: var(--bg); padding: 16px; border-radius: var(--radius-lg); border: 1px solid var(--border-light);";
+        div.style.cssText = "background: var(--bg); padding: 16px; border-radius: var(--radius-btn); border: 1px solid var(--border-light);";
         
         let focusBtnBg = c.inFocus ? "var(--focus-color)" : "transparent";
         let focusBtnColor = c.inFocus ? "#FFFFFF" : "var(--text-main)";
         let focusBtnBorder = c.inFocus ? "var(--focus-color)" : "var(--border-light)";
-        let focusBtnText = c.inFocus ? "Fokus" : "Fokus";
+        let focusBtnText = c.inFocus ? "FOKUS AKTIV" : "FOKUS";
 
         let html = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <div style="font-size: 1.5rem; font-weight: 500;">${c.hz}</div>
                 <div style="display: flex; gap: 6px;">
-                    <button onclick="toggleDictFocus(${index})" style="padding: 6px 10px; font-size: 0.8rem; border-radius: var(--radius-sm); background: ${focusBtnBg}; color: ${focusBtnColor}; border: 1px solid ${focusBtnBorder};">${focusBtnText}</button>
-                    <select onchange="changeDictBox(${index}, this.value)" style="background: var(--box${boxNum}); color: white; padding: 6px 10px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 600; border: none; outline: none;">
+                    <button onclick="toggleDictFocus(${index})" style="padding: 6px 10px; font-size: 0.75rem; border-radius: var(--radius-btn); background: ${focusBtnBg}; color: ${focusBtnColor}; border: 1px solid ${focusBtnBorder};">${focusBtnText}</button>
+                    <select onchange="changeDictBox(${index}, this.value)" style="background: var(--box${boxNum}); color: white; padding: 6px 10px; border-radius: var(--radius-btn); font-size: 0.8rem; font-weight: 600; border: none; outline: none;">
                         <option value="1" style="color: black; background: white;" ${boxNum == 1 ? 'selected' : ''}>B1</option>
                         <option value="2" style="color: black; background: white;" ${boxNum == 2 ? 'selected' : ''}>B2</option>
                         <option value="3" style="color: black; background: white;" ${boxNum == 3 ? 'selected' : ''}>B3</option>
@@ -594,7 +584,7 @@ function changeDictBox(index, newBoxLevel) {
 }
 
 function updateUI() {
-    document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box">Box ${i}<br>${state['box'+i].length}</div>`).join('');
+    document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br>${state['box'+i].length}</div>`).join('');
     localStorage.setItem('hsk_data', JSON.stringify(state));
     highlightActiveBox(); 
     updateFocusButtonText();
@@ -617,9 +607,9 @@ function highlightActiveBox() {
 function updateFocusButtonText() {
     let btn = document.getElementById('btn-toggle-only-focus');
     let count = getFocusCount();
-    btn.innerText = `Alle anzeigen (${count})`;
+    btn.innerText = `ALLE KARTEN (${count})`;
     if (onlyFocusMode) {
-        btn.innerText = `Fokus aktiv (${count})`;
+        btn.innerText = `FOKUS AKTIV (${count})`;
     }
 }
 
@@ -644,13 +634,13 @@ function toggleBox5Mode() {
     box5Mode = !box5Mode;
     let btn = document.getElementById('btn-toggle-box5-mode');
     if (box5Mode) {
-        btn.innerText = "Box 5: Aktiv";
+        btn.innerText = "BOX 5 AKTIV";
         btn.style.background = "var(--box5)";
         btn.style.color = "#FFFFFF";
         btn.style.borderColor = "var(--box5)";
         if(onlyFocusMode) toggleOnlyFocusMode();
     } else {
-        btn.innerText = "Box 5: Aus";
+        btn.innerText = "BOX 5 AUS";
         btn.style.background = "var(--card)";
         btn.style.color = "var(--text-main)";
         btn.style.borderColor = "var(--border-light)";
@@ -719,7 +709,7 @@ function next() {
     
     if(pool.length === 0) {
         currentBoxName = ""; currentCard = null;
-        document.getElementById('v-box').innerText = "Systemstatus";
+        document.getElementById('v-box').innerText = "SYSTEMSTATUS";
         document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten vorhanden" : (box5Mode ? "Box 5 ist leer" : "Bitte laden Sie eine CSV-Datei...");
         
         document.getElementById('writer-container').classList.add('hidden');
@@ -733,7 +723,7 @@ function next() {
     let selection = pool[Math.floor(Math.random() * pool.length)];
     currentCard = selection.c; currentBoxName = selection.box; 
     
-    document.getElementById('v-box').innerText = (currentCard.level || "Unbekannt") + (currentCard.inFocus ? " • FOKUS" : "");
+    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "");
     document.getElementById('v-de').innerText = currentCard.de;
     
     highlightActiveBox();
@@ -768,7 +758,7 @@ function next() {
 
 function flip() {
     if (!currentCard) return;
-    document.getElementById('v-box').innerText = (currentCard.level || "Unbekannt") + (currentCard.inFocus ? " • FOKUS" : "");
+    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "");
 
     let hzElement = document.getElementById('v-hz');
     let cleanHz = currentCard.hz.replace(/\s/g, '');
@@ -792,11 +782,11 @@ function flip() {
     
     let btnFocus = document.getElementById('btn-focus');
     if (currentCard.inFocus) {
-        btnFocus.innerText = "Fokus aktiv";
+        btnFocus.innerText = "FOKUS AKTIV";
         btnFocus.style.background = "var(--focus-color)";
         btnFocus.style.color = "#FFFFFF";
     } else {
-        btnFocus.innerText = "Fokus aktivieren";
+        btnFocus.innerText = "FOKUS AKTIVIEREN";
         btnFocus.style.background = "var(--bg)";
         btnFocus.style.color = "var(--focus-color)";
     }
@@ -851,16 +841,16 @@ function toggleFocus() {
     
     let btnFocus = document.getElementById('btn-focus');
     if (currentCard.inFocus) {
-        btnFocus.innerText = "Fokus aktiv";
+        btnFocus.innerText = "FOKUS AKTIV";
         btnFocus.style.background = "var(--focus-color)";
         btnFocus.style.color = "#FFFFFF";
     } else {
-        btnFocus.innerText = "Fokus aktivieren";
+        btnFocus.innerText = "FOKUS AKTIVIEREN";
         btnFocus.style.background = "var(--bg)";
         btnFocus.style.color = "var(--focus-color)";
     }
     
-    document.getElementById('v-box').innerText = (currentCard.level || "Unbekannt") + (currentCard.inFocus ? " • FOKUS" : "");
+    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "");
     updateUI();
 }
 
