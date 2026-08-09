@@ -424,6 +424,7 @@
 
 <script>
 let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [] };
+let sessionQueue = []; // Stapel für Abfragen ohne sofortige Wiederholung
 let currentCard = null;
 let currentBoxName = ""; 
 
@@ -447,6 +448,8 @@ document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i =>
 [1,2,3,4,5].forEach(i => {
     document.getElementById(`stat-box-${i}`).addEventListener('click', () => {
         if (dictMode) toggleDictMode();
+        
+        sessionQueue = []; // Stapel zurücksetzen bei Boxen-Wechsel
         
         if (selectedBoxFilter === i) {
             selectedBoxFilter = null; // Klick hebt Filter auf
@@ -605,6 +608,7 @@ function toggleDictFocus(index) {
     }
     item.card.inFocus = !item.card.inFocus;
     if (item.card.inFocus) item.card.correctCount = 0;
+    sessionQueue = [];
     updateUI(); searchDict(); 
 }
 
@@ -616,11 +620,12 @@ function changeDictBox(index, newBoxLevel) {
     state[oldBox] = state[oldBox].filter(c => c !== item.card);
     item.card.lastMovedDate = new Date().toDateString();
     state[newBox].push(item.card);
+    sessionQueue = [];
     updateUI(); searchDict(); 
 }
 
 function updateUI() {
-    // Aktualisiert nun NUR die Zahlenwerte in den Boxen anstatt sie komplett neu zu zeichnen
+    // Aktualisiert die Zahlenwerte in den Boxen
     [1,2,3,4,5].forEach(i => {
         let countSpan = document.getElementById(`stat-count-${i}`);
         if (countSpan) countSpan.innerText = state['box'+i].length;
@@ -660,6 +665,7 @@ function updateFocusButtonText() {
 
 function toggleOnlyFocusMode() {
     onlyFocusMode = !onlyFocusMode;
+    sessionQueue = []; // Stapel leeren
     let btn = document.getElementById('btn-toggle-only-focus');
     if (onlyFocusMode) {
         btn.style.background = "var(--focus-color)";
@@ -678,6 +684,7 @@ function toggleOnlyFocusMode() {
 
 function toggleRandomMode() {
     randomMode = !randomMode;
+    sessionQueue = []; // Stapel leeren
     let btn = document.getElementById('btn-toggle-random-mode');
     if (randomMode) {
         btn.innerText = "ZUFALLSMODUS AKTIV";
@@ -730,6 +737,7 @@ function importCSV(file) {
                 state[targetBox].push({ hz: p[0], py: p[1], de: p[2], sentenceHz: p[3] || '', sentencePy: p[4] || '', sentenceDe: p[5] || '', level: p[6] ? p[6].trim() : detectedLevel, inFocus: false });
             }
         });
+        sessionQueue = [];
         updateUI(); next();
     };
     reader.readAsText(file);
@@ -738,57 +746,66 @@ function importCSV(file) {
 function next() {
     if (dictMode) return; 
 
-    let pool = [];
-    const boxWeights = [0, 16, 8, 4, 2, 1]; 
-    
-    for(let i=1; i<=5; i++) {
-        // Falls ein einzelner Box-Filter gesetzt ist, ignoriere alle anderen Boxen
-        if (selectedBoxFilter !== null && i !== selectedBoxFilter) continue;
+    // Wenn der aktuelle Stapel abgearbeitet ist, erstelle einen neuen, durchgemischten Stapel
+    if (sessionQueue.length === 0) {
+        let pool = [];
+        const boxWeights = [0, 16, 8, 4, 2, 1]; 
         
-        state['box'+i].forEach(c => {
-            if (onlyFocusMode && !c.inFocus) return; 
+        for(let i=1; i<=5; i++) {
+            if (selectedBoxFilter !== null && i !== selectedBoxFilter) continue;
             
-            // Wenn Zufallsmodus aktiv oder eine bestimmte Box ausgewählt ist,
-            // bekommt jede Vokabel die exakt gleiche Wahrscheinlichkeit (Gewichtung = 1).
-            let weight = 1; 
-            if (!randomMode && selectedBoxFilter === null) {
-                weight = boxWeights[i]; // Normale Leitner-Gewichtung
-            }
+            state['box'+i].forEach(c => {
+                if (onlyFocusMode && !c.inFocus) return; 
+                
+                let weight = 1; 
+                if (!randomMode && selectedBoxFilter === null) {
+                    weight = boxWeights[i]; // Normale Leitner-Gewichtung
+                }
 
-            for(let j=0; j<weight; j++) {
-                pool.push({c, box: 'box'+i});
+                for(let j=0; j<weight; j++) {
+                    pool.push({c, box: 'box'+i});
+                }
+                
+                // Fokus-Tickets nur vergeben, wenn KEIN spezieller Box-Filter aktiv ist
+                if (c.inFocus && !randomMode && selectedBoxFilter === null) {
+                    let additionalTickets = 7;
+                    for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
+                }
+            });
+        }
+
+        if(pool.length === 0) {
+            currentBoxName = ""; currentCard = null;
+            document.getElementById('v-box').innerText = "SYSTEMSTATUS";
+            
+            if (selectedBoxFilter !== null) {
+                document.getElementById('v-de').innerText = `Box ${selectedBoxFilter} ist leer.`;
+            } else {
+                document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten vorhanden" : "Bitte laden Sie eine CSV-Datei...";
             }
             
-            // Fokus-Tickets (nur im normalen Modus, nicht im reinen Zufallsmodus, 
-            // damit der Zufall auch 100% mathematisch zufällig für ALLE Karten bleibt)
-            if (c.inFocus && !randomMode) {
-                let additionalTickets = 7;
-                for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
-            }
-        });
-    }
-    
-    if(pool.length === 0) {
-        currentBoxName = ""; currentCard = null;
-        document.getElementById('v-box').innerText = "SYSTEMSTATUS";
-        
-        if (selectedBoxFilter !== null) {
-            document.getElementById('v-de').innerText = `Box ${selectedBoxFilter} ist leer.`;
-        } else {
-            document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten vorhanden" : "Bitte laden Sie eine CSV-Datei...";
+            document.getElementById('writer-container').classList.add('hidden');
+            document.getElementById('drawing-controls').classList.add('hidden');
+            document.getElementById('learning-tools').classList.add('hidden');
+            document.getElementById('special-actions').classList.add('hidden');
+            document.getElementById('controls').classList.add('hidden');
+            highlightActiveBox();
+            return;
         }
-        
-        document.getElementById('writer-container').classList.add('hidden');
-        document.getElementById('drawing-controls').classList.add('hidden');
-        document.getElementById('learning-tools').classList.add('hidden');
-        document.getElementById('special-actions').classList.add('hidden');
-        document.getElementById('controls').classList.add('hidden');
-        highlightActiveBox();
-        return;
+
+        // Karten im Pool durchmischen (Fisher-Yates Shuffle)
+        for (let i = pool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+
+        sessionQueue = pool;
     }
     
-    let selection = pool[Math.floor(Math.random() * pool.length)];
-    currentCard = selection.c; currentBoxName = selection.box; 
+    // Nimm die nächste Vokabel aus dem vorbereiteten Stapel
+    let selection = sessionQueue.pop();
+    currentCard = selection.c; 
+    currentBoxName = selection.box; 
     
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "");
     document.getElementById('v-de').innerText = currentCard.de;
@@ -918,6 +935,7 @@ function toggleFocus() {
     }
     
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "");
+    sessionQueue = [];
     updateUI();
 }
 
@@ -951,9 +969,9 @@ function moveToBox5() {
     updateUI(); next();
 }
 
-function resetSpeicher() { if(confirm("Möchten Sie den Lernstand wirklich vollständig löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.")) { state = { box1: [], box2: [], box3: [], box4: [], box5: [] }; updateUI(); location.reload(); } }
+function resetSpeicher() { if(confirm("Möchten Sie den Lernstand wirklich vollständig löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.")) { state = { box1: [], box2: [], box3: [], box4: [], box5: [] }; sessionQueue = []; updateUI(); location.reload(); } }
 function exportProgress() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "hsk_trainer_backup.json"); dl.click(); }
-function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); updateUI(); next(); }; reader.readAsText(file); }
+function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); sessionQueue = []; updateUI(); next(); }; reader.readAsText(file); }
 function clearCanvas() { if (currentWriter) currentWriter.cancelQuiz(); currentQuizCharIndex = 0; startQuizForCurrentChar(); }
 function speak() { if(!currentCard) return; const u = new SpeechSynthesisUtterance(currentCard.hz); u.lang = 'zh-CN'; window.speechSynthesis.speak(u); }
 
