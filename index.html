@@ -159,6 +159,7 @@
             transition: all 0.2s ease;
             cursor: pointer;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         #stat-box-1 { color: var(--box1); }
         #stat-box-2 { color: var(--box2); }
@@ -358,6 +359,7 @@
         </div>
     </div>
 
+    <!-- DOM container wird per JS initialisiert -->
     <div class="stats" id="stats"></div>
 
     <div class="card">
@@ -436,15 +438,28 @@ let selectedBoxFilter = null;
 let dictMode = false;       
 let currentDictResults = []; 
 
-function selectBoxFilter(boxNum) {
-    if (selectedBoxFilter === boxNum) {
-        selectedBoxFilter = null; 
-    } else {
-        selectedBoxFilter = boxNum;
-    }
-    updateUI();
-    next();
-}
+// 1. STATS BEREICH INITIALISIEREN (einmalig statt bei jedem Vokabel-Laden, fixiert Mobile Klick-Bugs)
+document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => 
+    `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br><span id="stat-count-${i}">0</span></div>`
+).join('');
+
+// 2. KLICK-EVENTS ZUWEISEN
+[1,2,3,4,5].forEach(i => {
+    document.getElementById(`stat-box-${i}`).addEventListener('click', () => {
+        if (dictMode) toggleDictMode();
+        
+        if (selectedBoxFilter === i) {
+            selectedBoxFilter = null; // Klick hebt Filter auf
+        } else {
+            selectedBoxFilter = i;
+            // Andere Filter abschalten, damit man wirklich nur die Box testet
+            if (box5Mode) toggleBox5Mode();
+            if (onlyFocusMode) toggleOnlyFocusMode();
+        }
+        updateUI();
+        next();
+    });
+});
 
 function startQuizForCurrentChar() {
     if (!singleCharBox || currentQuizCharIndex >= currentQuizChars.length) return;
@@ -605,16 +620,10 @@ function changeDictBox(index, newBoxLevel) {
 }
 
 function updateUI() {
-    let statsContainer = document.getElementById('stats');
-    statsContainer.innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br>${state['box'+i].length}</div>`).join('');
-    
+    // Aktualisiert nun NUR die Zahlenwerte in den Boxen anstatt sie komplett neu zu zeichnen
     [1,2,3,4,5].forEach(i => {
-        let el = document.getElementById(`stat-box-${i}`);
-        if(el) {
-            el.addEventListener('click', function() {
-                selectBoxFilter(i);
-            });
-        }
+        let countSpan = document.getElementById(`stat-count-${i}`);
+        if (countSpan) countSpan.innerText = state['box'+i].length;
     });
 
     localStorage.setItem('hsk_data', JSON.stringify(state));
@@ -656,13 +665,14 @@ function toggleOnlyFocusMode() {
         btn.style.background = "var(--focus-color)";
         btn.style.color = "#FFFFFF";
         btn.style.borderColor = "var(--focus-color)";
+        selectedBoxFilter = null; // Filter löschen
         if(box5Mode) toggleBox5Mode();
     } else {
         btn.style.background = "var(--card)";
         btn.style.color = "var(--text-main)";
         btn.style.borderColor = "var(--border-light)";
     }
-    updateFocusButtonText();
+    updateUI();
     next();
 }
 
@@ -674,6 +684,7 @@ function toggleBox5Mode() {
         btn.style.background = "var(--box5)";
         btn.style.color = "#FFFFFF";
         btn.style.borderColor = "var(--box5)";
+        selectedBoxFilter = null; // Filter löschen
         if(onlyFocusMode) toggleOnlyFocusMode();
     } else {
         btn.innerText = "BOX 5 AUS";
@@ -681,6 +692,7 @@ function toggleBox5Mode() {
         btn.style.color = "var(--text-main)";
         btn.style.borderColor = "var(--border-light)";
     }
+    updateUI();
     next();
 }
 
@@ -730,6 +742,7 @@ function next() {
     const boxWeights = [0, 16, 8, 4, 2, 1]; 
     
     for(let i=1; i<=5; i++) {
+        // Falls ein Filter gesetzt ist, ignoriere alle anderen Boxen
         if (selectedBoxFilter !== null && i !== selectedBoxFilter) continue;
         
         state['box'+i].forEach(c => {
@@ -752,7 +765,7 @@ function next() {
         document.getElementById('v-box').innerText = "SYSTEMSTATUS";
         
         if (selectedBoxFilter !== null) {
-            document.getElementById('v-de').innerText = `Box ${selectedBoxFilter} ist leer`;
+            document.getElementById('v-de').innerText = `Box ${selectedBoxFilter} ist leer.`;
         } else {
             document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten vorhanden" : (box5Mode ? "Box 5 ist leer" : "Bitte laden Sie eine CSV-Datei...");
         }
