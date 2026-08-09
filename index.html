@@ -605,7 +605,18 @@ function changeDictBox(index, newBoxLevel) {
 }
 
 function updateUI() {
-    document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box" onclick="selectBoxFilter(${i})">BOX ${i}<br>${state['box'+i].length}</div>`).join('');
+    let statsContainer = document.getElementById('stats');
+    statsContainer.innerHTML = [1,2,3,4,5].map(i => `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br>${state['box'+i].length}</div>`).join('');
+    
+    [1,2,3,4,5].forEach(i => {
+        let el = document.getElementById(`stat-box-${i}`);
+        if(el) {
+            el.addEventListener('click', function() {
+                selectBoxFilter(i);
+            });
+        }
+    });
+
     localStorage.setItem('hsk_data', JSON.stringify(state));
     highlightActiveBox(); 
     updateFocusButtonText();
