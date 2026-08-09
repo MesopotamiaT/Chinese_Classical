@@ -354,7 +354,7 @@
         </div>
         <div class="filter-buttons">
             <button id="btn-toggle-only-focus" onclick="toggleOnlyFocusMode()">ALLE KARTEN (0)</button>
-            <button id="btn-toggle-box5-mode" onclick="toggleBox5Mode()">BOX 5 AUS</button>
+            <button id="btn-toggle-random-mode" onclick="toggleRandomMode()">ZUFALLSMODUS AUS</button>
             <button id="btn-toggle-dict" onclick="toggleDictMode()">WÖRTERBUCH</button>
         </div>
     </div>
@@ -433,7 +433,7 @@ let currentWriter = null;
 let singleCharBox = null;
 
 let onlyFocusMode = false; 
-let box5Mode = false;       
+let randomMode = false;       
 let selectedBoxFilter = null; 
 let dictMode = false;       
 let currentDictResults = []; 
@@ -453,7 +453,7 @@ document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i =>
         } else {
             selectedBoxFilter = i;
             // Andere Filter abschalten, damit man wirklich nur die Box testet
-            if (box5Mode) toggleBox5Mode();
+            if (randomMode) toggleRandomMode();
             if (onlyFocusMode) toggleOnlyFocusMode();
         }
         updateUI();
@@ -666,7 +666,7 @@ function toggleOnlyFocusMode() {
         btn.style.color = "#FFFFFF";
         btn.style.borderColor = "var(--focus-color)";
         selectedBoxFilter = null; // Filter löschen
-        if(box5Mode) toggleBox5Mode();
+        if(randomMode) toggleRandomMode();
     } else {
         btn.style.background = "var(--card)";
         btn.style.color = "var(--text-main)";
@@ -676,18 +676,18 @@ function toggleOnlyFocusMode() {
     next();
 }
 
-function toggleBox5Mode() {
-    box5Mode = !box5Mode;
-    let btn = document.getElementById('btn-toggle-box5-mode');
-    if (box5Mode) {
-        btn.innerText = "BOX 5 AKTIV";
-        btn.style.background = "var(--box5)";
+function toggleRandomMode() {
+    randomMode = !randomMode;
+    let btn = document.getElementById('btn-toggle-random-mode');
+    if (randomMode) {
+        btn.innerText = "ZUFALLSMODUS AKTIV";
+        btn.style.background = "var(--box4)"; // Schickes Lila für den Zufallsmodus
         btn.style.color = "#FFFFFF";
-        btn.style.borderColor = "var(--box5)";
+        btn.style.borderColor = "var(--box4)";
         selectedBoxFilter = null; // Filter löschen
         if(onlyFocusMode) toggleOnlyFocusMode();
     } else {
-        btn.innerText = "BOX 5 AUS";
+        btn.innerText = "ZUFALLSMODUS AUS";
         btn.style.background = "var(--card)";
         btn.style.color = "var(--text-main)";
         btn.style.borderColor = "var(--border-light)";
@@ -742,19 +742,27 @@ function next() {
     const boxWeights = [0, 16, 8, 4, 2, 1]; 
     
     for(let i=1; i<=5; i++) {
-        // Falls ein Filter gesetzt ist, ignoriere alle anderen Boxen
+        // Falls ein einzelner Box-Filter gesetzt ist, ignoriere alle anderen Boxen
         if (selectedBoxFilter !== null && i !== selectedBoxFilter) continue;
         
         state['box'+i].forEach(c => {
-            if (selectedBoxFilter === null && box5Mode && i !== 5) return;
             if (onlyFocusMode && !c.inFocus) return; 
             
-            let weight = selectedBoxFilter !== null ? 1 : boxWeights[i];
+            // Wenn Zufallsmodus aktiv oder eine bestimmte Box ausgewählt ist,
+            // bekommt jede Vokabel die exakt gleiche Wahrscheinlichkeit (Gewichtung = 1).
+            let weight = 1; 
+            if (!randomMode && selectedBoxFilter === null) {
+                weight = boxWeights[i]; // Normale Leitner-Gewichtung
+            }
+
             for(let j=0; j<weight; j++) {
                 pool.push({c, box: 'box'+i});
             }
-            if (c.inFocus) {
-                let additionalTickets = box5Mode ? 2 : 7;
+            
+            // Fokus-Tickets (nur im normalen Modus, nicht im reinen Zufallsmodus, 
+            // damit der Zufall auch 100% mathematisch zufällig für ALLE Karten bleibt)
+            if (c.inFocus && !randomMode) {
+                let additionalTickets = 7;
                 for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
             }
         });
@@ -767,7 +775,7 @@ function next() {
         if (selectedBoxFilter !== null) {
             document.getElementById('v-de').innerText = `Box ${selectedBoxFilter} ist leer.`;
         } else {
-            document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten vorhanden" : (box5Mode ? "Box 5 ist leer" : "Bitte laden Sie eine CSV-Datei...");
+            document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten vorhanden" : "Bitte laden Sie eine CSV-Datei...";
         }
         
         document.getElementById('writer-container').classList.add('hidden');
