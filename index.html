@@ -359,7 +359,6 @@
         </div>
     </div>
 
-    <!-- DOM container wird per JS initialisiert -->
     <div class="stats" id="stats"></div>
 
     <div class="card">
@@ -424,7 +423,7 @@
 
 <script>
 let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [] };
-let sessionQueue = []; // Stapel für Abfragen ohne sofortige Wiederholung
+let sessionQueue = []; 
 let currentCard = null;
 let currentBoxName = ""; 
 
@@ -439,23 +438,20 @@ let selectedBoxFilter = null;
 let dictMode = false;       
 let currentDictResults = []; 
 
-// 1. STATS BEREICH INITIALISIEREN (einmalig statt bei jedem Vokabel-Laden, fixiert Mobile Klick-Bugs)
 document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => 
     `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br><span id="stat-count-${i}">0</span></div>`
 ).join('');
 
-// 2. KLICK-EVENTS ZUWEISEN
 [1,2,3,4,5].forEach(i => {
     document.getElementById(`stat-box-${i}`).addEventListener('click', () => {
         if (dictMode) toggleDictMode();
         
-        sessionQueue = []; // Stapel zurücksetzen bei Boxen-Wechsel
+        sessionQueue = []; 
         
         if (selectedBoxFilter === i) {
-            selectedBoxFilter = null; // Klick hebt Filter auf
+            selectedBoxFilter = null; 
         } else {
             selectedBoxFilter = i;
-            // Andere Filter abschalten, damit man wirklich nur die Box testet
             if (randomMode) toggleRandomMode();
             if (onlyFocusMode) toggleOnlyFocusMode();
         }
@@ -625,7 +621,6 @@ function changeDictBox(index, newBoxLevel) {
 }
 
 function updateUI() {
-    // Aktualisiert die Zahlenwerte in den Boxen
     [1,2,3,4,5].forEach(i => {
         let countSpan = document.getElementById(`stat-count-${i}`);
         if (countSpan) countSpan.innerText = state['box'+i].length;
@@ -665,13 +660,13 @@ function updateFocusButtonText() {
 
 function toggleOnlyFocusMode() {
     onlyFocusMode = !onlyFocusMode;
-    sessionQueue = []; // Stapel leeren
+    sessionQueue = []; 
     let btn = document.getElementById('btn-toggle-only-focus');
     if (onlyFocusMode) {
         btn.style.background = "var(--focus-color)";
         btn.style.color = "#FFFFFF";
         btn.style.borderColor = "var(--focus-color)";
-        selectedBoxFilter = null; // Filter löschen
+        selectedBoxFilter = null; 
         if(randomMode) toggleRandomMode();
     } else {
         btn.style.background = "var(--card)";
@@ -684,14 +679,14 @@ function toggleOnlyFocusMode() {
 
 function toggleRandomMode() {
     randomMode = !randomMode;
-    sessionQueue = []; // Stapel leeren
+    sessionQueue = []; 
     let btn = document.getElementById('btn-toggle-random-mode');
     if (randomMode) {
         btn.innerText = "ZUFALLSMODUS AKTIV";
-        btn.style.background = "var(--box4)"; // Schickes Lila für den Zufallsmodus
+        btn.style.background = "var(--box4)"; 
         btn.style.color = "#FFFFFF";
         btn.style.borderColor = "var(--box4)";
-        selectedBoxFilter = null; // Filter löschen
+        selectedBoxFilter = null; 
         if(onlyFocusMode) toggleOnlyFocusMode();
     } else {
         btn.innerText = "ZUFALLSMODUS AUS";
@@ -734,7 +729,14 @@ function importCSV(file) {
             if(!r.trim()) return;
             const p = parseCSVLine(r);
             if(p.length >= 3) {
-                state[targetBox].push({ hz: p[0], py: p[1], de: p[2], sentenceHz: p[3] || '', sentencePy: p[4] || '', sentenceDe: p[5] || '', level: p[6] ? p[6].trim() : detectedLevel, inFocus: false });
+                // Bei Neuimport direkt die Stats mit anlegen
+                state[targetBox].push({ 
+                    hz: p[0], py: p[1], de: p[2], 
+                    sentenceHz: p[3] || '', sentencePy: p[4] || '', sentenceDe: p[5] || '', 
+                    level: p[6] ? p[6].trim() : detectedLevel, 
+                    inFocus: false,
+                    stats: { queries: 0, correct: 0 }
+                });
             }
         });
         sessionQueue = [];
@@ -746,7 +748,6 @@ function importCSV(file) {
 function next() {
     if (dictMode) return; 
 
-    // Wenn der aktuelle Stapel abgearbeitet ist, erstelle einen neuen, durchgemischten Stapel
     if (sessionQueue.length === 0) {
         let pool = [];
         const boxWeights = [0, 16, 8, 4, 2, 1]; 
@@ -757,16 +758,33 @@ function next() {
             state['box'+i].forEach(c => {
                 if (onlyFocusMode && !c.inFocus) return; 
                 
+                // Stelle sicher, dass jede Karte ein Stats-Objekt hat (für alte Savegames)
+                if (!c.stats) c.stats = { queries: 0, correct: 0 };
+
                 let weight = 1; 
                 if (!randomMode && selectedBoxFilter === null) {
-                    weight = boxWeights[i]; // Normale Leitner-Gewichtung
+                    if (i === 5) {
+                        // SMART-LOGIK FÜR BOX 5
+                        let rate = c.stats.queries > 0 ? (c.stats.correct / c.stats.queries) : 1; 
+                        
+                        // 1. Quoten-Bonus (Je schlechter, desto höher das Gewicht. Max +4)
+                        let rateWeight = Math.round((1 - rate) * 4); 
+                        
+                        // 2. Häufigkeits-Bonus (Seltener als 5x gefragt = +2, seltener als 10x = +1)
+                        let freqWeight = c.stats.queries < 5 ? 2 : (c.stats.queries < 10 ? 1 : 0);
+                        
+                        // Berechne dynamisches Gewicht (variiert zwischen 1 und 7)
+                        weight = 1 + rateWeight + freqWeight;
+                    } else {
+                        // Normale Leitner-Gewichtung für Box 1 bis 4
+                        weight = boxWeights[i]; 
+                    }
                 }
 
                 for(let j=0; j<weight; j++) {
                     pool.push({c, box: 'box'+i});
                 }
                 
-                // Fokus-Tickets nur vergeben, wenn KEIN spezieller Box-Filter aktiv ist
                 if (c.inFocus && !randomMode && selectedBoxFilter === null) {
                     let additionalTickets = 7;
                     for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
@@ -793,7 +811,6 @@ function next() {
             return;
         }
 
-        // Karten im Pool durchmischen (Fisher-Yates Shuffle)
         for (let i = pool.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -802,17 +819,22 @@ function next() {
         sessionQueue = pool;
     }
     
-    // Nimm die nächste Vokabel aus dem vorbereiteten Stapel
     let selection = sessionQueue.pop();
     currentCard = selection.c; 
     currentBoxName = selection.box; 
     
-    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "");
+    // Kleiner Zusatz: Wenn die Karte in Box 5 ist, wird im Box-Tag optional die Quote (unsichtbar im Hintergrund getrackt) angezeigt
+    let statsInfo = "";
+    if (currentBoxName === 'box5' && currentCard.stats && currentCard.stats.queries > 0) {
+        let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
+        statsInfo = ` • ${percent}% ERFOLG`;
+    }
+
+    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
     document.getElementById('v-de').innerText = currentCard.de;
     
     highlightActiveBox();
     
-    // UI Reset für Zeichenmodus
     document.getElementById('writer-container').classList.remove('hidden');
     document.getElementById('writer-container').innerHTML = '';
     
@@ -821,7 +843,6 @@ function next() {
     document.getElementById('v-hz').classList.remove('long-char');
     document.getElementById('v-py').classList.add('hidden');
     
-    // Actions steuern
     document.getElementById('drawing-controls').classList.remove('hidden');
     document.getElementById('learning-tools').classList.add('hidden');
     document.getElementById('special-actions').classList.add('hidden');
@@ -842,7 +863,14 @@ function next() {
 
 function flip() {
     if (!currentCard) return;
-    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "");
+    
+    let statsInfo = "";
+    if (currentBoxName === 'box5' && currentCard.stats && currentCard.stats.queries > 0) {
+        let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
+        statsInfo = ` • ${percent}% ERFOLG`;
+    }
+
+    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
 
     let hzElement = document.getElementById('v-hz');
     let cleanHz = currentCard.hz.replace(/\s/g, '');
@@ -934,13 +962,27 @@ function toggleFocus() {
         btnFocus.style.color = "var(--focus-color)";
     }
     
-    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "");
+    let statsInfo = "";
+    if (currentBoxName === 'box5' && currentCard.stats && currentCard.stats.queries > 0) {
+        let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
+        statsInfo = ` • ${percent}% ERFOLG`;
+    }
+    
+    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
     sessionQueue = [];
     updateUI();
 }
 
 function move(step) {
     if (!currentCard) return;
+    
+    // DATEN-TRACKING DER STATISTIKEN
+    if (!currentCard.stats) currentCard.stats = { queries: 0, correct: 0 };
+    currentCard.stats.queries++;
+    if (step === 1) {
+        currentCard.stats.correct++;
+    }
+
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
     let level = parseInt(oldBox.replace('box',''));
     state[oldBox] = state[oldBox].filter(c => c !== currentCard);
