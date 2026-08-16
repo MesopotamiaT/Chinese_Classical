@@ -79,15 +79,17 @@
             display: flex;
             flex-direction: column;
             padding: 12px; 
+            overflow-x: hidden;
         }
         
         /* HEADER */
         .header {
             display: flex;
             flex-direction: column;
-            gap: 12px; 
+            gap: 10px; 
             flex-shrink: 0;
             margin-bottom: 12px;
+            width: 100%;
         }
         
         .header-top {
@@ -96,27 +98,28 @@
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
+            width: 100%;
         }
         
         .header-top h2 {
             margin: 0;
-            font-size: 1.3rem; 
+            font-size: 1.2rem; 
             font-weight: 700;
             letter-spacing: -0.03em;
-            white-space: nowrap;
+            flex-shrink: 0;
         }
         
         .system-buttons { 
             display: flex; 
-            gap: 6px; 
+            gap: 4px; 
             flex-wrap: wrap;
             justify-content: flex-end;
-            flex: 1;
+            max-width: 100%;
         }
         
         .system-buttons button {
-            font-size: 0.75rem; 
-            padding: 8px 10px; 
+            font-size: 0.7rem; 
+            padding: 6px 8px; 
             border-radius: var(--radius-btn);
             background: var(--card);
             color: var(--text-main);
@@ -124,9 +127,9 @@
             font-weight: 600;
             box-shadow: var(--shadow-subtle);
             text-transform: uppercase;
-            letter-spacing: 0.03em;
-            flex: 0 1 auto;
+            letter-spacing: 0.02em;
             white-space: nowrap;
+            flex-shrink: 1;
         }
         .system-buttons .btn-danger { color: var(--box1); border-color: var(--border-light); }
         .system-buttons .btn-action { background: var(--primary); color: #FFFFFF; border: none; }
@@ -135,20 +138,20 @@
             display: flex; 
             gap: 6px; 
             width: 100%;
+            flex-wrap: wrap;
         }
         
         .filter-buttons button {
-            flex: 1; 
+            flex: 1 1 auto; 
             min-width: 0;
             font-size: 0.75rem; 
-            padding: 10px 4px; 
+            padding: 8px 4px; 
             border-radius: var(--radius-btn);
             border: 1px solid var(--border-light);
             background: var(--card);
             color: var(--text-main);
             font-weight: 600;
             box-shadow: var(--shadow-subtle);
-            text-align: center;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -906,7 +909,6 @@ function flip() {
     hzElement.classList.remove('hidden');
     document.getElementById('v-py').classList.remove('hidden');
     
-    // NEU: Statistik anzeigen
     let statsElement = document.getElementById('v-stats');
     if (currentCard.stats && currentCard.stats.queries > 0) {
         let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
