@@ -297,6 +297,7 @@
             background: var(--bg); 
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
             transition: border-color 0.2s;
+            touch-action: none; /* Verhindert ungewolltes Scrollen beim Zeichnen */
         }
         .char-box:active { border-color: var(--primary); }
 
@@ -499,6 +500,11 @@ document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i =>
 function startQuizForCurrentChar() {
     if (currentQuizCharIndex >= currentQuizChars.length) return;
     
+    if (currentWriter) {
+        try { currentWriter.cancelQuiz(); } catch(e) {}
+        currentWriter = null;
+    }
+    
     let container = document.getElementById('writer-container');
     container.innerHTML = ''; 
     
@@ -507,26 +513,29 @@ function startQuizForCurrentChar() {
     container.appendChild(singleCharBox);
     
     let char = currentQuizChars[currentQuizCharIndex];
-    let boxSize = Math.min(window.innerHeight * 0.5, window.innerWidth * 0.9, 400);
     
-    currentWriter = HanziWriter.create(singleCharBox, char, { 
-        width: boxSize, 
-        height: boxSize, 
-        showCharacter: false, 
-        showOutline: false, 
-        padding: Math.floor(boxSize * 0.05), 
-        strokeColor: '#3B82F6' 
-    });
-    
-    currentWriter.quiz({
-        onComplete: function() {
-            setTimeout(() => {
-                currentQuizCharIndex++;
-                if (currentQuizCharIndex < currentQuizChars.length) {
-                    startQuizForCurrentChar();
-                }
-            }, 300); 
-        }
+    requestAnimationFrame(() => {
+        let boxSize = Math.min(window.innerHeight * 0.5, window.innerWidth * 0.9, 400);
+        
+        currentWriter = HanziWriter.create(singleCharBox, char, { 
+            width: boxSize, 
+            height: boxSize, 
+            showCharacter: false, 
+            showOutline: false, 
+            padding: Math.floor(boxSize * 0.05), 
+            strokeColor: '#3B82F6' 
+        });
+        
+        currentWriter.quiz({
+            onComplete: function() {
+                setTimeout(() => {
+                    currentQuizCharIndex++;
+                    if (currentQuizCharIndex < currentQuizChars.length) {
+                        startQuizForCurrentChar();
+                    }
+                }, 300); 
+            }
+        });
     });
 }
 
