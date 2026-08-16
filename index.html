@@ -497,11 +497,16 @@ document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i =>
 });
 
 function startQuizForCurrentChar() {
-    if (!singleCharBox || currentQuizCharIndex >= currentQuizChars.length) return;
+    if (currentQuizCharIndex >= currentQuizChars.length) return;
     
-    singleCharBox.innerHTML = ''; 
+    let container = document.getElementById('writer-container');
+    container.innerHTML = ''; 
+    
+    singleCharBox = document.createElement('div');
+    singleCharBox.className = 'char-box';
+    container.appendChild(singleCharBox);
+    
     let char = currentQuizChars[currentQuizCharIndex];
-    
     let boxSize = Math.min(window.innerHeight * 0.5, window.innerWidth * 0.9, 400);
     
     currentWriter = HanziWriter.create(singleCharBox, char, { 
@@ -881,9 +886,6 @@ function next() {
     currentQuizCharIndex = 0;
 
     if (currentQuizChars.length > 0) {
-        singleCharBox = document.createElement('div'); 
-        singleCharBox.className = 'char-box';
-        document.getElementById('writer-container').appendChild(singleCharBox);
         startQuizForCurrentChar();
     }
 }
@@ -971,9 +973,6 @@ function retryCurrentWordWriting() {
     currentQuizCharIndex = 0;
 
     if (currentQuizChars.length > 0) {
-        singleCharBox = document.createElement('div'); 
-        singleCharBox.className = 'char-box';
-        container.appendChild(singleCharBox);
         startQuizForCurrentChar();
     }
 }
