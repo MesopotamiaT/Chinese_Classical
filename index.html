@@ -248,6 +248,14 @@
             margin: 0;
             letter-spacing: -0.01em;
         }
+
+        /* Hinweistext für Zeichenanzahl */
+        #v-char-count {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: -4px;
+        }
         
         #v-hz {
             font-size: 5rem; 
@@ -410,6 +418,7 @@
         <div id="flashcard-content" class="card-content">
             <div id="v-box"></div>
             <div id="v-de">Bitte CSV laden...</div>
+            <div id="v-char-count" class="hidden"></div>
             
             <div id="v-hz" class="hidden"></div>
             <div id="v-py" class="hidden"></div>
@@ -842,6 +851,7 @@ function next() {
                 document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten vorhanden" : "Bitte laden Sie eine CSV-Datei...";
             }
             
+            document.getElementById('v-char-count').classList.add('hidden');
             document.getElementById('writer-container').classList.add('hidden');
             document.getElementById('drawing-controls').classList.add('hidden');
             document.getElementById('learning-tools').classList.add('hidden');
@@ -873,12 +883,25 @@ function next() {
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
     document.getElementById('v-de').innerText = currentCard.de;
     
+    // Zählen der chinesischen Zeichen & Anzeige-Hinweis setzen
+    let cleanHz = currentCard.hz.replace(/\s/g, '');
+    currentQuizChars = cleanHz.split('').filter(char => /[\u4e00-\u9fa5]/.test(char));
+    let charCount = currentQuizChars.length;
+
+    let charCountEl = document.getElementById('v-char-count');
+    if (charCount > 0) {
+        charCountEl.innerText = `(${charCount} ${charCount === 1 ? 'Zeichen' : 'Zeichen'})`;
+        charCountEl.classList.remove('hidden');
+    } else {
+        charCountEl.classList.add('hidden');
+    }
+
     highlightActiveBox();
     
     document.getElementById('writer-container').classList.remove('hidden');
     document.getElementById('writer-container').innerHTML = '';
     
-    currentWriter = null; singleCharBox = null; currentQuizChars = [];
+    currentWriter = null; singleCharBox = null;
     document.getElementById('v-hz').classList.add('hidden');
     document.getElementById('v-hz').classList.remove('long-char');
     document.getElementById('v-py').classList.add('hidden');
@@ -890,8 +913,6 @@ function next() {
     document.getElementById('controls').classList.add('hidden');
     closeModal();
 
-    let cleanHz = currentCard.hz.replace(/\s/g, '');
-    currentQuizChars = cleanHz.split('').filter(char => /[\u4e00-\u9fa5]/.test(char));
     currentQuizCharIndex = 0;
 
     if (currentQuizChars.length > 0) {
