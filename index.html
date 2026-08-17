@@ -249,12 +249,12 @@
             letter-spacing: -0.01em;
         }
 
-        /* Styling für die Zeichen-Anzeige */
+        /* Styling für den Hinweis zur Zeichenanzahl */
         #v-char-count {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--primary);
             font-weight: 600;
-            margin-top: -4px;
+            margin-top: 2px;
         }
         
         #v-hz {
@@ -418,7 +418,7 @@
         <div id="flashcard-content" class="card-content">
             <div id="v-box"></div>
             <div id="v-de">Bitte CSV laden...</div>
-            <div id="v-char-count" class="hidden"></div>
+            <div id="v-char-count"></div>
             
             <div id="v-hz" class="hidden"></div>
             <div id="v-py" class="hidden"></div>
@@ -505,6 +505,12 @@ document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i =>
         next();
     });
 });
+
+function getHanziChars(str) {
+    if (!str) return [];
+    // Universeller Unicode-Filter für chinesische Schriftzeichen (Han)
+    return str.match(/\p{Script=Han}/gu) || [];
+}
 
 function startQuizForCurrentChar() {
     if (currentQuizCharIndex >= currentQuizChars.length) return;
@@ -851,7 +857,7 @@ function next() {
                 document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten vorhanden" : "Bitte laden Sie eine CSV-Datei...";
             }
             
-            document.getElementById('v-char-count').classList.add('hidden');
+            document.getElementById('v-char-count').innerText = "";
             document.getElementById('writer-container').classList.add('hidden');
             document.getElementById('drawing-controls').classList.add('hidden');
             document.getElementById('learning-tools').classList.add('hidden');
@@ -883,18 +889,17 @@ function next() {
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
     document.getElementById('v-de').innerText = currentCard.de;
     
-    // Zeichen abfangen und Anzahl anzeigen
-    let cleanHz = currentCard.hz.replace(/\s/g, '');
-    currentQuizChars = cleanHz.split('').filter(char => /[\u4e00-\u9fa5]/.test(char));
-    let charCount = currentQuizChars.length;
-
-    let charCountEl = document.getElementById('v-char-count');
-    if (charCount > 0) {
-        charCountEl.innerText = `(${charCount} ${charCount === 1 ? 'Zeichen' : 'Zeichen'})`;
-        charCountEl.classList.remove('hidden');
-    } else {
-        charCountEl.classList.add('hidden');
-    }
+    // Präzise Zählung der chinesischen Zeichen
+    currentQuizChars = getHanziChars(currentCard.hz);
+    let count = currentQuizChars.length;
+    
+    let countText = "";
+    if (count === 1) countText = "(1 Zeichen)";
+    else if (count === 2) countText = "(2 Zeichen)";
+    else if (count === 3) countText = "(3 Zeichen)";
+    else if (count > 3) countText = `(${count} Zeichen)`;
+    
+    document.getElementById('v-char-count').innerText = countText;
 
     highlightActiveBox();
     
@@ -931,8 +936,8 @@ function flip() {
 
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
 
-    // Zeichenanzahl-Hinweis beim Aufdecken ausblenden
-    document.getElementById('v-char-count').classList.add('hidden');
+    // Zeichenanzahl-Hinweis beim Umdrehen wieder ausblenden
+    document.getElementById('v-char-count').innerText = "";
 
     let hzElement = document.getElementById('v-hz');
     let cleanHz = currentCard.hz.replace(/\s/g, '');
@@ -985,11 +990,14 @@ function flip() {
 function retryCurrentWordWriting() {
     if (!currentCard) return;
     
-    // Hinweis beim erneuten Zeichnen wieder anzeigen
-    let cleanHz = currentCard.hz.replace(/\s/g, '');
-    let charCount = cleanHz.split('').filter(char => /[\u4e00-\u9fa5]/.test(char)).length;
-    let charCountEl = document.getElementById('v-char-count');
-    if (charCount > 0) charCountEl.classList.remove('hidden');
+    let count = getHanziChars(currentCard.hz).length;
+    let countText = "";
+    if (count === 1) countText = "(1 Zeichen)";
+    else if (count === 2) countText = "(2 Zeichen)";
+    else if (count === 3) countText = "(3 Zeichen)";
+    else if (count > 3) countText = `(${count} Zeichen)`;
+    
+    document.getElementById('v-char-count').innerText = countText;
 
     document.getElementById('v-hz').classList.add('hidden');
     document.getElementById('v-py').classList.add('hidden');
@@ -1005,9 +1013,9 @@ function retryCurrentWordWriting() {
     container.innerHTML = '';
     container.classList.remove('hidden');
     
-    currentWriter = null; singleCharBox = null; currentQuizChars = [];
+    currentWriter = null; singleCharBox = null;
     
-    currentQuizChars = cleanHz.split('').filter(char => /[\u4e00-\u9fa5]/.test(char));
+    currentQuizChars = getHanziChars(currentCard.hz);
     currentQuizCharIndex = 0;
 
     if (currentQuizChars.length > 0) {
