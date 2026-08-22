@@ -27,6 +27,7 @@
             --box3: #0284C7; 
             --box4: #7C3AED; 
             --box5: #059669; 
+            --box6: #DB2777; 
             
             --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -52,6 +53,7 @@
                 --box3: #3B82F6; 
                 --box4: #8B5CF6; 
                 --box5: #10B981; 
+                --box6: #EC4899; 
                 
                 --shadow-card: 0 8px 16px rgba(0, 0, 0, 0.4);
             }
@@ -160,8 +162,8 @@
         /* STATISTIK / BOXEN-FILTER */
         .stats { 
             display: grid; 
-            grid-template-columns: repeat(5, 1fr); 
-            gap: 8px; 
+            grid-template-columns: repeat(6, 1fr); 
+            gap: 6px; 
             background: var(--card);
             padding: 10px; 
             border-radius: var(--radius-btn);
@@ -171,10 +173,10 @@
             box-shadow: var(--shadow-subtle);
         }
         .stat-box { 
-            padding: 8px 4px; 
+            padding: 8px 2px; 
             border-radius: 6px; 
             text-align: center; 
-            font-size: 0.8rem; 
+            font-size: 0.72rem; 
             font-weight: 600; 
             border: 2px solid transparent;
             color: var(--text-muted);
@@ -189,6 +191,7 @@
         #stat-box-3 { color: var(--box3); }
         #stat-box-4 { color: var(--box4); }
         #stat-box-5 { color: var(--box5); }
+        #stat-box-6 { color: var(--box6); }
         
         .stat-box.selected-box { 
             border-color: currentColor !important; 
@@ -467,7 +470,8 @@
 </div>
 
 <script>
-let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [] };
+let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [], box6: [] };
+if (!state.box6) state.box6 = [];
 let sessionQueue = []; 
 let currentCard = null;
 let currentBoxName = ""; 
@@ -483,11 +487,11 @@ let selectedBoxFilter = null;
 let dictMode = false;       
 let currentDictResults = []; 
 
-document.getElementById('stats').innerHTML = [1,2,3,4,5].map(i => 
+document.getElementById('stats').innerHTML = [1,2,3,4,5,6].map(i => 
     `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br><span id="stat-count-${i}">0</span></div>`
 ).join('');
 
-[1,2,3,4,5].forEach(i => {
+[1,2,3,4,5,6].forEach(i => {
     document.getElementById(`stat-box-${i}`).addEventListener('click', () => {
         if (dictMode) toggleDictMode();
         
@@ -517,6 +521,13 @@ function countHanzi(str) {
         }
     }
     return count;
+}
+
+// Berechnet die Anzahl der Kalendertage zwischen zwei toDateString()-Werten
+function daysBetween(dateStr1, dateStr2) {
+    let d1 = new Date(dateStr1);
+    let d2 = new Date(dateStr2);
+    return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
 }
 
 function startQuizForCurrentChar() {
@@ -563,7 +574,7 @@ function startQuizForCurrentChar() {
 
 function getFocusCount() {
     let count = 0;
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 6; i++) {
         state['box' + i].forEach(c => {
             if (c.inFocus) count++;
         });
@@ -607,7 +618,7 @@ function searchDict() {
     if (!query) return;
 
     let allCards = [];
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 6; i++) {
         state['box' + i].forEach(c => {
             allCards.push({ card: c, boxNum: i });
         });
@@ -646,6 +657,7 @@ function searchDict() {
                         <option value="3" style="color: black; background: white;" ${boxNum == 3 ? 'selected' : ''}>B3</option>
                         <option value="4" style="color: black; background: white;" ${boxNum == 4 ? 'selected' : ''}>B4</option>
                         <option value="5" style="color: black; background: white;" ${boxNum == 5 ? 'selected' : ''}>B5</option>
+                        <option value="6" style="color: black; background: white;" ${boxNum == 6 ? 'selected' : ''}>B6</option>
                     </select>
                 </div>
             </div>
@@ -687,13 +699,14 @@ function changeDictBox(index, newBoxLevel) {
     if (oldBox === newBox) return; 
     state[oldBox] = state[oldBox].filter(c => c !== item.card);
     item.card.lastMovedDate = new Date().toDateString();
+    if (newBox === 'box5') { item.card.box5Streak = 0; item.card.box5LastCorrectDate = null; }
     state[newBox].push(item.card);
     sessionQueue = [];
     updateUI(); searchDict(); 
 }
 
 function updateUI() {
-    [1,2,3,4,5].forEach(i => {
+    [1,2,3,4,5,6].forEach(i => {
         let countSpan = document.getElementById(`stat-count-${i}`);
         if (countSpan) countSpan.innerText = state['box'+i].length;
     });
@@ -704,7 +717,7 @@ function updateUI() {
 }
 
 function highlightActiveBox() {
-    [1,2,3,4,5].forEach(i => {
+    [1,2,3,4,5,6].forEach(i => {
         let element = document.getElementById(`stat-box-${i}`);
         if (element) {
             element.classList.remove('active-box', 'inactive-box', 'selected-box');
@@ -821,9 +834,9 @@ function next() {
 
     if (sessionQueue.length === 0) {
         let pool = [];
-        const boxWeights = [0, 16, 8, 4, 2, 1]; 
+        const boxWeights = [0, 16, 8, 4, 2, 1, 1]; 
         
-        for(let i=1; i<=5; i++) {
+        for(let i=1; i<=6; i++) {
             if (selectedBoxFilter !== null && i !== selectedBoxFilter) continue;
             
             state['box'+i].forEach(c => {
@@ -833,7 +846,7 @@ function next() {
 
                 let weight = 1; 
                 if (!randomMode && selectedBoxFilter === null) {
-                    if (i === 5) {
+                    if (i === 6) {
                         let rate = c.stats.queries > 0 ? (c.stats.correct / c.stats.queries) : 1; 
                         let rateWeight = Math.round((1 - rate) * 4); 
                         let freqWeight = c.stats.queries < 5 ? 2 : (c.stats.queries < 10 ? 1 : 0);
@@ -887,7 +900,7 @@ function next() {
     currentBoxName = selection.box; 
     
     let statsInfo = "";
-    if (currentBoxName === 'box5' && currentCard.stats && currentCard.stats.queries > 0) {
+    if (currentBoxName === 'box6' && currentCard.stats && currentCard.stats.queries > 0) {
         let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
         statsInfo = ` • ${percent}% ERFOLG`;
     }
@@ -936,7 +949,7 @@ function flip() {
     if (!currentCard) return;
     
     let statsInfo = "";
-    if (currentBoxName === 'box5' && currentCard.stats && currentCard.stats.queries > 0) {
+    if (currentBoxName === 'box6' && currentCard.stats && currentCard.stats.queries > 0) {
         let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
         statsInfo = ` • ${percent}% ERFOLG`;
     }
@@ -1053,7 +1066,7 @@ function toggleFocus() {
     }
     
     let statsInfo = "";
-    if (currentBoxName === 'box5' && currentCard.stats && currentCard.stats.queries > 0) {
+    if (currentBoxName === 'box6' && currentCard.stats && currentCard.stats.queries > 0) {
         let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
         statsInfo = ` • ${percent}% ERFOLG`;
     }
@@ -1086,7 +1099,31 @@ function move(step) {
         if (currentCard.correctCount >= 20) { currentCard.inFocus = false; currentCard.correctCount = 0; }
     }
 
-    let newLevel = Math.min(Math.max(level + effectiveStep, 1), 5);
+    // Sonderregel: Der Aufstieg von Box 5 zu Box 6 erfordert drei aufeinanderfolgende Tage mit richtiger Antwort
+    let newLevel;
+    if (oldBox === 'box5' && effectiveStep === 1) {
+        if (!currentCard.box5Streak) currentCard.box5Streak = 0;
+        if (currentCard.box5LastCorrectDate && daysBetween(currentCard.box5LastCorrectDate, today) === 1) {
+            currentCard.box5Streak++;
+        } else {
+            currentCard.box5Streak = 1;
+        }
+        currentCard.box5LastCorrectDate = today;
+
+        if (currentCard.box5Streak >= 3) {
+            newLevel = 6;
+            currentCard.box5Streak = 0;
+            currentCard.box5LastCorrectDate = null;
+        } else {
+            newLevel = 5;
+        }
+    } else {
+        if (oldBox === 'box5' && effectiveStep !== 1) {
+            currentCard.box5Streak = 0;
+        }
+        newLevel = Math.min(Math.max(level + effectiveStep, 1), 6);
+    }
+
     state['box' + newLevel].push(currentCard);
     updateUI(); next();
 }
@@ -1096,13 +1133,15 @@ function moveToBox5() {
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
     if (oldBox) state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     currentCard.lastMovedDate = new Date().toDateString();
+    currentCard.box5Streak = 0;
+    currentCard.box5LastCorrectDate = null;
     state['box5'].push(currentCard);
     updateUI(); next();
 }
 
-function resetSpeicher() { if(confirm("Möchten Sie den Lernstand wirklich vollständig löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.")) { state = { box1: [], box2: [], box3: [], box4: [], box5: [] }; sessionQueue = []; updateUI(); location.reload(); } }
+function resetSpeicher() { if(confirm("Möchten Sie den Lernstand wirklich vollständig löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.")) { state = { box1: [], box2: [], box3: [], box4: [], box5: [], box6: [] }; sessionQueue = []; updateUI(); location.reload(); } }
 function exportProgress() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "hsk_trainer_backup.json"); dl.click(); }
-function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); sessionQueue = []; updateUI(); next(); }; reader.readAsText(file); }
+function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); if(!state.box6) state.box6 = []; sessionQueue = []; updateUI(); next(); }; reader.readAsText(file); }
 function clearCanvas() { if (currentWriter) currentWriter.cancelQuiz(); currentQuizCharIndex = 0; startQuizForCurrentChar(); }
 function speak() { if(!currentCard) return; const u = new SpeechSynthesisUtterance(currentCard.hz); u.lang = 'zh-CN'; window.speechSynthesis.speak(u); }
 
