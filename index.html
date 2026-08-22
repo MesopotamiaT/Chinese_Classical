@@ -444,7 +444,7 @@
             
             <div id="special-actions" class="row-2 hidden">
                 <button id="btn-focus" class="btn-secondary btn-medium" style="color: var(--focus-color); border-color: var(--focus-color);" onclick="toggleFocus()">FOKUS AKTIVIEREN</button>
-                <button class="btn-secondary btn-medium" onclick="moveToBox5()">ZU BOX 5</button>
+                <button class="btn-secondary btn-medium" onclick="moveToBox6()">ZU BOX 6</button>
             </div>
             
             <div id="controls" class="row-3 hidden">
@@ -1128,14 +1128,14 @@ function move(step) {
     updateUI(); next();
 }
 
-function moveToBox5() {
+function moveToBox6() {
     if (!currentCard) return;
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
     if (oldBox) state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     currentCard.lastMovedDate = new Date().toDateString();
     currentCard.box5Streak = 0;
     currentCard.box5LastCorrectDate = null;
-    state['box5'].push(currentCard);
+    state['box6'].push(currentCard);
     updateUI(); next();
 }
 
