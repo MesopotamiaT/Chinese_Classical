@@ -158,6 +158,21 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        /* BOX 6 TAGES-FORTSCHRITT */
+        #box6-daily-progress {
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 8px 4px;
+            border-radius: var(--radius-btn);
+            background: var(--card);
+            color: var(--box6);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-subtle);
+        }
         
         /* STATISTIK / BOXEN-FILTER */
         .stats { 
@@ -404,6 +419,7 @@
             <button id="btn-toggle-random-mode" onclick="toggleRandomMode()">ZUFALLSMODUS AUS</button>
             <button id="btn-toggle-dict" onclick="toggleDictMode()">WÖRTERBUCH</button>
         </div>
+        <div id="box6-daily-progress">BOX 6 HEUTE: 0/100</div>
     </div>
 
     <div class="stats" id="stats"></div>
@@ -472,6 +488,7 @@
 <script>
 let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [], box6: [] };
 if (!state.box6) state.box6 = [];
+if (!state.box6Daily) state.box6Daily = { date: new Date().toDateString(), count: 0 };
 let sessionQueue = []; 
 let currentCard = null;
 let currentBoxName = ""; 
@@ -528,6 +545,21 @@ function daysBetween(dateStr1, dateStr2) {
     let d1 = new Date(dateStr1);
     let d2 = new Date(dateStr2);
     return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+}
+
+// Prüft, ob der Box-6-Tageszähler zurückgesetzt werden muss (neuer Kalendertag)
+function checkBox6DailyReset() {
+    let today = new Date().toDateString();
+    if (!state.box6Daily || state.box6Daily.date !== today) {
+        state.box6Daily = { date: today, count: 0 };
+    }
+}
+
+// Aktualisiert die Anzeige des Box-6-Tagesfortschritts (Ziel: 100 Vokabeln/Tag)
+function updateBox6DailyDisplay() {
+    checkBox6DailyReset();
+    let el = document.getElementById('box6-daily-progress');
+    if (el) el.innerText = `BOX 6 HEUTE: ${state.box6Daily.count}/100`;
 }
 
 function startQuizForCurrentChar() {
@@ -714,6 +746,7 @@ function updateUI() {
     localStorage.setItem('hsk_data', JSON.stringify(state));
     highlightActiveBox(); 
     updateFocusButtonText();
+    updateBox6DailyDisplay();
 }
 
 function highlightActiveBox() {
@@ -1086,6 +1119,13 @@ function move(step) {
     }
 
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
+
+    // Box-6-Tageszähler erhöhen, wenn eine Vokabel aus Box 6 abgefragt wurde
+    if (oldBox === 'box6') {
+        checkBox6DailyReset();
+        state.box6Daily.count++;
+    }
+
     let level = parseInt(oldBox.replace('box',''));
     state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     
@@ -1141,7 +1181,7 @@ function moveToBox6() {
 
 function resetSpeicher() { if(confirm("Möchten Sie den Lernstand wirklich vollständig löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.")) { state = { box1: [], box2: [], box3: [], box4: [], box5: [], box6: [] }; sessionQueue = []; updateUI(); location.reload(); } }
 function exportProgress() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "hsk_trainer_backup.json"); dl.click(); }
-function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); if(!state.box6) state.box6 = []; sessionQueue = []; updateUI(); next(); }; reader.readAsText(file); }
+function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); if(!state.box6) state.box6 = []; if(!state.box6Daily) state.box6Daily = { date: new Date().toDateString(), count: 0 }; sessionQueue = []; updateUI(); next(); }; reader.readAsText(file); }
 function clearCanvas() { if (currentWriter) currentWriter.cancelQuiz(); currentQuizCharIndex = 0; startQuizForCurrentChar(); }
 function speak() { if(!currentCard) return; const u = new SpeechSynthesisUtterance(currentCard.hz); u.lang = 'zh-CN'; window.speechSynthesis.speak(u); }
 
