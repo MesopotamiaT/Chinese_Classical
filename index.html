@@ -7,32 +7,51 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HSK Trainer">
     <title>HSK Trainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;1,8..60,500;1,8..60,600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
     <style>
-        /* Hochwertiges, mattes Farbkonzept */
+        /* Hochwertiges, mattes Farbkonzept — Tinte & Siegel */
         :root { 
-            --bg: #F3F4F6; 
+            --bg: #F3F1EC; 
             --card: #FFFFFF; 
-            --text-main: #111827; 
-            --text-muted: #6B7280;
-            --border-light: #E5E7EB;
+            --text-main: #191A1E; 
+            --text-muted: #6B6D72;
+            --border-light: #E4E1D9;
             
-            --primary: #2563EB; 
-            --primary-light: #EFF6FF;
-            --focus-color: #4F46E5; 
+            --primary: #1F3A5F; 
+            --primary-light: #E8EEF4;
+            --focus-color: #2E86D8; 
             
-            /* Gedämpfte Status-Farben */
-            --box1: #DC2626; 
-            --box2: #D97706; 
-            --box3: #0284C7; 
-            --box4: #7C3AED; 
-            --box5: #059669; 
-            --box6: #DB2777; 
+            /* Gedämpfte Status-Farben — Tinten- und Siegelfarben */
+            --box1: #C0392B; 
+            --box2: #B9791E; 
+            --box3: #1F7A8C; 
+            --box4: #6C4BA6; 
+            --box5: #2F8F5B; 
+            --box6: #9A2B4C; 
             
-            --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --radius-btn: 8px;
-            --radius-card: 16px;
+            --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.04);
+            --shadow-card: 0 12px 28px -6px rgba(25, 26, 30, 0.12), 0 4px 8px -2px rgba(25, 26, 30, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+            --radius-btn: 12px;
+            --radius-card: 20px;
+
+            /* Professionelle, plastische Button-Optik */
+            --btn-highlight: rgba(255, 255, 255, 0.5);
+            --btn-shade: rgba(0, 0, 0, 0.12);
+            --btn-shadow-raised: 
+                inset 0 2px 1px -1px var(--btn-highlight), 
+                inset 0 -3px 2px -1px var(--btn-shade), 
+                0 4px 6px -1px rgba(25,26,30,0.15), 
+                0 2px 4px -2px rgba(25,26,30,0.1);
+            --btn-shadow-pressed: 
+                inset 0 3px 6px rgba(25,26,30,0.25), 
+                inset 0 1px 3px rgba(25,26,30,0.15),
+                0 1px 1px rgba(255,255,255,0.6);
+
+            --font-ui: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-read: 'Source Serif 4', Georgia, 'Songti SC', serif;
         }
 
         /* Eleganter Dark Mode */
@@ -40,22 +59,34 @@
             :root {
                 --bg: #121212; 
                 --card: #1E1E1E; 
-                --text-main: #F9FAFB; 
-                --text-muted: #9CA3AF;
+                --text-main: #F5F4F1; 
+                --text-muted: #9A9B9F;
                 --border-light: #2C2C2C;
                 
-                --primary: #3B82F6; 
-                --primary-light: #1E3A8A;
-                --focus-color: #6366F1; 
+                --primary: #5588BE; 
+                --primary-light: #1C2A38;
+                --focus-color: #4FA3E8; 
                 
-                --box1: #EF4444; 
-                --box2: #F59E0B; 
-                --box3: #3B82F6; 
-                --box4: #8B5CF6; 
-                --box5: #10B981; 
-                --box6: #EC4899; 
+                --box1: #E0654F; 
+                --box2: #D99A3E; 
+                --box3: #45AEC4; 
+                --box4: #9678D6; 
+                --box5: #45B378; 
+                --box6: #CE5A80; 
                 
-                --shadow-card: 0 8px 16px rgba(0, 0, 0, 0.4);
+                --shadow-card: 0 14px 30px -8px rgba(0, 0, 0, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+
+                --btn-highlight: rgba(255, 255, 255, 0.12);
+                --btn-shade: rgba(0, 0, 0, 0.4);
+                --btn-shadow-raised: 
+                    inset 0 2px 1px -1px var(--btn-highlight), 
+                    inset 0 -3px 2px -1px var(--btn-shade), 
+                    0 4px 6px -1px rgba(0,0,0,0.5), 
+                    0 2px 4px -2px rgba(0,0,0,0.4);
+                --btn-shadow-pressed: 
+                    inset 0 3px 6px rgba(0,0,0,0.6), 
+                    inset 0 1px 3px rgba(0,0,0,0.4),
+                    0 1px 1px rgba(255,255,255,0.05);
             }
         }
         
@@ -66,7 +97,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            font-family: var(--font-ui);
             background: var(--bg); 
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
@@ -105,56 +136,61 @@
         
         .header-top h2 {
             margin: 0;
-            font-size: 1.2rem; 
-            font-weight: 700;
+            font-size: 1.25rem; 
+            font-weight: 800;
             letter-spacing: -0.03em;
             flex-shrink: 0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
         
         .system-buttons { 
-            display: flex; 
-            gap: 4px; 
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            max-width: 100%;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            width: 100%;
         }
         
         .system-buttons button {
-            font-size: 0.7rem; 
-            padding: 6px 8px; 
+            flex-direction: column;
+            gap: 3px;
+            font-size: 0.6rem; 
+            padding: 9px 2px 8px; 
             border-radius: var(--radius-btn);
             background: var(--card);
             color: var(--text-main);
-            border: 1px solid var(--border-light);
-            font-weight: 600;
-            box-shadow: var(--shadow-subtle);
+            border: 1px solid transparent;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.02em;
-            white-space: nowrap;
-            flex-shrink: 1;
+            letter-spacing: 0.03em;
+            min-width: 0;
         }
-        .system-buttons .btn-danger { color: var(--box1); border-color: var(--border-light); }
-        .system-buttons .btn-action { background: var(--primary); color: #FFFFFF; border: none; }
-        .system-buttons .btn-stats { color: var(--box6); border-color: var(--border-light); }
+        .system-buttons button span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        .btn-icon-svg { width: 17px; height: 17px; flex-shrink: 0; }
+        .system-buttons .btn-danger { color: var(--box1); }
+        .system-buttons .btn-action { background: var(--primary); color: #FFFFFF; }
+        .system-buttons .btn-stats { color: var(--box6); }
 
         .filter-buttons { 
-            display: flex; 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr);
             gap: 6px; 
             width: 100%;
-            flex-wrap: wrap;
         }
         
         .filter-buttons button {
-            flex: 1 1 auto; 
             min-width: 0;
-            font-size: 0.75rem; 
-            padding: 8px 4px; 
+            font-size: 0.72rem; 
+            padding: 10px 4px; 
             border-radius: var(--radius-btn);
-            border: 1px solid var(--border-light);
+            border: 1px solid transparent;
             background: var(--card);
             color: var(--text-main);
-            font-weight: 600;
-            box-shadow: var(--shadow-subtle);
+            font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -163,16 +199,36 @@
         /* BOX 6 TAGES-FORTSCHRITT */
         #box6-daily-progress {
             width: 100%;
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            padding: 8px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 10px 14px; 
             border-radius: var(--radius-btn);
             background: var(--card);
-            color: var(--box6);
             border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-subtle);
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.5), 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .box6-progress-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: var(--box6);
+        }
+        .box6-progress-track {
+            width: 100%;
+            height: 6px;
+            border-radius: 999px;
+            background: var(--bg);
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .box6-progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            background: var(--box6);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), inset 0 -1px 2px rgba(0,0,0,0.2);
+            transition: width 0.5s ease;
         }
         
         /* STATISTIK / BOXEN-FILTER */
@@ -186,14 +242,14 @@
             border: 1px solid var(--border-light);
             flex-shrink: 0;
             margin-bottom: 14px; 
-            box-shadow: var(--shadow-subtle);
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.04);
         }
         .stat-box { 
             padding: 8px 2px; 
-            border-radius: 6px; 
+            border-radius: 9px; 
             text-align: center; 
             font-size: 0.72rem; 
-            font-weight: 600; 
+            font-weight: 700; 
             border: 2px solid transparent;
             color: var(--text-muted);
             background: transparent;
@@ -201,6 +257,7 @@
             cursor: pointer;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 1px 3px rgba(0,0,0,0.05);
         }
         #stat-box-1 { color: var(--box1); }
         #stat-box-2 { color: var(--box2); }
@@ -214,14 +271,15 @@
             background: var(--bg) !important;
             opacity: 1 !important;
             transform: scale(1.05);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.1);
         }
         
         .stat-box.active-box { 
             border-color: var(--border-light); 
             background: var(--bg);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
         }
-        .stat-box.inactive-box { opacity: 0.3; }
+        .stat-box.inactive-box { opacity: 0.4; box-shadow: none; }
 
         /* HAUPTKARTE */
         .card { 
@@ -248,7 +306,7 @@
 
         #v-box { 
             font-size: 0.75rem; 
-            font-weight: 700; 
+            font-weight: 800; 
             color: var(--text-muted); 
             text-transform: uppercase;
             letter-spacing: 0.08em;
@@ -256,24 +314,28 @@
             background: var(--bg);
             border-radius: 20px;
             border: 1px solid var(--border-light);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
 
         #v-de {
+            font-family: var(--font-read);
             font-size: 1.5rem; 
             font-weight: 600; 
             color: var(--text-main); 
             word-break: break-word; 
-            line-height: 1.3;
+            line-height: 1.35;
             margin: 0;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.005em;
         }
         
         .char-tag {
             display: block;
-            font-size: 0.9rem;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
             color: var(--primary);
-            font-weight: 600;
-            margin-top: 6px;
+            font-weight: 700;
+            margin-top: 8px;
+            letter-spacing: 0.01em;
         }
 
         #v-hz {
@@ -282,18 +344,20 @@
             font-weight: 400;
             line-height: 1;
             margin: 0;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         #v-hz.long-char { font-size: 3.5rem; }
 
         #v-py {
-            font-size: 1.25rem; 
+            font-family: var(--font-read);
+            font-style: italic;
+            font-size: 1.3rem; 
             color: var(--primary); 
-            font-weight: 500; 
+            font-weight: 600; 
             margin: 0;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
         }
         
-        /* Neues Statistik-Feld auf der Karte */
         #v-stats {
             margin-top: 8px;
             font-size: 0.85rem;
@@ -303,6 +367,7 @@
             border-radius: var(--radius-btn);
             border: 1px solid var(--border-light);
             font-weight: 500;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         }
         
         /* ZEICHENBOX */
@@ -321,14 +386,25 @@
             aspect-ratio: 1/1; 
             border: 1px solid var(--border-light); 
             border-radius: var(--radius-card); 
-            background: var(--bg); 
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+            background-color: var(--bg); 
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><line x1='50' y1='3' x2='50' y2='97' stroke='%23BFC6CE' stroke-width='1' stroke-dasharray='3 3'/><line x1='3' y1='50' x2='97' y2='50' stroke='%23BFC6CE' stroke-width='1' stroke-dasharray='3 3'/><line x1='7' y1='7' x2='93' y2='93' stroke='%23BFC6CE' stroke-width='1' stroke-dasharray='3 3'/><line x1='93' y1='7' x2='7' y2='93' stroke='%23BFC6CE' stroke-width='1' stroke-dasharray='3 3'/></svg>");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.06), 0 1px 0 rgba(255,255,255,0.7);
             transition: border-color 0.2s;
             touch-action: none;
         }
         .char-box:active { border-color: var(--primary); }
 
-        /* ACTION BUTTONS */
+        @media (prefers-color-scheme: dark) {
+            .char-box {
+                background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><line x1='50' y1='3' x2='50' y2='97' stroke='%233B3D42' stroke-width='1' stroke-dasharray='3 3'/><line x1='3' y1='50' x2='97' y2='50' stroke='%233B3D42' stroke-width='1' stroke-dasharray='3 3'/><line x1='7' y1='7' x2='93' y2='93' stroke='%233B3D42' stroke-width='1' stroke-dasharray='3 3'/><line x1='93' y1='7' x2='7' y2='93' stroke='%233B3D42' stroke-width='1' stroke-dasharray='3 3'/></svg>");
+                box-shadow: inset 0 3px 6px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05);
+            }
+        }
+
+        /* ACTION BUTTONS - GRID LAYOUT FÜR GLEICHE BREITEN */
         .action-area {
             margin-top: auto; 
             padding-top: 16px;
@@ -341,47 +417,52 @@
         button { 
             border: none; 
             margin: 0; 
-            font-weight: 600; 
+            font-weight: 800; 
             cursor: pointer; 
             font-family: inherit;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: all 0.15s ease;
+            box-shadow: var(--btn-shadow-raised);
+            transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-        button:active { opacity: 0.8; transform: scale(0.98); }
-        button:disabled { opacity: 0.4 !important; cursor: not-allowed; transform: none; }
+        button:active { 
+            transform: translateY(2px) scale(0.98); 
+            box-shadow: var(--btn-shadow-pressed);
+            filter: brightness(0.95);
+        }
+        button:disabled { opacity: 0.4 !important; cursor: not-allowed; transform: none; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
         
-        .row-2 { display: flex; gap: 8px; width: 100%; }
+        .row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
         .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
         
         .btn-large { padding: 16px; border-radius: var(--radius-btn); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .btn-medium { padding: 14px; border-radius: var(--radius-btn); font-size: 0.95rem; }
         
-        .btn-primary { background: var(--primary); color: #FFFFFF; flex: 2; }
-        .btn-secondary { background: var(--card); color: var(--text-main); border: 1px solid var(--border-light); flex: 1; }
+        .btn-primary { background-color: var(--primary); color: #FFFFFF; }
+        .btn-secondary { background-color: var(--card); color: var(--text-main); border: 1px solid transparent; }
         
         .btn-tool { 
-            background: var(--card); 
+            background-color: var(--card); 
             color: var(--text-main); 
-            border: 1px solid var(--border-light);
+            border: 1px solid transparent;
             padding: 14px 4px; 
             font-size: 0.9rem; 
             border-radius: var(--radius-btn); 
-            box-shadow: var(--shadow-subtle);
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
         
-        .btn-grade { color: #FFFFFF; padding: 16px 4px; font-size: 0.95rem; border-radius: var(--radius-btn); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .btn-grade { color: #FFFFFF; padding: 16px 4px; font-size: 0.95rem; border-radius: var(--radius-btn); font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
         
         .hidden { display: none !important; }
         
         /* MODAL */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
             display: flex; justify-content: center; align-items: center; 
             z-index: 1000; padding: 20px; 
         }
@@ -389,14 +470,21 @@
             background: var(--card); padding: 24px; border-radius: var(--radius-card); 
             width: 100%; max-width: 400px; max-height: 80vh; 
             display: flex; flex-direction: column; box-shadow: var(--shadow-card); 
+            border: 1px solid var(--border-light);
         }
         
         /* Wörterbuch Styling */
         #dict-search-input {
-            flex-grow: 1; padding: 14px; border-radius: var(--radius-btn); 
+            width: 100%; padding: 14px; border-radius: var(--radius-btn); 
             border: 1px solid var(--border-light); font-size: 1rem; 
             background: var(--bg); color: var(--text-main); 
             font-family: inherit; outline: none;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        #dict-search-input:focus {
+            border-color: var(--primary);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05), 0 0 0 3px var(--primary-light);
         }
 
         /* Box 6 Statistik Tabelle */
@@ -419,6 +507,7 @@
             position: sticky;
             top: 0;
             background: var(--card);
+            box-shadow: 0 1px 0 var(--border-light);
         }
         #box6-stats-table th:nth-child(n+2) { text-align: center; }
         #box6-stats-table td {
@@ -466,9 +555,9 @@
     <div class="card">
         
         <div id="dict-view" class="hidden" style="display: flex; flex-direction: column; height: 100%;">
-            <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-shrink: 0;">
+            <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 12px; flex-shrink: 0;">
                 <input type="text" id="dict-search-input" placeholder="Nach Begriff suchen..." onkeypress="if(event.key === 'Enter') searchDict()">
-                <button class="btn-primary btn-medium" style="flex: 0 1 auto; padding: 0 20px;" onclick="searchDict()">SUCHEN</button>
+                <button class="btn-primary btn-medium" style="padding: 0 20px;" onclick="searchDict()">SUCHEN</button>
             </div>
             <div id="dict-results" style="overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 8px;"></div>
         </div>
@@ -498,14 +587,14 @@
             </div>
             
             <div id="special-actions" class="row-2 hidden">
-                <button id="btn-focus" class="btn-secondary btn-medium" style="color: var(--focus-color); border-color: var(--focus-color);" onclick="toggleFocus()">FOKUS AKTIVIEREN</button>
+                <button id="btn-focus" class="btn-secondary btn-medium" style="color: var(--focus-color);" onclick="toggleFocus()">FOKUS AKTIVIEREN</button>
                 <button class="btn-secondary btn-medium" onclick="moveToBox6()">ZU BOX 6</button>
             </div>
             
             <div id="controls" class="row-3 hidden">
-                <button class="btn-grade" style="background: var(--box1);" onclick="move(-1)">FALSCH</button>
-                <button class="btn-grade" style="background: var(--box2);" onclick="move(0)">HALTEN</button>
-                <button class="btn-grade" style="background: var(--box5);" onclick="move(1)">RICHTIG</button>
+                <button class="btn-grade" style="background-color: var(--box1);" onclick="move(-1)">FALSCH</button>
+                <button class="btn-grade" style="background-color: var(--box2);" onclick="move(0)">HALTEN</button>
+                <button class="btn-grade" style="background-color: var(--box5);" onclick="move(1)">RICHTIG</button>
             </div>
             
         </div>
@@ -514,11 +603,11 @@
 
 <div id="exampleModal" class="modal-overlay hidden">
     <div class="modal-content">
-        <h3 style="margin-top: 0; color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Beispielsatz</h3>
+        <h3 style="margin-top: 0; color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Beispielsatz</h3>
         <div style="overflow-y: auto; flex-grow: 1; margin-bottom: 16px;">
             <div id="ex-hz" style="font-size: 1.6rem; font-weight: 400; margin-bottom: 6px;"></div>
-            <div id="ex-py" style="color: var(--primary); margin-bottom: 12px; font-size: 1.1rem;"></div>
-            <div id="ex-de" style="background: var(--bg); padding: 16px; border-radius: var(--radius-btn); border-left: 4px solid var(--primary); font-size: 1rem; line-height: 1.5; color: var(--text-main);"></div>
+            <div id="ex-py" style="color: var(--primary); margin-bottom: 12px; font-size: 1.1rem; font-weight: 700;"></div>
+            <div id="ex-de" style="background: var(--bg); padding: 16px; border-radius: var(--radius-btn); border-left: 4px solid var(--primary); font-size: 1rem; line-height: 1.5; color: var(--text-main); box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);"></div>
         </div>
         <button class="btn-secondary btn-large" onclick="closeModal()">SCHLIESSEN</button>
     </div>
@@ -526,9 +615,9 @@
 
 <div id="box6StatsModal" class="modal-overlay hidden">
     <div class="modal-content" style="max-width: 480px;">
-        <h3 style="margin-top: 0; color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Box 6 Statistik</h3>
+        <h3 style="margin-top: 0; color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Box 6 Statistik</h3>
         <div id="box6-stats-summary"></div>
-        <div style="overflow: auto; flex-grow: 1; margin-bottom: 16px;">
+        <div style="overflow: auto; flex-grow: 1; margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 8px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.03);">
             <table id="box6-stats-table">
                 <thead>
                     <tr>
@@ -537,6 +626,7 @@
                         <th onclick="sortBox6Stats('correct')">Richtig</th>
                         <th onclick="sortBox6Stats('wrong')">Falsch</th>
                         <th onclick="sortBox6Stats('rate')">Quote</th>
+                        <th onclick="sortBox6Stats('dueDays')">Fällig</th>
                     </tr>
                 </thead>
                 <tbody id="box6-stats-body"></tbody>
@@ -590,13 +680,11 @@ document.getElementById('stats').innerHTML = [1,2,3,4,5,6].map(i =>
     });
 });
 
-// Zählt verlässlich chinesische Schriftzeichen aus jedem Eingabetyp
 function countHanzi(str) {
     if (!str) return 0;
     let count = 0;
     for (let i = 0; i < str.length; i++) {
         let code = str.charCodeAt(i);
-        // Prüft Standard-Unicode-Bereich für chinesische Zeichen (CJK)
         if ((code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF)) {
             count++;
         }
@@ -604,14 +692,32 @@ function countHanzi(str) {
     return count;
 }
 
-// Berechnet die Anzahl der Kalendertage zwischen zwei toDateString()-Werten
 function daysBetween(dateStr1, dateStr2) {
     let d1 = new Date(dateStr1);
     let d2 = new Date(dateStr2);
     return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
 }
 
-// Prüft, ob der Box-6-Tageszähler zurückgesetzt werden muss (neuer Kalendertag)
+function addDays(dateStr, days) {
+    let d = dateStr ? new Date(dateStr) : new Date();
+    d.setDate(d.getDate() + days);
+    return d.toDateString();
+}
+
+function isBox6CardDue(c) {
+    if (!c.nextReviewDate) return true; 
+    let today = new Date(); today.setHours(0,0,0,0);
+    let due = new Date(c.nextReviewDate); due.setHours(0,0,0,0);
+    return due <= today;
+}
+
+function box6DueInDays(c) {
+    if (!c.nextReviewDate) return -9999;
+    let today = new Date(); today.setHours(0,0,0,0);
+    let due = new Date(c.nextReviewDate); due.setHours(0,0,0,0);
+    return Math.round((due - today) / (1000 * 60 * 60 * 24));
+}
+
 function checkBox6DailyReset() {
     let today = new Date().toDateString();
     if (!state.box6Daily || state.box6Daily.date !== today) {
@@ -619,14 +725,12 @@ function checkBox6DailyReset() {
     }
 }
 
-// Aktualisiert die Anzeige des Box-6-Tagesfortschritts (Ziel: 100 Vokabeln/Tag)
 function updateBox6DailyDisplay() {
     checkBox6DailyReset();
     let el = document.getElementById('box6-daily-progress');
     if (el) el.innerText = `BOX 6 HEUTE: ${state.box6Daily.count}/100`;
 }
 
-// Öffnet die Box-6-Statistik-Übersicht
 function openBox6Stats() {
     document.getElementById('box6StatsModal').classList.remove('hidden');
     renderBox6StatsTable();
@@ -636,7 +740,6 @@ function closeBox6Stats() {
     document.getElementById('box6StatsModal').classList.add('hidden');
 }
 
-// Wechselt die Sortierspalte/-richtung der Box-6-Statistiktabelle
 function sortBox6Stats(column) {
     if (box6SortColumn === column) {
         box6SortDirection = box6SortDirection === 'asc' ? 'desc' : 'asc';
@@ -647,7 +750,6 @@ function sortBox6Stats(column) {
     renderBox6StatsTable();
 }
 
-// Baut die sortierte Statistiktabelle für alle Box-6-Vokabeln
 function renderBox6StatsTable() {
     let data = state.box6.map(c => {
         let stats = c.stats || { queries: 0, correct: 0 };
@@ -655,7 +757,8 @@ function renderBox6StatsTable() {
         let correct = stats.correct || 0;
         let wrong = queries - correct;
         let rate = queries > 0 ? (correct / queries) * 100 : 0;
-        return { card: c, hz: c.hz || '', py: c.py || '', de: c.de || '', queries, correct, wrong, rate };
+        let dueDays = box6DueInDays(c);
+        return { card: c, hz: c.hz || '', py: c.py || '', de: c.de || '', queries, correct, wrong, rate, dueDays };
     });
 
     data.sort((a, b) => {
@@ -675,23 +778,34 @@ function renderBox6StatsTable() {
 
     let tbody = document.getElementById('box6-stats-body');
     if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--text-muted);">Keine Vokabeln in Box 6</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--text-muted);">Keine Vokabeln in Box 6</td></tr>`;
     } else {
-        tbody.innerHTML = data.map(d => `
+        tbody.innerHTML = data.map(d => {
+            let dueLabel;
+            if (d.dueDays <= 0) {
+                dueLabel = `<span style="color: var(--box6); font-weight:700;">jetzt</span>`;
+            } else if (d.dueDays === 1) {
+                dueLabel = `in 1 Tag`;
+            } else {
+                dueLabel = `in ${d.dueDays} Tg.`;
+            }
+            return `
             <tr>
                 <td>
-                    <div style="font-weight:600; font-size: 1rem;">${d.hz}</div>
-                    <div style="color: var(--primary); font-size:0.75rem;">${d.py}</div>
+                    <div style="font-weight:700; font-size: 1rem;">${d.hz}</div>
+                    <div style="color: var(--primary); font-size:0.75rem; font-weight:600;">${d.py}</div>
                 </td>
                 <td>${d.queries}</td>
-                <td style="color: var(--box5); font-weight:600;">${d.correct}</td>
-                <td style="color: var(--box1); font-weight:600;">${d.wrong}</td>
-                <td>${d.queries > 0 ? Math.round(d.rate) + '%' : '–'}</td>
+                <td style="color: var(--box5); font-weight:700;">${d.correct}</td>
+                <td style="color: var(--box1); font-weight:700;">${d.wrong}</td>
+                <td style="font-weight:600;">${d.queries > 0 ? Math.round(d.rate) + '%' : '–'}</td>
+                <td style="font-size:0.75rem;">${dueLabel}</td>
             </tr>
-        `).join('');
+        `;
+        }).join('');
     }
 
-    let columnIndex = { hz: 0, queries: 1, correct: 2, wrong: 3, rate: 4 };
+    let columnIndex = { hz: 0, queries: 1, correct: 2, wrong: 3, rate: 4, dueDays: 5 };
     let ths = document.querySelectorAll('#box6-stats-table th');
     ths.forEach(th => th.classList.remove('sorted-asc', 'sorted-desc'));
     let activeTh = ths[columnIndex[box6SortColumn]];
@@ -757,7 +871,7 @@ function toggleDictMode() {
     let flashcardElements = ['flashcard-content', 'drawing-controls', 'learning-tools', 'special-actions', 'controls'];
     
     if (dictMode) {
-        btn.style.background = "var(--primary)";
+        btn.style.backgroundColor = "var(--primary)";
         btn.style.color = "#FFFFFF";
         dictView.classList.remove('hidden');
         
@@ -770,7 +884,7 @@ function toggleDictMode() {
         document.getElementById('dict-results').innerHTML = "";
         document.getElementById('dict-search-input').focus();
     } else {
-        btn.style.background = "var(--card)";
+        btn.style.backgroundColor = "var(--card)";
         btn.style.color = "var(--text-main)";
         dictView.classList.add('hidden');
         document.getElementById('flashcard-content').classList.remove('hidden');
@@ -799,7 +913,7 @@ function searchDict() {
     );
 
     if (currentDictResults.length === 0) {
-        resultsContainer.innerHTML = "<p style='color: var(--text-muted); text-align: center; font-size: 0.95rem; margin-top: 20px;'>Keine Ergebnisse gefunden.</p>";
+        resultsContainer.innerHTML = "<p style='color: var(--text-muted); text-align: center; font-size: 0.95rem; margin-top: 20px; font-weight:600;'>Keine Ergebnisse gefunden.</p>";
         return;
     }
 
@@ -807,19 +921,20 @@ function searchDict() {
         let c = item.card;
         let boxNum = item.boxNum;
         let div = document.createElement('div');
-        div.style.cssText = "background: var(--bg); padding: 16px; border-radius: var(--radius-btn); border: 1px solid var(--border-light);";
+        div.style.cssText = "background: var(--bg); padding: 16px; border-radius: var(--radius-btn); border: 1px solid var(--border-light); box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 2px 5px rgba(0,0,0,0.03);";
         
         let focusBtnBg = c.inFocus ? "var(--focus-color)" : "transparent";
         let focusBtnColor = c.inFocus ? "#FFFFFF" : "var(--text-main)";
-        let focusBtnBorder = c.inFocus ? "var(--focus-color)" : "var(--border-light)";
+        let focusBtnBorder = c.inFocus ? "transparent" : "var(--border-light)";
         let focusBtnText = c.inFocus ? "FOKUS AKTIV" : "FOKUS";
+        let focusShadow = c.inFocus ? "var(--btn-shadow-raised)" : "none";
 
         let html = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <div style="font-size: 1.5rem; font-weight: 500;">${c.hz}</div>
+                <div style="font-size: 1.5rem; font-weight: 700;">${c.hz}</div>
                 <div style="display: flex; gap: 6px;">
-                    <button onclick="toggleDictFocus(${index})" style="padding: 6px 10px; font-size: 0.75rem; border-radius: var(--radius-btn); background: ${focusBtnBg}; color: ${focusBtnColor}; border: 1px solid ${focusBtnBorder};">${focusBtnText}</button>
-                    <select onchange="changeDictBox(${index}, this.value)" style="background: var(--box${boxNum}); color: white; padding: 6px 10px; border-radius: var(--radius-btn); font-size: 0.8rem; font-weight: 600; border: none; outline: none;">
+                    <button onclick="toggleDictFocus(${index})" style="padding: 6px 10px; font-size: 0.75rem; border-radius: var(--radius-btn); background-color: ${focusBtnBg}; color: ${focusBtnColor}; border: 1px solid ${focusBtnBorder}; box-shadow: ${focusShadow}; font-weight:800;">${focusBtnText}</button>
+                    <select onchange="changeDictBox(${index}, this.value)" style="background: var(--box${boxNum}); color: white; padding: 6px 10px; border-radius: var(--radius-btn); font-size: 0.8rem; font-weight: 800; border: none; outline: none; box-shadow: var(--btn-shadow-raised);">
                         <option value="1" style="color: black; background: white;" ${boxNum == 1 ? 'selected' : ''}>B1</option>
                         <option value="2" style="color: black; background: white;" ${boxNum == 2 ? 'selected' : ''}>B2</option>
                         <option value="3" style="color: black; background: white;" ${boxNum == 3 ? 'selected' : ''}>B3</option>
@@ -829,15 +944,15 @@ function searchDict() {
                     </select>
                 </div>
             </div>
-            <div style="color: var(--primary); font-size: 1rem; margin-bottom: 6px;">${c.py}</div>
-            <div style="font-size: 1.05rem; font-weight: 500;">${c.de}</div>
+            <div style="color: var(--primary); font-size: 1rem; margin-bottom: 6px; font-weight:700;">${c.py}</div>
+            <div style="font-size: 1.05rem; font-weight: 600;">${c.de}</div>
         `;
         
         if (c.sentenceHz) {
             html += `
                 <div style="border-top: 1px solid var(--border-light); padding-top: 10px; margin-top: 10px; font-size: 0.9rem;">
-                    <div style="color: var(--text-main); font-weight: 500;">${c.sentenceHz}</div>
-                    <div style="color: var(--primary); margin: 4px 0;">${c.sentencePy}</div>
+                    <div style="color: var(--text-main); font-weight: 600;">${c.sentenceHz}</div>
+                    <div style="color: var(--primary); margin: 4px 0; font-weight:700;">${c.sentencePy}</div>
                     <div style="color: var(--text-muted); line-height: 1.4;">${c.sentenceDe}</div>
                 </div>
             `;
@@ -917,15 +1032,13 @@ function toggleOnlyFocusMode() {
     sessionQueue = []; 
     let btn = document.getElementById('btn-toggle-only-focus');
     if (onlyFocusMode) {
-        btn.style.background = "var(--focus-color)";
+        btn.style.backgroundColor = "var(--focus-color)";
         btn.style.color = "#FFFFFF";
-        btn.style.borderColor = "var(--focus-color)";
         selectedBoxFilter = null; 
         if(randomMode) toggleRandomMode();
     } else {
-        btn.style.background = "var(--card)";
+        btn.style.backgroundColor = "var(--card)";
         btn.style.color = "var(--text-main)";
-        btn.style.borderColor = "var(--border-light)";
     }
     updateUI();
     next();
@@ -937,16 +1050,14 @@ function toggleRandomMode() {
     let btn = document.getElementById('btn-toggle-random-mode');
     if (randomMode) {
         btn.innerText = "ZUFALLSMODUS AKTIV";
-        btn.style.background = "var(--box4)"; 
+        btn.style.backgroundColor = "var(--box4)"; 
         btn.style.color = "#FFFFFF";
-        btn.style.borderColor = "var(--box4)";
         selectedBoxFilter = null; 
         if(onlyFocusMode) toggleOnlyFocusMode();
     } else {
         btn.innerText = "ZUFALLSMODUS AUS";
-        btn.style.background = "var(--card)";
+        btn.style.backgroundColor = "var(--card)";
         btn.style.color = "var(--text-main)";
-        btn.style.borderColor = "var(--border-light)";
     }
     updateUI();
     next();
@@ -1016,10 +1127,8 @@ function next() {
                 let weight = 1; 
                 if (!randomMode && selectedBoxFilter === null) {
                     if (i === 6) {
-                        let rate = c.stats.queries > 0 ? (c.stats.correct / c.stats.queries) : 1; 
-                        let rateWeight = Math.round((1 - rate) * 4); 
-                        let freqWeight = c.stats.queries < 5 ? 2 : (c.stats.queries < 10 ? 1 : 0);
-                        weight = 1 + rateWeight + freqWeight;
+                        if (!isBox6CardDue(c)) return;
+                        weight = 1;
                     } else {
                         weight = boxWeights[i]; 
                     }
@@ -1076,7 +1185,6 @@ function next() {
 
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
     
-    // Zeichenanzahl berechnen und direkt im deutschen Feld abfeuern
     let hCount = countHanzi(currentCard.hz);
     let tagHtml = hCount > 0 ? `<span class="char-tag">(${hCount} ${hCount === 1 ? 'Zeichen' : 'Zeichen'})</span>` : '';
     document.getElementById('v-de').innerHTML = currentCard.de + tagHtml;
@@ -1098,7 +1206,6 @@ function next() {
     document.getElementById('controls').classList.add('hidden');
     closeModal();
 
-    // HanziWriter Einzelzeichen-Vorbereitung
     let cleanHz = currentCard.hz ? currentCard.hz.replace(/\s/g, '') : '';
     currentQuizChars = [];
     for (let i = 0; i < cleanHz.length; i++) {
@@ -1124,8 +1231,6 @@ function flip() {
     }
 
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
-
-    // Nur den reinen deutschen Text beim Aufdecken anzeigen (ohne Zeichen-Hinweis)
     document.getElementById('v-de').innerText = currentCard.de;
 
     let hzElement = document.getElementById('v-hz');
@@ -1160,11 +1265,11 @@ function flip() {
     let btnFocus = document.getElementById('btn-focus');
     if (currentCard.inFocus) {
         btnFocus.innerText = "FOKUS AKTIV";
-        btnFocus.style.background = "var(--focus-color)";
+        btnFocus.style.backgroundColor = "var(--focus-color)";
         btnFocus.style.color = "#FFFFFF";
     } else {
         btnFocus.innerText = "FOKUS AKTIVIEREN";
-        btnFocus.style.background = "var(--bg)";
+        btnFocus.style.backgroundColor = "var(--card)";
         btnFocus.style.color = "var(--focus-color)";
     }
     
@@ -1226,11 +1331,11 @@ function toggleFocus() {
     let btnFocus = document.getElementById('btn-focus');
     if (currentCard.inFocus) {
         btnFocus.innerText = "FOKUS AKTIV";
-        btnFocus.style.background = "var(--focus-color)";
+        btnFocus.style.backgroundColor = "var(--focus-color)";
         btnFocus.style.color = "#FFFFFF";
     } else {
         btnFocus.innerText = "FOKUS AKTIVIEREN";
-        btnFocus.style.background = "var(--bg)";
+        btnFocus.style.backgroundColor = "var(--card)";
         btnFocus.style.color = "var(--focus-color)";
     }
     
@@ -1256,7 +1361,6 @@ function move(step) {
 
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
 
-    // Box-6-Tageszähler erhöhen, wenn eine Vokabel aus Box 6 abgefragt wurde
     if (oldBox === 'box6') {
         checkBox6DailyReset();
         state.box6Daily.count++;
@@ -1275,7 +1379,6 @@ function move(step) {
         if (currentCard.correctCount >= 20) { currentCard.inFocus = false; currentCard.correctCount = 0; }
     }
 
-    // Sonderregel: Der Aufstieg von Box 5 zu Box 6 erfordert drei aufeinanderfolgende Tage mit richtiger Antwort
     let newLevel;
     if (oldBox === 'box5' && effectiveStep === 1) {
         if (!currentCard.box5Streak) currentCard.box5Streak = 0;
@@ -1300,6 +1403,20 @@ function move(step) {
         newLevel = Math.min(Math.max(level + effectiveStep, 1), 6);
     }
 
+    if (oldBox === 'box6') {
+        if (newLevel === 6) {
+            if (effectiveStep === 1) {
+                currentCard.box6Interval = currentCard.box6Interval ? Math.min(currentCard.box6Interval * 2, 60) : 2;
+            } else if (!currentCard.box6Interval) {
+                currentCard.box6Interval = 1;
+            }
+            currentCard.nextReviewDate = addDays(today, currentCard.box6Interval);
+        } else {
+            currentCard.box6Interval = 0;
+            currentCard.nextReviewDate = null;
+        }
+    }
+
     state['box' + newLevel].push(currentCard);
     updateUI(); next();
 }
@@ -1311,6 +1428,8 @@ function moveToBox6() {
     currentCard.lastMovedDate = new Date().toDateString();
     currentCard.box5Streak = 0;
     currentCard.box5LastCorrectDate = null;
+    currentCard.box6Interval = 1;
+    currentCard.nextReviewDate = null; 
     state['box6'].push(currentCard);
     updateUI(); next();
 }
