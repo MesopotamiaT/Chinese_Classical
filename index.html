@@ -12,25 +12,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;1,8..60,500;1,8..60,600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
     <style>
-        /* Hochwertiges, mattes Farbkonzept — Tinte & Siegel */
+        /* Hochwertiges Farbkonzept — Gemini UI (Google) */
         :root { 
-            --bg: #F3F1EC; 
-            --card: #FFFFFF; 
-            --text-main: #191A1E; 
-            --text-muted: #6B6D72;
-            --border-light: #E4E1D9;
+            --bg: #F0F4F9; /* Gemini UI Heller Hintergrund */
+            --card: #FFFFFF; /* Gemini UI Kartenhintergrund */
+            --text-main: #1F1F1F; /* Google Grey 900 */
+            --text-muted: #444746; /* Google Grey 700 */
+            --border-light: #E0E4E8; /* Zarte Abgrenzungen */
             
-            --primary: #1F3A5F; 
-            --primary-light: #E8EEF4;
-            --focus-color: #2E86D8; 
+            --primary: #1A73E8; /* Classic Gemini/Google Action Blue */
+            --primary-light: #D3E3FD;
+            --focus-color: #9334E6; /* Gemini Signature Purple */
             
-            /* Gedämpfte Status-Farben — Tinten- und Siegelfarben */
-            --box1: #C0392B; 
-            --box2: #B9791E; 
-            --box3: #1F7A8C; 
-            --box4: #6C4BA6; 
-            --box5: #2F8F5B; 
-            --box6: #9A2B4C; 
+            /* Status-Farben orientiert an der Google Material / Gemini Palette */
+            --box1: #EA4335; /* Google Red */
+            --box2: #F29900; /* Google Orange (nachgedunkelt für weiße Schrift) */
+            --box3: #4285F4; /* Google Blue */
+            --box4: #A142F4; /* Google Purple */
+            --box5: #34A853; /* Google Green */
+            --box6: #E33371; /* Gemini Pink/Rose */
             
             --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.04);
             --shadow-card: 0 12px 28px -6px rgba(25, 26, 30, 0.12), 0 4px 8px -2px rgba(25, 26, 30, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
@@ -54,25 +54,25 @@
             --font-read: 'Source Serif 4', Georgia, 'Songti SC', serif;
         }
 
-        /* Eleganter Dark Mode */
+        /* Eleganter Dark Mode — Gemini UI */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #121212; 
-                --card: #1E1E1E; 
-                --text-main: #F5F4F1; 
-                --text-muted: #9A9B9F;
-                --border-light: #2C2C2C;
+                --bg: #131314; /* Gemini UI Dunkler Hintergrund */
+                --card: #1E1F20; /* Gemini UI Dunkle Karte */
+                --text-main: #E3E3E3; 
+                --text-muted: #8E918F;
+                --border-light: #444746;
                 
-                --primary: #5588BE; 
-                --primary-light: #1C2A38;
-                --focus-color: #4FA3E8; 
+                --primary: #4C8BF5; /* Angepasstes Blau für besseren Kontrast im Dark Mode */
+                --primary-light: #004A77;
+                --focus-color: #B265F6; /* Angepasstes Lila */
                 
-                --box1: #E0654F; 
-                --box2: #D99A3E; 
-                --box3: #45AEC4; 
-                --box4: #9678D6; 
-                --box5: #45B378; 
-                --box6: #CE5A80; 
+                --box1: #D93025; 
+                --box2: #E37400; 
+                --box3: #1A73E8; 
+                --box4: #8A3FFC; 
+                --box5: #1E8E3E; 
+                --box6: #D81B60; 
                 
                 --shadow-card: 0 14px 30px -8px rgba(0, 0, 0, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
 
@@ -370,7 +370,7 @@
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         }
         
-        /* ZEICHENBOX */
+        /* ZEICHENBOX (Gitterlinien entfernt) */
         .writer-grid { 
             display: flex; 
             justify-content: center; 
@@ -387,10 +387,6 @@
             border: 1px solid var(--border-light); 
             border-radius: var(--radius-card); 
             background-color: var(--bg); 
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><line x1='50' y1='3' x2='50' y2='97' stroke='%23BFC6CE' stroke-width='1' stroke-dasharray='3 3'/><line x1='3' y1='50' x2='97' y2='50' stroke='%23BFC6CE' stroke-width='1' stroke-dasharray='3 3'/><line x1='7' y1='7' x2='93' y2='93' stroke='%23BFC6CE' stroke-width='1' stroke-dasharray='3 3'/><line x1='93' y1='7' x2='7' y2='93' stroke='%23BFC6CE' stroke-width='1' stroke-dasharray='3 3'/></svg>");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 100% 100%;
             box-shadow: inset 0 3px 6px rgba(0,0,0,0.06), 0 1px 0 rgba(255,255,255,0.7);
             transition: border-color 0.2s;
             touch-action: none;
@@ -399,7 +395,6 @@
 
         @media (prefers-color-scheme: dark) {
             .char-box {
-                background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><line x1='50' y1='3' x2='50' y2='97' stroke='%233B3D42' stroke-width='1' stroke-dasharray='3 3'/><line x1='3' y1='50' x2='97' y2='50' stroke='%233B3D42' stroke-width='1' stroke-dasharray='3 3'/><line x1='7' y1='7' x2='93' y2='93' stroke='%233B3D42' stroke-width='1' stroke-dasharray='3 3'/><line x1='93' y1='7' x2='7' y2='93' stroke='%233B3D42' stroke-width='1' stroke-dasharray='3 3'/></svg>");
                 box-shadow: inset 0 3px 6px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05);
             }
         }
@@ -838,7 +833,7 @@ function startQuizForCurrentChar() {
             showCharacter: false, 
             showOutline: false, 
             padding: Math.floor(boxSize * 0.05), 
-            strokeColor: '#3B82F6' 
+            strokeColor: '#1A73E8' /* Updated stroke color to Gemini blue */
         });
         
         currentWriter.quiz({
