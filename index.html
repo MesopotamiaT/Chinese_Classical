@@ -833,7 +833,7 @@ function startQuizForCurrentChar() {
             showCharacter: false, 
             showOutline: false, 
             padding: Math.floor(boxSize * 0.05), 
-            strokeColor: '#1A73E8' /* Updated stroke color to Gemini blue */
+            strokeColor: '#1A73E8'
         });
         
         currentWriter.quiz({
@@ -1119,23 +1119,29 @@ function next() {
                 
                 if (!c.stats) c.stats = { queries: 0, correct: 0 };
 
-                let weight = 1; 
-                if (!randomMode && selectedBoxFilter === null) {
-                    if (i === 6) {
-                        if (!isBox6CardDue(c)) return;
-                        weight = 1;
-                    } else {
-                        weight = boxWeights[i]; 
-                    }
-                }
-
-                for(let j=0; j<weight; j++) {
+                // Wenn explizit eine bestimmte Box ausgewählt wurde
+                if (selectedBoxFilter !== null) {
                     pool.push({c, box: 'box'+i});
-                }
-                
-                if (c.inFocus && !randomMode && selectedBoxFilter === null) {
-                    let additionalTickets = 7;
-                    for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
+                } else {
+                    // Normaler Mischmodus über alle Boxen
+                    let weight = 1;
+                    if (!randomMode) {
+                        if (i === 6) {
+                            if (!isBox6CardDue(c)) return;
+                            weight = 1;
+                        } else {
+                            weight = boxWeights[i]; 
+                        }
+                    }
+
+                    for(let j=0; j<weight; j++) {
+                        pool.push({c, box: 'box'+i});
+                    }
+                    
+                    if (c.inFocus && !randomMode) {
+                        let additionalTickets = 7;
+                        for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
+                    }
                 }
             });
         }
