@@ -14,23 +14,23 @@
     <style>
         /* Hochwertiges Farbkonzept — Gemini UI (Google) */
         :root { 
-            --bg: #F0F4F9; /* Gemini UI Heller Hintergrund */
-            --card: #FFFFFF; /* Gemini UI Kartenhintergrund */
-            --text-main: #1F1F1F; /* Google Grey 900 */
-            --text-muted: #444746; /* Google Grey 700 */
-            --border-light: #E0E4E8; /* Zarte Abgrenzungen */
+            --bg: #F0F4F9; 
+            --card: #FFFFFF; 
+            --text-main: #1F1F1F; 
+            --text-muted: #444746; 
+            --border-light: #E0E4E8; 
             
-            --primary: #1A73E8; /* Classic Gemini/Google Action Blue */
+            --primary: #1A73E8; 
             --primary-light: #D3E3FD;
-            --focus-color: #9334E6; /* Gemini Signature Purple */
+            --focus-color: #9334E6; 
             
-            /* Status-Farben orientiert an der Google Material / Gemini Palette */
-            --box1: #EA4335; /* Google Red */
-            --box2: #F29900; /* Google Orange (nachgedunkelt für weiße Schrift) */
-            --box3: #4285F4; /* Google Blue */
-            --box4: #A142F4; /* Google Purple */
-            --box5: #34A853; /* Google Green */
-            --box6: #E33371; /* Gemini Pink/Rose */
+            /* Status-Farben */
+            --box1: #EA4335; 
+            --box2: #F29900; 
+            --box3: #4285F4; 
+            --box4: #A142F4; 
+            --box5: #34A853; 
+            --box6: #E33371; 
             
             --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.04);
             --shadow-card: 0 12px 28px -6px rgba(25, 26, 30, 0.12), 0 4px 8px -2px rgba(25, 26, 30, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
@@ -57,15 +57,15 @@
         /* Eleganter Dark Mode — Gemini UI */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #131314; /* Gemini UI Dunkler Hintergrund */
-                --card: #1E1F20; /* Gemini UI Dunkle Karte */
+                --bg: #131314; 
+                --card: #1E1F20; 
                 --text-main: #E3E3E3; 
                 --text-muted: #8E918F;
                 --border-light: #444746;
                 
-                --primary: #4C8BF5; /* Angepasstes Blau für besseren Kontrast im Dark Mode */
+                --primary: #4C8BF5; 
                 --primary-light: #004A77;
-                --focus-color: #B265F6; /* Angepasstes Lila */
+                --focus-color: #B265F6; 
                 
                 --box1: #D93025; 
                 --box2: #E37400; 
@@ -227,6 +227,7 @@
             box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.04);
         }
         .stat-box { 
+            position: relative;
             padding: 8px 2px; 
             border-radius: 9px; 
             text-align: center; 
@@ -262,6 +263,26 @@
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
         }
         .stat-box.inactive-box { opacity: 0.4; box-shadow: none; }
+
+        /* Badge für Tagesdurchläufe Box 2-5 */
+        .daily-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--focus-color);
+            color: #FFFFFF;
+            font-size: 0.55rem;
+            font-weight: 800;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
 
         /* HAUPTKARTE */
         .card { 
@@ -569,9 +590,10 @@
             </div>
             
             <div id="controls" class="row-3 hidden">
+                <!-- Richtig und Halten getauscht -->
                 <button class="btn-grade" style="background-color: var(--box1);" onclick="move(-1)">FALSCH</button>
-                <button class="btn-grade" style="background-color: var(--box2);" onclick="move(0)">HALTEN</button>
                 <button class="btn-grade" style="background-color: var(--box5);" onclick="move(1)">RICHTIG</button>
+                <button class="btn-grade" style="background-color: var(--box2);" onclick="move(0)">HALTEN</button>
             </div>
             
         </div>
@@ -616,7 +638,12 @@
 <script>
 let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [], box6: [] };
 if (!state.box6) state.box6 = [];
-if (!state.box6Daily) state.box6Daily = { date: new Date().toDateString(), count: 0 };
+// Tageszähler für Boxen 2 bis 6 anlegen
+[2, 3, 4, 5, 6].forEach(i => {
+    let key = 'box' + i + 'Daily';
+    if (!state[key]) state[key] = { date: new Date().toDateString(), count: 0 };
+});
+
 let sessionQueue = []; 
 let currentCard = null;
 let currentBoxName = ""; 
@@ -635,8 +662,11 @@ let currentDictResults = [];
 let box6SortColumn = 'queries';
 let box6SortDirection = 'desc';
 
+// Stats UI Aufbau mit Badge für Box 2 bis 5
 document.getElementById('stats').innerHTML = [1,2,3,4,5,6].map(i => 
-    `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br><span id="stat-count-${i}">0</span></div>`
+    `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br><span id="stat-count-${i}">0</span>
+     ${(i >= 2 && i <= 5) ? `<div id="daily-count-${i}" class="daily-badge">0</div>` : ''}
+     </div>`
 ).join('');
 
 [1,2,3,4,5,6].forEach(i => {
@@ -695,15 +725,19 @@ function box6DueInDays(c) {
     return Math.round((due - today) / (1000 * 60 * 60 * 24));
 }
 
-function checkBox6DailyReset() {
+// Stellt sicher, dass die Tageszähler jeden Tag auf 0 starten
+function checkDailyResets() {
     let today = new Date().toDateString();
-    if (!state.box6Daily || state.box6Daily.date !== today) {
-        state.box6Daily = { date: today, count: 0 };
-    }
+    [2, 3, 4, 5, 6].forEach(i => {
+        let key = 'box' + i + 'Daily';
+        if (!state[key] || state[key].date !== today) {
+            state[key] = { date: today, count: 0 };
+        }
+    });
 }
 
 function updateBox6DailyDisplay() {
-    checkBox6DailyReset();
+    checkDailyResets();
     let el = document.getElementById('box6-daily-progress');
     if (el) el.innerText = `BOX 6 HEUTE: ${state.box6Daily.count}/100`;
 }
@@ -966,9 +1000,15 @@ function changeDictBox(index, newBoxLevel) {
 }
 
 function updateUI() {
+    checkDailyResets();
     [1,2,3,4,5,6].forEach(i => {
         let countSpan = document.getElementById(`stat-count-${i}`);
         if (countSpan) countSpan.innerText = state['box'+i].length;
+        // Aktualisiere das Daily-Badge für die Boxen 2 bis 5
+        if (i >= 2 && i <= 5) {
+            let badge = document.getElementById(`daily-count-${i}`);
+            if (badge) badge.innerText = state['box'+i+'Daily'].count;
+        }
     });
 
     localStorage.setItem('hsk_data', JSON.stringify(state));
@@ -1093,23 +1133,19 @@ function next() {
         let pool = [];
         const boxWeights = [0, 16, 8, 4, 2, 1, 1]; 
         
-        // --- BOX 6 SPEZIALFALL: Strikte Abfrage von max. 100 Karten pro Tag ---
         if (selectedBoxFilter === 6) {
             let cards = [...state.box6];
             
-            // Sortierung: Älteste/am längsten nicht abgefragte Karten zuerst
             cards.sort((a, b) => {
                 let dateA = a.lastMovedDate ? new Date(a.lastMovedDate).getTime() : 0;
                 let dateB = b.lastMovedDate ? new Date(b.lastMovedDate).getTime() : 0;
                 return dateA - dateB;
             });
 
-            // Genau 100 Karten für den Durchgang aufbauen
             let targetBatch = cards.slice(0, 100);
             
             targetBatch.forEach(c => pool.push({c, box: 'box6'}));
 
-            // Mischen, damit die Reihenfolge innerhalb des Tagespakets zufällig ist
             for (let i = pool.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -1118,7 +1154,6 @@ function next() {
             sessionQueue = pool;
         } 
         else {
-            // Standard-Logik für alle anderen Modi
             for(let i=1; i<=6; i++) {
                 if (selectedBoxFilter !== null && i !== selectedBoxFilter) continue;
                 
@@ -1369,17 +1404,25 @@ function move(step) {
 
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
 
-    if (oldBox === 'box6') {
-        checkBox6DailyReset();
-        state.box6Daily.count++;
+    // Zähler für die abgefragten Karten in den Boxen 2 bis 6 erhöhen
+    checkDailyResets();
+    if (['box2', 'box3', 'box4', 'box5', 'box6'].includes(oldBox)) {
+        state[oldBox + 'Daily'].count++;
     }
 
     let level = parseInt(oldBox.replace('box',''));
     state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     
-    let today = new Date().toDateString(); let effectiveStep = step;
-    if (currentCard.lastMovedDate === today) { effectiveStep = 0; } 
-    else if (step !== 0) { currentCard.lastMovedDate = today; }
+    let today = new Date().toDateString(); 
+    let effectiveStep = step;
+    
+    // Sobald die Karte heute bewegt (oder auf HALTEN) gesetzt wurde, wird sie gesperrt
+    if (currentCard.lastMovedDate === today) { 
+        effectiveStep = 0; 
+    } else {
+        // Durch Setzen des Datums (auch bei step === 0) wird sie bis morgen eingefroren
+        currentCard.lastMovedDate = today;
+    }
 
     if (effectiveStep === 1 && currentCard.inFocus) {
         if (!currentCard.correctCount) currentCard.correctCount = 0;
@@ -1444,7 +1487,21 @@ function moveToBox6() {
 
 function resetSpeicher() { if(confirm("Möchten Sie den Lernstand wirklich vollständig löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.")) { state = { box1: [], box2: [], box3: [], box4: [], box5: [], box6: [] }; sessionQueue = []; updateUI(); location.reload(); } }
 function exportProgress() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "hsk_trainer_backup.json"); dl.click(); }
-function importProgress(file) { const reader = new FileReader(); reader.onload = (e) => { state = JSON.parse(e.target.result); if(!state.box6) state.box6 = []; if(!state.box6Daily) state.box6Daily = { date: new Date().toDateString(), count: 0 }; sessionQueue = []; updateUI(); next(); }; reader.readAsText(file); }
+
+function importProgress(file) { 
+    const reader = new FileReader(); 
+    reader.onload = (e) => { 
+        state = JSON.parse(e.target.result); 
+        if(!state.box6) state.box6 = []; 
+        [2, 3, 4, 5, 6].forEach(i => {
+            let key = 'box' + i + 'Daily';
+            if (!state[key]) state[key] = { date: new Date().toDateString(), count: 0 };
+        });
+        sessionQueue = []; updateUI(); next(); 
+    }; 
+    reader.readAsText(file); 
+}
+
 function clearCanvas() { if (currentWriter) currentWriter.cancelQuiz(); currentQuizCharIndex = 0; startQuizForCurrentChar(); }
 function speak() { if(!currentCard) return; const u = new SpeechSynthesisUtterance(currentCard.hz); u.lang = 'zh-CN'; window.speechSynthesis.speak(u); }
 
