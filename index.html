@@ -657,7 +657,6 @@ let currentDictResults = [];
 let box6SortColumn = 'queries';
 let box6SortDirection = 'desc';
 
-// Stats UI Aufbau mit Badge für Box 2 bis 5
 document.getElementById('stats').innerHTML = [1,2,3,4,5,6].map(i => 
     `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br><span id="stat-count-${i}">0</span>
      ${(i >= 2 && i <= 5) ? `<div id="daily-count-${i}" class="daily-badge">0</div>` : ''}
@@ -991,22 +990,26 @@ function changeDictBox(index, newBoxLevel) {
 }
 
 function updateUI() {
+    let today = new Date().toDateString();
     [1,2,3,4,5,6].forEach(i => {
         let countSpan = document.getElementById(`stat-count-${i}`);
         if (countSpan) countSpan.innerText = state['box'+i].length;
         
-        // Aktualisiere das Daily-Badge für die Boxen 2 bis 5 (Komplette Durchgänge)
         if (i >= 2 && i <= 5) {
             let badge = document.getElementById(`daily-count-${i}`);
             if (badge) {
-                let box = state['box'+i];
-                let rounds = 0;
-                if (box.length > 0) {
-                    let today = new Date().toDateString();
-                    // Die Rundenanzahl ist die geringste Anzahl an heutigen Ansichten aller Karten in der Box
-                    rounds = Math.min(...box.map(c => (c.dailySeenDate === today ? (c.dailySeen || 0) : 0)));
+                let boxCards = state['box'+i];
+                if (boxCards.length === 0) {
+                    badge.innerText = 0;
+                } else {
+                    // Finde heraus, wie oft jede Karte heute bereits bearbeitet wurde
+                    let minRounds = Infinity;
+                    boxCards.forEach(c => {
+                        let rounds = (c.lastSeenDate === today && typeof c.todayRounds === 'number') ? c.todayRounds : 0;
+                        if (rounds < minRounds) minRounds = rounds;
+                    });
+                    badge.innerText = (minRounds === Infinity) ? 0 : minRounds;
                 }
-                badge.innerText = rounds;
             }
         }
     });
@@ -1405,14 +1408,13 @@ function move(step) {
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
     let today = new Date().toDateString(); 
 
-    // Zähler pro Karte für komplette Box-Durchgänge erfassen
-    if (currentCard.dailySeenDate !== today) {
-        currentCard.dailySeenDate = today;
-        currentCard.dailySeen = 0;
+    // Zähler pro Karte für den heutigen Tag aktualisieren
+    if (currentCard.lastSeenDate !== today) {
+        currentCard.lastSeenDate = today;
+        currentCard.todayRounds = 0;
     }
-    currentCard.dailySeen++;
+    currentCard.todayRounds++;
 
-    // Tracker für den absoluten Box 6 Tages-Stand
     if (oldBox === 'box6') {
         checkBox6DailyReset();
         state.box6Daily.count++;
@@ -1421,7 +1423,6 @@ function move(step) {
     let level = parseInt(oldBox.replace('box',''));
     state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     
-    // Sperre: Wenn die Karte heute schon bewegt wurde, wandert sie nicht mehr
     let effectiveStep = step;
     if (currentCard.lastMovedDate === today) { 
         effectiveStep = 0; 
