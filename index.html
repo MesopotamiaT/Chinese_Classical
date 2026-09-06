@@ -590,7 +590,6 @@
             </div>
             
             <div id="controls" class="row-3 hidden">
-                <!-- Richtig und Halten getauscht -->
                 <button class="btn-grade" style="background-color: var(--box1);" onclick="move(-1)">FALSCH</button>
                 <button class="btn-grade" style="background-color: var(--box5);" onclick="move(1)">RICHTIG</button>
                 <button class="btn-grade" style="background-color: var(--box2);" onclick="move(0)">HALTEN</button>
@@ -638,11 +637,7 @@
 <script>
 let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [], box6: [] };
 if (!state.box6) state.box6 = [];
-// Tageszähler für Boxen 2 bis 6 anlegen
-[2, 3, 4, 5, 6].forEach(i => {
-    let key = 'box' + i + 'Daily';
-    if (!state[key]) state[key] = { date: new Date().toDateString(), count: 0 };
-});
+if (!state.box6Daily) state.box6Daily = { date: new Date().toDateString(), count: 0 };
 
 let sessionQueue = []; 
 let currentCard = null;
@@ -725,19 +720,15 @@ function box6DueInDays(c) {
     return Math.round((due - today) / (1000 * 60 * 60 * 24));
 }
 
-// Stellt sicher, dass die Tageszähler jeden Tag auf 0 starten
-function checkDailyResets() {
+function checkBox6DailyReset() {
     let today = new Date().toDateString();
-    [2, 3, 4, 5, 6].forEach(i => {
-        let key = 'box' + i + 'Daily';
-        if (!state[key] || state[key].date !== today) {
-            state[key] = { date: today, count: 0 };
-        }
-    });
+    if (!state.box6Daily || state.box6Daily.date !== today) {
+        state.box6Daily = { date: today, count: 0 };
+    }
 }
 
 function updateBox6DailyDisplay() {
-    checkDailyResets();
+    checkBox6DailyReset();
     let el = document.getElementById('box6-daily-progress');
     if (el) el.innerText = `BOX 6 HEUTE: ${state.box6Daily.count}/100`;
 }
@@ -1000,14 +991,23 @@ function changeDictBox(index, newBoxLevel) {
 }
 
 function updateUI() {
-    checkDailyResets();
     [1,2,3,4,5,6].forEach(i => {
         let countSpan = document.getElementById(`stat-count-${i}`);
         if (countSpan) countSpan.innerText = state['box'+i].length;
-        // Aktualisiere das Daily-Badge für die Boxen 2 bis 5
+        
+        // Aktualisiere das Daily-Badge für die Boxen 2 bis 5 (Komplette Durchgänge)
         if (i >= 2 && i <= 5) {
             let badge = document.getElementById(`daily-count-${i}`);
-            if (badge) badge.innerText = state['box'+i+'Daily'].count;
+            if (badge) {
+                let box = state['box'+i];
+                let rounds = 0;
+                if (box.length > 0) {
+                    let today = new Date().toDateString();
+                    // Die Rundenanzahl ist die geringste Anzahl an heutigen Ansichten aller Karten in der Box
+                    rounds = Math.min(...box.map(c => (c.dailySeenDate === today ? (c.dailySeen || 0) : 0)));
+                }
+                badge.innerText = rounds;
+            }
         }
     });
 
@@ -1403,25 +1403,30 @@ function move(step) {
     }
 
     let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
+    let today = new Date().toDateString(); 
 
-    // Zähler für die abgefragten Karten in den Boxen 2 bis 6 erhöhen
-    checkDailyResets();
-    if (['box2', 'box3', 'box4', 'box5', 'box6'].includes(oldBox)) {
-        state[oldBox + 'Daily'].count++;
+    // Zähler pro Karte für komplette Box-Durchgänge erfassen
+    if (currentCard.dailySeenDate !== today) {
+        currentCard.dailySeenDate = today;
+        currentCard.dailySeen = 0;
+    }
+    currentCard.dailySeen++;
+
+    // Tracker für den absoluten Box 6 Tages-Stand
+    if (oldBox === 'box6') {
+        checkBox6DailyReset();
+        state.box6Daily.count++;
     }
 
     let level = parseInt(oldBox.replace('box',''));
     state[oldBox] = state[oldBox].filter(c => c !== currentCard);
     
-    let today = new Date().toDateString(); 
+    // Sperre: Wenn die Karte heute schon bewegt wurde, wandert sie nicht mehr
     let effectiveStep = step;
-    
-    // Sobald die Karte heute bewegt (oder auf HALTEN) gesetzt wurde, wird sie gesperrt
     if (currentCard.lastMovedDate === today) { 
         effectiveStep = 0; 
     } else {
-        // Durch Setzen des Datums (auch bei step === 0) wird sie bis morgen eingefroren
-        currentCard.lastMovedDate = today;
+        currentCard.lastMovedDate = today; 
     }
 
     if (effectiveStep === 1 && currentCard.inFocus) {
@@ -1493,10 +1498,6 @@ function importProgress(file) {
     reader.onload = (e) => { 
         state = JSON.parse(e.target.result); 
         if(!state.box6) state.box6 = []; 
-        [2, 3, 4, 5, 6].forEach(i => {
-            let key = 'box' + i + 'Daily';
-            if (!state[key]) state[key] = { date: new Date().toDateString(), count: 0 };
-        });
         sessionQueue = []; updateUI(); next(); 
     }; 
     reader.readAsText(file); 
