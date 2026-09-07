@@ -591,8 +591,8 @@
             
             <div id="controls" class="row-3 hidden">
                 <button class="btn-grade" style="background-color: var(--box1);" onclick="move(-1)">FALSCH</button>
-                <button class="btn-grade" style="background-color: var(--box5);" onclick="move(1)">RICHTIG</button>
                 <button class="btn-grade" style="background-color: var(--box2);" onclick="move(0)">HALTEN</button>
+                <button class="btn-grade" style="background-color: var(--box5);" onclick="move(1)">RICHTIG</button>
             </div>
             
         </div>
@@ -1002,7 +1002,6 @@ function updateUI() {
                 if (boxCards.length === 0) {
                     badge.innerText = 0;
                 } else {
-                    // Finde heraus, wie oft jede Karte heute bereits bearbeitet wurde
                     let minRounds = Infinity;
                     boxCards.forEach(c => {
                         let rounds = (c.lastSeenDate === today && typeof c.todayRounds === 'number') ? c.todayRounds : 0;
@@ -1227,6 +1226,9 @@ function next() {
     if (currentBoxName === 'box6' && currentCard.stats && currentCard.stats.queries > 0) {
         let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
         statsInfo = ` • ${percent}% ERFOLG`;
+    } else if (currentBoxName === 'box5') {
+        let streak = currentCard.box5Streak || 0;
+        statsInfo = ` • STREAK: ${streak}/3 TAGEN`;
     }
 
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
@@ -1274,6 +1276,9 @@ function flip() {
     if (currentBoxName === 'box6' && currentCard.stats && currentCard.stats.queries > 0) {
         let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
         statsInfo = ` • ${percent}% ERFOLG`;
+    } else if (currentBoxName === 'box5') {
+        let streak = currentCard.box5Streak || 0;
+        statsInfo = ` • STREAK: ${streak}/3 TAGEN`;
     }
 
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
@@ -1290,12 +1295,20 @@ function flip() {
     document.getElementById('v-py').classList.remove('hidden');
     
     let statsElement = document.getElementById('v-stats');
+    let statsText = "";
     if (currentCard.stats && currentCard.stats.queries > 0) {
         let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
-        statsElement.innerHTML = `Abgefragt: <b>${currentCard.stats.queries}x</b> &nbsp;|&nbsp; Richtig: <b>${currentCard.stats.correct}x</b> (${percent}%)`;
+        statsText = `Abgefragt: <b>${currentCard.stats.queries}x</b> &nbsp;|&nbsp; Richtig: <b>${currentCard.stats.correct}x</b> (${percent}%)`;
     } else {
-        statsElement.innerHTML = "<i>Noch keine Statistik vorhanden</i>";
+        statsText = "<i>Noch keine Statistik vorhanden</i>";
     }
+
+    if (currentBoxName === 'box5') {
+        let streak = currentCard.box5Streak || 0;
+        statsText += `<br><span style="color: var(--box5); font-weight:700;">Box 6 Fortschritt: ${streak} von 3 Tagen in Folge richtig</span>`;
+    }
+
+    statsElement.innerHTML = statsText;
     statsElement.classList.remove('hidden');
     
     let btnExample = document.getElementById('btn-example-trigger');
@@ -1389,6 +1402,9 @@ function toggleFocus() {
     if (currentBoxName === 'box6' && currentCard.stats && currentCard.stats.queries > 0) {
         let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
         statsInfo = ` • ${percent}% ERFOLG`;
+    } else if (currentBoxName === 'box5') {
+        let streak = currentCard.box5Streak || 0;
+        statsInfo = ` • STREAK: ${streak}/3 TAGEN`;
     }
     
     document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
