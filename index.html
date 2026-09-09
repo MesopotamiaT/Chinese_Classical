@@ -1453,26 +1453,36 @@ function move(step) {
     }
 
     let newLevel;
-    if (oldBox === 'box5' && effectiveStep === 1) {
-        if (!currentCard.box5Streak) currentCard.box5Streak = 0;
-        if (currentCard.box5LastCorrectDate && daysBetween(currentCard.box5LastCorrectDate, today) === 1) {
-            currentCard.box5Streak++;
-        } else {
-            currentCard.box5Streak = 1;
-        }
-        currentCard.box5LastCorrectDate = today;
+    if (oldBox === 'box5') {
+        if (step === 1) { 
+            if (!currentCard.box5Streak) currentCard.box5Streak = 0;
+            
+            let daysDiff = currentCard.box5LastCorrectDate ? daysBetween(currentCard.box5LastCorrectDate, today) : -1;
+            
+            if (daysDiff === 1) {
+                currentCard.box5Streak++;
+                currentCard.box5LastCorrectDate = today;
+            } else if (daysDiff === 0) {
+                // Gleicher Tag: Streak bleibt erhalten, kein Reset
+            } else {
+                currentCard.box5Streak = 1;
+                currentCard.box5LastCorrectDate = today;
+            }
 
-        if (currentCard.box5Streak >= 3) {
-            newLevel = 6;
+            if (currentCard.box5Streak >= 3) {
+                newLevel = 6;
+                currentCard.box5Streak = 0;
+                currentCard.box5LastCorrectDate = null;
+            } else {
+                newLevel = 5;
+            }
+        } else {
+            // Bei Falsch oder Halten wird der Streak zurückgesetzt
             currentCard.box5Streak = 0;
             currentCard.box5LastCorrectDate = null;
-        } else {
-            newLevel = 5;
+            newLevel = Math.min(Math.max(level + effectiveStep, 1), 6);
         }
     } else {
-        if (oldBox === 'box5' && effectiveStep !== 1) {
-            currentCard.box5Streak = 0;
-        }
         newLevel = Math.min(Math.max(level + effectiveStep, 1), 6);
     }
 
