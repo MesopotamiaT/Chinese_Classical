@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HSK Trainer">
-    <meta name="theme-color" content="#f4f7fb">
+    <meta name="theme-color" content="#f3f6fa">
 
     <title>HSK Trainer</title>
 
@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;1,8..60,500;1,8..60,600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,500;1,8..60,600&display=swap"
         rel="stylesheet"
     >
 
@@ -85,6 +85,7 @@
                 'Source Serif 4',
                 Georgia,
                 'Songti SC',
+                'STSong',
                 serif;
         }
 
@@ -132,9 +133,15 @@
         }
 
 
+        html {
+            font-size: 17px;
+        }
+
+
         * {
             box-sizing: border-box;
         }
+
 
         html,
         body {
@@ -160,16 +167,19 @@
         body {
 
             background:
+
                 radial-gradient(
                     circle at 10% -10%,
                     rgba(37, 99, 235, 0.10),
                     transparent 34%
                 ),
+
                 radial-gradient(
                     circle at 110% 15%,
                     rgba(124, 58, 237, 0.07),
                     transparent 30%
                 ),
+
                 var(--bg);
         }
 
@@ -274,7 +284,7 @@
 
             margin: 0 2px;
 
-            font-size: 1.35rem;
+            font-size: 1.48rem;
             line-height: 1.1;
 
             font-weight: 800;
@@ -297,7 +307,7 @@
         .system-buttons button {
 
             min-width: 0;
-            min-height: 44px;
+            min-height: 46px;
 
             padding: 8px 3px;
 
@@ -309,10 +319,10 @@
 
             box-shadow: var(--shadow-small);
 
-            font-size: 0.69rem;
+            font-size: 0.76rem;
             font-weight: 800;
 
-            letter-spacing: -0.01em;
+            letter-spacing: -0.012em;
 
             white-space: nowrap;
             overflow: hidden;
@@ -331,10 +341,10 @@
 
             border-color: transparent;
 
-            color: #ffffff;
+            color: white;
 
             box-shadow:
-                0 7px 16px rgba(37, 99, 235, 0.20);
+                0 7px 16px rgba(37,99,235,0.20);
         }
 
 
@@ -362,7 +372,7 @@
         .filter-buttons button {
 
             min-width: 0;
-            min-height: 43px;
+            min-height: 45px;
 
             padding: 8px 5px;
 
@@ -374,7 +384,8 @@
 
             box-shadow: var(--shadow-small);
 
-            font-size: 0.72rem;
+            font-size: 0.78rem;
+            font-weight: 800;
 
             white-space: nowrap;
             overflow: hidden;
@@ -386,7 +397,7 @@
 
             position: relative;
 
-            min-height: 40px;
+            min-height: 42px;
 
             display: flex;
             justify-content: center;
@@ -395,7 +406,6 @@
             padding: 9px 14px 9px 42px;
 
             border: 1px solid var(--border);
-
             border-radius: var(--radius-button);
 
             background: var(--card);
@@ -404,11 +414,10 @@
 
             box-shadow: var(--shadow-small);
 
-            font-size: 0.72rem;
-
+            font-size: 0.78rem;
             font-weight: 800;
 
-            letter-spacing: 0.05em;
+            letter-spacing: 0.045em;
         }
 
 
@@ -423,8 +432,8 @@
 
             transform: translateY(-50%);
 
-            width: 22px;
-            height: 22px;
+            width: 23px;
+            height: 23px;
 
             display: flex;
             align-items: center;
@@ -433,14 +442,13 @@
             border-radius: 50%;
 
             background: var(--box6);
-
             color: white;
 
-            font-size: 0.65rem;
+            font-size: 0.70rem;
             font-weight: 800;
 
             box-shadow:
-                0 4px 10px rgba(223, 63, 125, 0.24);
+                0 4px 10px rgba(223,63,125,0.24);
         }
 
 
@@ -471,7 +479,7 @@
             position: relative;
 
             min-width: 0;
-            min-height: 48px;
+            min-height: 50px;
 
             padding: 7px 1px;
 
@@ -487,7 +495,7 @@
 
             color: var(--text-muted);
 
-            font-size: 0.61rem;
+            font-size: 0.67rem;
             font-weight: 700;
 
             line-height: 1.2;
@@ -508,7 +516,7 @@
 
             margin-top: 2px;
 
-            font-size: 0.82rem;
+            font-size: 0.92rem;
             font-weight: 800;
         }
 
@@ -553,8 +561,8 @@
             top: -5px;
             right: -4px;
 
-            min-width: 17px;
-            height: 17px;
+            min-width: 18px;
+            height: 18px;
 
             padding: 0 4px;
 
@@ -563,14 +571,12 @@
             align-items: center;
 
             border: 2px solid var(--card);
-
             border-radius: 999px;
 
             background: var(--focus-color);
-
             color: white;
 
-            font-size: 0.51rem;
+            font-size: 0.57rem;
             font-weight: 800;
 
             box-shadow:
@@ -604,30 +610,6 @@
         }
 
 
-        .card::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 8%;
-            right: 8%;
-
-            height: 1px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(255,255,255,0.65),
-                    transparent
-                );
-
-            pointer-events: none;
-        }
-
-
         .card-content {
 
             position: relative;
@@ -653,21 +635,19 @@
 
             max-width: 100%;
 
-            padding: 6px 12px;
+            padding: 7px 13px;
 
             border: 1px solid var(--border);
-
             border-radius: 999px;
 
             background: var(--surface);
 
             color: var(--text-muted);
 
-            font-size: 0.68rem;
-
+            font-size: 0.76rem;
             font-weight: 800;
 
-            letter-spacing: 0.07em;
+            letter-spacing: 0.06em;
 
             text-transform: uppercase;
 
@@ -679,7 +659,7 @@
 
         #v-de {
 
-            width: min(100%, 450px);
+            width: min(100%, 460px);
 
             margin: 0;
 
@@ -687,14 +667,14 @@
 
             font-size:
                 clamp(
-                    1.55rem,
-                    5.3vw,
-                    1.95rem
+                    1.72rem,
+                    5.8vw,
+                    2.15rem
                 );
 
             font-weight: 600;
 
-            line-height: 1.28;
+            line-height: 1.25;
 
             letter-spacing: -0.012em;
 
@@ -710,9 +690,9 @@
 
             width: fit-content;
 
-            margin: 8px auto 0;
+            margin: 9px auto 0;
 
-            padding: 4px 9px;
+            padding: 5px 10px;
 
             border-radius: 999px;
 
@@ -722,30 +702,43 @@
 
             font-family: var(--font-ui);
 
-            font-size: 0.72rem;
+            font-size: 0.79rem;
 
             font-weight: 700;
         }
 
 
+        /* WICHTIG:
+           Die chinesischen Zeichen nach dem Umdrehen
+           sind jetzt deutlich größer und dünner. */
+
         #v-hz {
 
-            margin: 0;
+            margin: 2px 0 0;
 
             font-size:
                 clamp(
-                    5rem,
-                    20vw,
-                    7rem
+                    6.3rem,
+                    25vw,
+                    8.8rem
                 );
 
-            font-weight: 400;
+            font-weight: 300;
 
-            line-height: 1;
+            font-family:
+                "Songti SC",
+                "STSong",
+                "Noto Serif CJK SC",
+                "SimSun",
+                serif;
 
-            letter-spacing: -0.045em;
+            line-height: 0.98;
+
+            letter-spacing: -0.055em;
 
             color: var(--text-main);
+
+            -webkit-font-smoothing: antialiased;
         }
 
 
@@ -753,14 +746,16 @@
 
             font-size:
                 clamp(
-                    3.2rem,
-                    13vw,
-                    4.7rem
+                    3.8rem,
+                    15.5vw,
+                    5.7rem
                 );
 
-            letter-spacing: -0.03em;
+            font-weight: 300;
 
-            line-height: 1.08;
+            letter-spacing: -0.035em;
+
+            line-height: 1.05;
         }
 
 
@@ -772,9 +767,9 @@
 
             font-size:
                 clamp(
-                    1.25rem,
-                    4.8vw,
-                    1.55rem
+                    1.4rem,
+                    5.2vw,
+                    1.75rem
                 );
 
             font-style: italic;
@@ -789,9 +784,9 @@
 
             max-width: 100%;
 
-            margin-top: 1px;
+            margin-top: 2px;
 
-            padding: 7px 12px;
+            padding: 8px 13px;
 
             border: 1px solid var(--border);
             border-radius: 11px;
@@ -800,9 +795,9 @@
 
             color: var(--text-muted);
 
-            font-size: 0.77rem;
+            font-size: 0.84rem;
 
-            line-height: 1.45;
+            line-height: 1.5;
         }
 
 
@@ -859,10 +854,6 @@
                 inset 0 1px 4px rgba(16,24,40,0.03);
 
             touch-action: none;
-
-            transition:
-                border-color 0.15s ease,
-                box-shadow 0.15s ease;
         }
 
 
@@ -898,6 +889,7 @@
             width: 100%;
 
             display: grid;
+
             grid-template-columns: repeat(2, 1fr);
 
             gap: 8px;
@@ -909,6 +901,7 @@
             width: 100%;
 
             display: grid;
+
             grid-template-columns: repeat(3, 1fr);
 
             gap: 8px;
@@ -917,15 +910,17 @@
 
         .btn-large {
 
-            min-height: 50px;
+            min-height: 52px;
 
             padding: 13px 12px;
 
             border-radius: var(--radius-button);
 
-            font-size: 0.88rem;
+            font-size: 0.99rem;
 
-            letter-spacing: 0.035em;
+            font-weight: 800;
+
+            letter-spacing: 0.03em;
 
             text-transform: uppercase;
         }
@@ -933,13 +928,15 @@
 
         .btn-medium {
 
-            min-height: 45px;
+            min-height: 47px;
 
             padding: 11px 8px;
 
             border-radius: var(--radius-button);
 
-            font-size: 0.82rem;
+            font-size: 0.92rem;
+
+            font-weight: 800;
         }
 
 
@@ -955,7 +952,7 @@
             color: white;
 
             box-shadow:
-                0 7px 16px rgba(37, 99, 235, 0.20);
+                0 7px 16px rgba(37,99,235,0.20);
         }
 
 
@@ -973,7 +970,7 @@
 
         .btn-tool {
 
-            min-height: 46px;
+            min-height: 49px;
 
             padding: 10px 4px;
 
@@ -987,9 +984,11 @@
 
             box-shadow: var(--shadow-small);
 
-            font-size: 0.75rem;
+            font-size: 0.86rem;
 
-            letter-spacing: 0.04em;
+            font-weight: 800;
+
+            letter-spacing: 0.035em;
 
             text-transform: uppercase;
         }
@@ -997,7 +996,7 @@
 
         .btn-grade {
 
-            min-height: 51px;
+            min-height: 53px;
 
             padding: 12px 3px;
 
@@ -1005,11 +1004,11 @@
 
             color: white;
 
-            font-size: 0.78rem;
+            font-size: 0.89rem;
 
             font-weight: 800;
 
-            letter-spacing: 0.035em;
+            letter-spacing: 0.03em;
 
             text-transform: uppercase;
 
@@ -1031,7 +1030,7 @@
 
             width: 100%;
 
-            min-height: 47px;
+            min-height: 49px;
 
             padding: 11px 13px;
 
@@ -1045,11 +1044,7 @@
 
             color: var(--text-main);
 
-            font-size: 0.93rem;
-
-            transition:
-                border-color 0.15s ease,
-                box-shadow 0.15s ease;
+            font-size: 1rem;
         }
 
 
@@ -1067,13 +1062,6 @@
         }
 
 
-        #dict-results {
-
-            scrollbar-width: thin;
-            scrollbar-color: var(--border-strong) transparent;
-        }
-
-
         .modal-overlay {
 
             position: fixed;
@@ -1083,7 +1071,9 @@
             z-index: 1000;
 
             display: flex;
+
             justify-content: center;
+
             align-items: center;
 
             padding:
@@ -1092,9 +1082,10 @@
                 max(18px, env(safe-area-inset-bottom));
 
             background:
-                rgba(5, 8, 13, 0.63);
+                rgba(5,8,13,0.63);
 
             backdrop-filter: blur(15px);
+
             -webkit-backdrop-filter: blur(15px);
         }
 
@@ -1102,6 +1093,7 @@
         .modal-content {
 
             width: 100%;
+
             max-width: 420px;
 
             max-height: 82vh;
@@ -1109,6 +1101,7 @@
             padding: 21px;
 
             display: flex;
+
             flex-direction: column;
 
             border: 1px solid var(--border);
@@ -1119,6 +1112,8 @@
 
             box-shadow:
                 0 28px 70px rgba(0,0,0,0.30);
+
+            font-size: 1rem;
         }
 
 
@@ -1128,7 +1123,7 @@
 
             border-collapse: collapse;
 
-            font-size: 0.78rem;
+            font-size: 0.87rem;
         }
 
 
@@ -1149,7 +1144,7 @@
 
             color: var(--text-muted);
 
-            font-size: 0.60rem;
+            font-size: 0.67rem;
 
             text-transform: uppercase;
 
@@ -1172,10 +1167,9 @@
 
         #box6-stats-table td {
 
-            padding: 9px 6px;
+            padding: 10px 6px;
 
-            border-bottom:
-                1px solid var(--border);
+            border-bottom: 1px solid var(--border);
 
             vertical-align: middle;
         }
@@ -1206,7 +1200,7 @@
 
             margin-bottom: 10px;
 
-            padding: 7px 10px;
+            padding: 8px 10px;
 
             border-radius: 10px;
 
@@ -1214,7 +1208,7 @@
 
             color: var(--text-muted);
 
-            font-size: 0.72rem;
+            font-size: 0.81rem;
 
             text-align: center;
         }
@@ -1234,13 +1228,17 @@
         * {
 
             scrollbar-width: thin;
-            scrollbar-color: var(--border-strong) transparent;
+
+            scrollbar-color:
+                var(--border-strong)
+                transparent;
         }
 
 
         *::-webkit-scrollbar {
 
             width: 6px;
+
             height: 6px;
         }
 
@@ -1259,6 +1257,11 @@
 
 
         @media (max-width: 390px) {
+
+            html {
+                font-size: 16.5px;
+            }
+
 
             .container {
 
@@ -1282,7 +1285,8 @@
 
 
             .header-top h2 {
-                font-size: 1.17rem;
+
+                font-size: 1.28rem;
             }
 
 
@@ -1291,34 +1295,34 @@
             .stats,
             .row-2,
             .row-3 {
+
                 gap: 5px;
             }
 
 
             .system-buttons button {
 
-                min-height: 41px;
+                min-height: 42px;
 
                 padding: 6px 2px;
 
-                font-size: 0.62rem;
+                font-size: 0.67rem;
             }
 
 
             .filter-buttons button {
 
-                min-height: 39px;
+                min-height: 41px;
 
-                font-size: 0.64rem;
+                font-size: 0.70rem;
             }
 
 
             #box6-daily-progress {
 
-                min-height: 36px;
+                min-height: 38px;
 
-                padding-top: 7px;
-                padding-bottom: 7px;
+                font-size: 0.71rem;
             }
 
 
@@ -1332,14 +1336,15 @@
 
             .stat-box {
 
-                min-height: 43px;
+                min-height: 45px;
 
-                font-size: 0.55rem;
+                font-size: 0.60rem;
             }
 
 
             .stat-box span {
-                font-size: 0.72rem;
+
+                font-size: 0.80rem;
             }
 
 
@@ -1355,7 +1360,14 @@
 
 
             .card-content {
+
                 gap: 8px;
+            }
+
+
+            #v-box {
+
+                font-size: 0.69rem;
             }
 
 
@@ -1363,9 +1375,9 @@
 
                 font-size:
                     clamp(
-                        1.4rem,
-                        5.5vw,
-                        1.72rem
+                        1.55rem,
+                        6.1vw,
+                        1.88rem
                     );
             }
 
@@ -1374,10 +1386,12 @@
 
                 font-size:
                     clamp(
-                        4.5rem,
-                        19vw,
-                        6rem
+                        5.5rem,
+                        24vw,
+                        7.3rem
                     );
+
+                font-weight: 300;
             }
 
 
@@ -1385,10 +1399,12 @@
 
                 font-size:
                     clamp(
-                        2.8rem,
-                        12.5vw,
-                        4rem
+                        3.25rem,
+                        14.5vw,
+                        4.7rem
                     );
+
+                font-weight: 300;
             }
 
 
@@ -1396,10 +1412,16 @@
 
                 font-size:
                     clamp(
-                        1.15rem,
-                        4.8vw,
-                        1.4rem
+                        1.28rem,
+                        5.3vw,
+                        1.55rem
                     );
+            }
+
+
+            #v-stats {
+
+                font-size: 0.78rem;
             }
 
 
@@ -1413,33 +1435,33 @@
 
             .btn-large {
 
-                min-height: 46px;
+                min-height: 48px;
 
-                font-size: 0.81rem;
+                font-size: 0.89rem;
             }
 
 
             .btn-medium {
 
-                min-height: 42px;
+                min-height: 44px;
 
-                font-size: 0.75rem;
+                font-size: 0.82rem;
             }
 
 
             .btn-tool {
 
-                min-height: 42px;
+                min-height: 44px;
 
-                font-size: 0.68rem;
+                font-size: 0.76rem;
             }
 
 
             .btn-grade {
 
-                min-height: 47px;
+                min-height: 49px;
 
-                font-size: 0.70rem;
+                font-size: 0.78rem;
             }
         }
 
@@ -1455,17 +1477,17 @@
 
 
             .system-buttons button {
-                min-height: 38px;
+                min-height: 39px;
             }
 
 
             .filter-buttons button {
-                min-height: 37px;
+                min-height: 39px;
             }
 
 
             #box6-daily-progress {
-                min-height: 34px;
+                min-height: 35px;
             }
 
 
@@ -1475,19 +1497,42 @@
 
 
             .stat-box {
-                min-height: 40px;
+                min-height: 41px;
             }
 
 
             .card {
 
                 padding-top: 12px;
+
                 padding-bottom: 10px;
             }
 
 
             .card-content {
                 gap: 7px;
+            }
+
+
+            #v-hz {
+
+                font-size:
+                    clamp(
+                        5rem,
+                        21vw,
+                        7.2rem
+                    );
+            }
+
+
+            #v-hz.long-char {
+
+                font-size:
+                    clamp(
+                        3.1rem,
+                        13vw,
+                        4.6rem
+                    );
             }
 
 
@@ -1501,12 +1546,14 @@
 
             .btn-large,
             .btn-grade {
-                min-height: 44px;
+
+                min-height: 45px;
             }
 
 
             .btn-tool {
-                min-height: 40px;
+
+                min-height: 42px;
             }
         }
 
@@ -1680,9 +1727,7 @@
                     type="text"
                     id="dict-search-input"
                     placeholder="Nach Begriff suchen..."
-                    onkeypress="
-                        if(event.key === 'Enter') searchDict()
-                    "
+                    onkeypress="if(event.key === 'Enter') searchDict()"
                 >
 
 
@@ -1903,7 +1948,7 @@
             style="
                 margin-top:0;
                 color:var(--text-main);
-                font-size:1rem;
+                font-size:1.1rem;
                 border-bottom:1px solid var(--border);
                 padding-bottom:12px;
                 margin-bottom:16px;
@@ -1928,9 +1973,10 @@
             <div
                 id="ex-hz"
                 style="
-                    font-size:1.8rem;
-                    font-weight:500;
-                    margin-bottom:6px;
+                    font-size:2rem;
+                    font-weight:400;
+                    margin-bottom:7px;
+                    font-family:'Songti SC','STSong','Noto Serif CJK SC','SimSun',serif;
                 "
             ></div>
 
@@ -1940,7 +1986,7 @@
                 style="
                     color:var(--primary);
                     margin-bottom:12px;
-                    font-size:1.12rem;
+                    font-size:1.22rem;
                     font-weight:700;
                 "
             ></div>
@@ -1953,7 +1999,7 @@
                     padding:15px;
                     border-radius:12px;
                     border-left:3px solid var(--primary);
-                    font-size:0.98rem;
+                    font-size:1.06rem;
                     line-height:1.5;
                     color:var(--text-main);
                 "
@@ -1993,7 +2039,7 @@
             style="
                 margin-top:0;
                 color:var(--text-main);
-                font-size:1rem;
+                font-size:1.1rem;
                 border-bottom:1px solid var(--border);
                 padding-bottom:12px;
                 margin-bottom:12px;
@@ -2080,7 +2126,6 @@
 
 
 <script>
-
 
 let state =
     JSON.parse(
@@ -2673,13 +2718,9 @@ function renderBox6StatsTable() {
 
         `${data.length} Vokabel${
             data.length === 1
-
             ?
-
             ''
-
             :
-
             'n'
         } in Box 6`;
 
@@ -2773,8 +2814,9 @@ function renderBox6StatsTable() {
 
                             <div
                                 style="
-                                    font-weight:700;
-                                    font-size:1rem;
+                                    font-weight:600;
+                                    font-size:1.15rem;
+                                    font-family:'Songti SC','STSong','Noto Serif CJK SC','SimSun',serif;
                                 "
                             >
                                 ${d.hz}
@@ -2783,7 +2825,7 @@ function renderBox6StatsTable() {
                             <div
                                 style="
                                     color:var(--primary);
-                                    font-size:0.75rem;
+                                    font-size:0.82rem;
                                     font-weight:600;
                                 "
                             >
@@ -2837,7 +2879,7 @@ function renderBox6StatsTable() {
 
                         <td
                             style="
-                                font-size:0.75rem;
+                                font-size:0.82rem;
                             "
                         >
                             ${dueLabel}
@@ -3310,7 +3352,7 @@ function searchDict() {
                 style="
                     color:var(--text-muted);
                     text-align:center;
-                    font-size:0.95rem;
+                    font-size:1rem;
                     margin-top:20px;
                     font-weight:600;
                 "
@@ -3422,8 +3464,9 @@ function searchDict() {
 
                     <div
                         style="
-                            font-size:1.5rem;
-                            font-weight:700;
+                            font-size:1.75rem;
+                            font-weight:400;
+                            font-family:'Songti SC','STSong','Noto Serif CJK SC','SimSun',serif;
                         "
                     >
                         ${c.hz}
@@ -3443,14 +3486,14 @@ function searchDict() {
 
                             style="
                                 padding:6px 9px;
-                                font-size:0.68rem;
+                                font-size:0.75rem;
                                 border-radius:10px;
                                 background-color:${focusBtnBg};
                                 color:${focusBtnColor};
                                 border:1px solid ${focusBtnBorder};
                                 box-shadow:var(--shadow-small);
                                 font-weight:800;
-                                min-height:34px;
+                                min-height:36px;
                             "
                         >
                             ${focusBtnText}
@@ -3470,13 +3513,12 @@ function searchDict() {
                                 color:white;
                                 padding:6px 8px;
                                 border-radius:10px;
-                                font-size:0.75rem;
+                                font-size:0.82rem;
                                 font-weight:800;
                                 border:none;
                                 outline:none;
                             "
                         >
-
 
                             <option value="1" style="color:black;background:white;" ${boxNum == 1 ? 'selected' : ''}>B1</option>
                             <option value="2" style="color:black;background:white;" ${boxNum == 2 ? 'selected' : ''}>B2</option>
@@ -3484,7 +3526,6 @@ function searchDict() {
                             <option value="4" style="color:black;background:white;" ${boxNum == 4 ? 'selected' : ''}>B4</option>
                             <option value="5" style="color:black;background:white;" ${boxNum == 5 ? 'selected' : ''}>B5</option>
                             <option value="6" style="color:black;background:white;" ${boxNum == 6 ? 'selected' : ''}>B6</option>
-
 
                         </select>
 
@@ -3498,7 +3539,7 @@ function searchDict() {
                 <div
                     style="
                         color:var(--primary);
-                        font-size:0.98rem;
+                        font-size:1.08rem;
                         margin-bottom:5px;
                         font-weight:700;
                     "
@@ -3509,7 +3550,7 @@ function searchDict() {
 
                 <div
                     style="
-                        font-size:1rem;
+                        font-size:1.08rem;
                         font-weight:600;
                     "
                 >
@@ -3531,7 +3572,7 @@ function searchDict() {
                             border-top:1px solid var(--border);
                             padding-top:10px;
                             margin-top:10px;
-                            font-size:0.88rem;
+                            font-size:0.96rem;
                         "
                     >
 
@@ -3539,7 +3580,9 @@ function searchDict() {
                         <div
                             style="
                                 color:var(--text-main);
-                                font-weight:600;
+                                font-weight:400;
+                                font-size:1.15rem;
+                                font-family:'Songti SC','STSong','Noto Serif CJK SC','SimSun',serif;
                             "
                         >
                             ${c.sentenceHz}
@@ -6287,6 +6330,9 @@ function move(step) {
             ) {
 
 
+                // gleicher Tag
+
+
             } else {
 
 
@@ -6605,18 +6651,14 @@ function exportProgress() {
 
 
     dl.setAttribute(
-
         "href",
-
         dataStr
     );
 
 
 
     dl.setAttribute(
-
         "download",
-
         "hsk_trainer_backup.json"
     );
 
