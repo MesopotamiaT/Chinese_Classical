@@ -11,7 +11,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HSK Trainer">
-
     <meta name="theme-color" content="#f4f7fb">
 
     <title>HSK Trainer</title>
@@ -28,13 +27,8 @@
 
     <style>
 
-        /* =========================================================
-           HSK TRAINER — PROFESSIONAL UI
-           ========================================================= */
-
         :root {
 
-            /* BASE */
             --bg: #f3f6fa;
             --card: #ffffff;
             --surface: #f8fafc;
@@ -47,7 +41,6 @@
             --border: #e7eaf0;
             --border-strong: #d8dde6;
 
-            /* BRAND */
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --primary-soft: #eaf1ff;
@@ -55,7 +48,6 @@
             --focus-color: #7c3aed;
             --focus-soft: #f2eafe;
 
-            /* BOX COLORS */
             --box1: #e5484d;
             --box2: #e99a14;
             --box3: #3b82f6;
@@ -63,7 +55,6 @@
             --box5: #27a65a;
             --box6: #df3f7d;
 
-            /* SHADOW */
             --shadow-small:
                 0 1px 2px rgba(16, 24, 40, 0.04),
                 0 3px 8px rgba(16, 24, 40, 0.05);
@@ -76,12 +67,10 @@
                 0 20px 48px rgba(16, 24, 40, 0.09),
                 0 4px 16px rgba(16, 24, 40, 0.05);
 
-            /* DIMENSIONS */
             --radius-small: 10px;
             --radius-button: 13px;
             --radius-card: 24px;
 
-            /* FONT */
             --font-ui:
                 'Manrope',
                 -apple-system,
@@ -99,10 +88,6 @@
                 serif;
         }
 
-
-        /* =========================================================
-           DARK MODE
-           ========================================================= */
 
         @media (prefers-color-scheme: dark) {
 
@@ -146,10 +131,6 @@
             }
         }
 
-
-        /* =========================================================
-           RESET
-           ========================================================= */
 
         * {
             box-sizing: border-box;
@@ -196,7 +177,6 @@
         button,
         input,
         select {
-
             font-family: inherit;
         }
 
@@ -225,7 +205,6 @@
 
 
         button:active {
-
             transform: scale(0.975);
         }
 
@@ -240,14 +219,9 @@
 
 
         .hidden {
-
             display: none !important;
         }
 
-
-        /* =========================================================
-           APP CONTAINER
-           ========================================================= */
 
         .container {
 
@@ -271,10 +245,6 @@
             overflow: hidden;
         }
 
-
-        /* =========================================================
-           HEADER
-           ========================================================= */
 
         .header {
 
@@ -313,10 +283,6 @@
         }
 
 
-        /* =========================================================
-           SYSTEM BUTTONS
-           ========================================================= */
-
         .system-buttons {
 
             display: grid;
@@ -331,9 +297,9 @@
         .system-buttons button {
 
             min-width: 0;
-            min-height: 42px;
+            min-height: 44px;
 
-            padding: 7px 3px;
+            padding: 8px 3px;
 
             border: 1px solid var(--border);
             border-radius: var(--radius-button);
@@ -343,7 +309,10 @@
 
             box-shadow: var(--shadow-small);
 
-            font-size: 0.61rem;
+            font-size: 0.69rem;
+            font-weight: 800;
+
+            letter-spacing: -0.01em;
 
             white-space: nowrap;
             overflow: hidden;
@@ -370,20 +339,14 @@
 
 
         .system-buttons .btn-stats {
-
             color: var(--box6);
         }
 
 
         .system-buttons .btn-danger {
-
             color: var(--box1);
         }
 
-
-        /* =========================================================
-           MODE BUTTONS
-           ========================================================= */
 
         .filter-buttons {
 
@@ -411,17 +374,13 @@
 
             box-shadow: var(--shadow-small);
 
-            font-size: 0.69rem;
+            font-size: 0.72rem;
 
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-
-        /* =========================================================
-           BOX 6 DAILY
-           ========================================================= */
 
         #box6-daily-progress {
 
@@ -445,7 +404,7 @@
 
             box-shadow: var(--shadow-small);
 
-            font-size: 0.69rem;
+            font-size: 0.72rem;
 
             font-weight: 800;
 
@@ -484,10 +443,6 @@
                 0 4px 10px rgba(223, 63, 125, 0.24);
         }
 
-
-        /* =========================================================
-           BOX NAVIGATION
-           ========================================================= */
 
         .stats {
 
@@ -587,7 +542,6 @@
 
 
         .stat-box.inactive-box {
-
             opacity: 0.32;
         }
 
@@ -625,10 +579,6 @@
             pointer-events: none;
         }
 
-
-        /* =========================================================
-           MAIN CARD
-           ========================================================= */
 
         .card {
 
@@ -699,10 +649,6 @@
         }
 
 
-        /* =========================================================
-           CARD LABEL
-           ========================================================= */
-
         #v-box {
 
             max-width: 100%;
@@ -717,7 +663,7 @@
 
             color: var(--text-muted);
 
-            font-size: 0.64rem;
+            font-size: 0.68rem;
 
             font-weight: 800;
 
@@ -731,13 +677,9 @@
         }
 
 
-        /* =========================================================
-           GERMAN WORD
-           ========================================================= */
-
         #v-de {
 
-            width: min(100%, 430px);
+            width: min(100%, 450px);
 
             margin: 0;
 
@@ -745,14 +687,14 @@
 
             font-size:
                 clamp(
-                    1.25rem,
-                    4.5vw,
-                    1.62rem
+                    1.55rem,
+                    5.3vw,
+                    1.95rem
                 );
 
             font-weight: 600;
 
-            line-height: 1.3;
+            line-height: 1.28;
 
             letter-spacing: -0.012em;
 
@@ -768,7 +710,7 @@
 
             width: fit-content;
 
-            margin: 7px auto 0;
+            margin: 8px auto 0;
 
             padding: 4px 9px;
 
@@ -780,15 +722,11 @@
 
             font-family: var(--font-ui);
 
-            font-size: 0.70rem;
+            font-size: 0.72rem;
 
             font-weight: 700;
         }
 
-
-        /* =========================================================
-           CHINESE
-           ========================================================= */
 
         #v-hz {
 
@@ -796,9 +734,9 @@
 
             font-size:
                 clamp(
-                    3.7rem,
-                    16vw,
-                    5.4rem
+                    5rem,
+                    20vw,
+                    7rem
                 );
 
             font-weight: 400;
@@ -815,12 +753,14 @@
 
             font-size:
                 clamp(
-                    2.45rem,
-                    10vw,
-                    3.55rem
+                    3.2rem,
+                    13vw,
+                    4.7rem
                 );
 
-            letter-spacing: -0.035em;
+            letter-spacing: -0.03em;
+
+            line-height: 1.08;
         }
 
 
@@ -832,9 +772,9 @@
 
             font-size:
                 clamp(
-                    1.05rem,
-                    4vw,
-                    1.3rem
+                    1.25rem,
+                    4.8vw,
+                    1.55rem
                 );
 
             font-style: italic;
@@ -844,10 +784,6 @@
             color: var(--primary);
         }
 
-
-        /* =========================================================
-           CARD STATS
-           ========================================================= */
 
         #v-stats {
 
@@ -864,15 +800,11 @@
 
             color: var(--text-muted);
 
-            font-size: 0.75rem;
+            font-size: 0.77rem;
 
             line-height: 1.45;
         }
 
-
-        /* =========================================================
-           HANZI WRITER
-           ========================================================= */
 
         .writer-grid {
 
@@ -943,10 +875,6 @@
         }
 
 
-        /* =========================================================
-           ACTION AREA
-           ========================================================= */
-
         .action-area {
 
             position: relative;
@@ -986,10 +914,6 @@
             gap: 8px;
         }
 
-
-        /* =========================================================
-           BUTTONS
-           ========================================================= */
 
         .btn-large {
 
@@ -1094,10 +1018,6 @@
         }
 
 
-        /* =========================================================
-           DICTIONARY
-           ========================================================= */
-
         #dict-view {
 
             position: relative;
@@ -1134,7 +1054,6 @@
 
 
         #dict-search-input::placeholder {
-
             color: var(--text-soft);
         }
 
@@ -1154,10 +1073,6 @@
             scrollbar-color: var(--border-strong) transparent;
         }
 
-
-        /* =========================================================
-           MODAL
-           ========================================================= */
 
         .modal-overlay {
 
@@ -1207,10 +1122,6 @@
         }
 
 
-        /* =========================================================
-           BOX 6 STATISTICS
-           ========================================================= */
-
         #box6-stats-table {
 
             width: 100%;
@@ -1255,7 +1166,6 @@
 
 
         #box6-stats-table th:nth-child(n+2) {
-
             text-align: center;
         }
 
@@ -1272,7 +1182,6 @@
 
 
         #box6-stats-table td:nth-child(n+2) {
-
             text-align: center;
         }
 
@@ -1311,10 +1220,6 @@
         }
 
 
-        /* =========================================================
-           FOCUS
-           ========================================================= */
-
         button:focus-visible,
         input:focus-visible,
         select:focus-visible {
@@ -1325,10 +1230,6 @@
                 0 0 0 3px var(--primary-soft);
         }
 
-
-        /* =========================================================
-           SCROLLBAR
-           ========================================================= */
 
         * {
 
@@ -1345,7 +1246,6 @@
 
 
         *::-webkit-scrollbar-track {
-
             background: transparent;
         }
 
@@ -1357,10 +1257,6 @@
             background: var(--border-strong);
         }
 
-
-        /* =========================================================
-           SMALL SCREENS
-           ========================================================= */
 
         @media (max-width: 390px) {
 
@@ -1386,7 +1282,6 @@
 
 
             .header-top h2 {
-
                 font-size: 1.17rem;
             }
 
@@ -1396,18 +1291,17 @@
             .stats,
             .row-2,
             .row-3 {
-
                 gap: 5px;
             }
 
 
             .system-buttons button {
 
-                min-height: 38px;
+                min-height: 41px;
 
-                padding: 5px 2px;
+                padding: 6px 2px;
 
-                font-size: 0.54rem;
+                font-size: 0.62rem;
             }
 
 
@@ -1415,7 +1309,7 @@
 
                 min-height: 39px;
 
-                font-size: 0.62rem;
+                font-size: 0.64rem;
             }
 
 
@@ -1445,7 +1339,6 @@
 
 
             .stat-box span {
-
                 font-size: 0.72rem;
             }
 
@@ -1462,8 +1355,51 @@
 
 
             .card-content {
-
                 gap: 8px;
+            }
+
+
+            #v-de {
+
+                font-size:
+                    clamp(
+                        1.4rem,
+                        5.5vw,
+                        1.72rem
+                    );
+            }
+
+
+            #v-hz {
+
+                font-size:
+                    clamp(
+                        4.5rem,
+                        19vw,
+                        6rem
+                    );
+            }
+
+
+            #v-hz.long-char {
+
+                font-size:
+                    clamp(
+                        2.8rem,
+                        12.5vw,
+                        4rem
+                    );
+            }
+
+
+            #v-py {
+
+                font-size:
+                    clamp(
+                        1.15rem,
+                        4.8vw,
+                        1.4rem
+                    );
             }
 
 
@@ -1508,10 +1444,6 @@
         }
 
 
-        /* =========================================================
-           SHORT SCREENS
-           ========================================================= */
-
         @media (max-height: 760px) {
 
             .header {
@@ -1523,31 +1455,26 @@
 
 
             .system-buttons button {
-
-                min-height: 36px;
+                min-height: 38px;
             }
 
 
             .filter-buttons button {
-
                 min-height: 37px;
             }
 
 
             #box6-daily-progress {
-
                 min-height: 34px;
             }
 
 
             .stats {
-
                 margin-bottom: 6px;
             }
 
 
             .stat-box {
-
                 min-height: 40px;
             }
 
@@ -1560,7 +1487,6 @@
 
 
             .card-content {
-
                 gap: 7px;
             }
 
@@ -1575,21 +1501,15 @@
 
             .btn-large,
             .btn-grade {
-
                 min-height: 44px;
             }
 
 
             .btn-tool {
-
                 min-height: 40px;
             }
         }
 
-
-        /* =========================================================
-           REDUCED MOTION
-           ========================================================= */
 
         @media (prefers-reduced-motion: reduce) {
 
@@ -1614,10 +1534,6 @@
 
 <div class="container">
 
-
-    <!-- =======================================================
-         HEADER
-         ======================================================= -->
 
     <div class="header">
 
@@ -1729,26 +1645,14 @@
     </div>
 
 
-    <!-- =======================================================
-         BOX NAVIGATION
-         ======================================================= -->
-
     <div
         class="stats"
         id="stats"
     ></div>
 
 
-    <!-- =======================================================
-         MAIN CARD
-         ======================================================= -->
-
     <div class="card">
 
-
-        <!-- ===================================================
-             DICTIONARY
-             =================================================== -->
 
         <div
             id="dict-view"
@@ -1809,10 +1713,6 @@
         </div>
 
 
-        <!-- ===================================================
-             FLASHCARD
-             =================================================== -->
-
         <div
             id="flashcard-content"
             class="card-content"
@@ -1853,10 +1753,6 @@
 
         </div>
 
-
-        <!-- ===================================================
-             ACTION BUTTONS
-             =================================================== -->
 
         <div class="action-area">
 
@@ -1994,10 +1890,6 @@
 </div>
 
 
-<!-- =========================================================
-     EXAMPLE MODAL
-     ========================================================= -->
-
 <div
     id="exampleModal"
     class="modal-overlay hidden"
@@ -2036,7 +1928,7 @@
             <div
                 id="ex-hz"
                 style="
-                    font-size:1.6rem;
+                    font-size:1.8rem;
                     font-weight:500;
                     margin-bottom:6px;
                 "
@@ -2048,7 +1940,7 @@
                 style="
                     color:var(--primary);
                     margin-bottom:12px;
-                    font-size:1.05rem;
+                    font-size:1.12rem;
                     font-weight:700;
                 "
             ></div>
@@ -2061,7 +1953,7 @@
                     padding:15px;
                     border-radius:12px;
                     border-left:3px solid var(--primary);
-                    font-size:0.95rem;
+                    font-size:0.98rem;
                     line-height:1.5;
                     color:var(--text-main);
                 "
@@ -2084,10 +1976,6 @@
 
 </div>
 
-
-<!-- =========================================================
-     BOX 6 STATISTICS MODAL
-     ========================================================= -->
 
 <div
     id="box6StatsModal"
@@ -2194,11 +2082,6 @@
 <script>
 
 
-/* ============================================================
-   STATE
-   ============================================================ */
-
-
 let state =
     JSON.parse(
         localStorage.getItem('hsk_data')
@@ -2213,7 +2096,6 @@ let state =
 
 
 if (!state.box6) {
-
     state.box6 = [];
 }
 
@@ -2258,11 +2140,6 @@ let box6SortColumn = 'queries';
 
 let box6SortDirection = 'desc';
 
-
-
-/* ============================================================
-   BOX UI
-   ============================================================ */
 
 
 document.getElementById('stats').innerHTML =
@@ -2320,7 +2197,6 @@ document.getElementById('stats').innerHTML =
 
 
                 if (dictMode) {
-
                     toggleDictMode();
                 }
 
@@ -2338,13 +2214,11 @@ document.getElementById('stats').innerHTML =
 
 
                     if (randomMode) {
-
                         toggleRandomMode();
                     }
 
 
                     if (onlyFocusMode) {
-
                         toggleOnlyFocusMode();
                     }
                 }
@@ -2360,16 +2234,10 @@ document.getElementById('stats').innerHTML =
 
 
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
-
-
 function countHanzi(str) {
 
 
     if (!str) {
-
         return 0;
     }
 
@@ -2467,7 +2335,6 @@ function isBox6CardDue(c) {
 
 
     if (!c.nextReviewDate) {
-
         return true;
     }
 
@@ -2507,7 +2374,6 @@ function box6DueInDays(c) {
 
 
     if (!c.nextReviewDate) {
-
         return -9999;
     }
 
@@ -2553,11 +2419,6 @@ function box6DueInDays(c) {
     );
 }
 
-
-
-/* ============================================================
-   BOX 6 DAILY
-   ============================================================ */
 
 
 function checkBox6DailyReset() {
@@ -2609,11 +2470,6 @@ function updateBox6DailyDisplay() {
     }
 }
 
-
-
-/* ============================================================
-   BOX 6 STATISTICS
-   ============================================================ */
 
 
 function openBox6Stats() {
@@ -3058,11 +2914,6 @@ function renderBox6StatsTable() {
 
 
 
-/* ============================================================
-   HANZI WRITER
-   ============================================================ */
-
-
 function startQuizForCurrentChar() {
 
 
@@ -3204,11 +3055,6 @@ function startQuizForCurrentChar() {
 
 
 
-/* ============================================================
-   FOCUS
-   ============================================================ */
-
-
 function getFocusCount() {
 
 
@@ -3239,11 +3085,6 @@ function getFocusCount() {
     return count;
 }
 
-
-
-/* ============================================================
-   DICTIONARY
-   ============================================================ */
 
 
 function toggleDictMode() {
@@ -3637,76 +3478,12 @@ function searchDict() {
                         >
 
 
-                            <option
-                                value="1"
-                                style="
-                                    color:black;
-                                    background:white;
-                                "
-                                ${boxNum == 1 ? 'selected' : ''}
-                            >
-                                B1
-                            </option>
-
-
-                            <option
-                                value="2"
-                                style="
-                                    color:black;
-                                    background:white;
-                                "
-                                ${boxNum == 2 ? 'selected' : ''}
-                            >
-                                B2
-                            </option>
-
-
-                            <option
-                                value="3"
-                                style="
-                                    color:black;
-                                    background:white;
-                                "
-                                ${boxNum == 3 ? 'selected' : ''}
-                            >
-                                B3
-                            </option>
-
-
-                            <option
-                                value="4"
-                                style="
-                                    color:black;
-                                    background:white;
-                                "
-                                ${boxNum == 4 ? 'selected' : ''}
-                            >
-                                B4
-                            </option>
-
-
-                            <option
-                                value="5"
-                                style="
-                                    color:black;
-                                    background:white;
-                                "
-                                ${boxNum == 5 ? 'selected' : ''}
-                            >
-                                B5
-                            </option>
-
-
-                            <option
-                                value="6"
-                                style="
-                                    color:black;
-                                    background:white;
-                                "
-                                ${boxNum == 6 ? 'selected' : ''}
-                            >
-                                B6
-                            </option>
+                            <option value="1" style="color:black;background:white;" ${boxNum == 1 ? 'selected' : ''}>B1</option>
+                            <option value="2" style="color:black;background:white;" ${boxNum == 2 ? 'selected' : ''}>B2</option>
+                            <option value="3" style="color:black;background:white;" ${boxNum == 3 ? 'selected' : ''}>B3</option>
+                            <option value="4" style="color:black;background:white;" ${boxNum == 4 ? 'selected' : ''}>B4</option>
+                            <option value="5" style="color:black;background:white;" ${boxNum == 5 ? 'selected' : ''}>B5</option>
+                            <option value="6" style="color:black;background:white;" ${boxNum == 6 ? 'selected' : ''}>B6</option>
 
 
                         </select>
@@ -3948,11 +3725,6 @@ function changeDictBox(
 
 
 
-/* ============================================================
-   UI UPDATE
-   ============================================================ */
-
-
 function updateUI() {
 
 
@@ -4102,11 +3874,6 @@ function updateUI() {
 
 
 
-/* ============================================================
-   BOX HIGHLIGHT
-   ============================================================ */
-
-
 function highlightActiveBox() {
 
 
@@ -4181,11 +3948,6 @@ function highlightActiveBox() {
 
 
 
-/* ============================================================
-   FOCUS BUTTON
-   ============================================================ */
-
-
 function updateFocusButtonText() {
 
 
@@ -4213,11 +3975,6 @@ function updateFocusButtonText() {
     }
 }
 
-
-
-/* ============================================================
-   MODES
-   ============================================================ */
 
 
 function toggleOnlyFocusMode() {
@@ -4354,11 +4111,6 @@ function toggleRandomMode() {
 
 
 
-/* ============================================================
-   CSV PARSER
-   ============================================================ */
-
-
 function parseCSVLine(text) {
 
 
@@ -4489,16 +4241,10 @@ function cleanField(str) {
 
 
 
-/* ============================================================
-   CSV IMPORT
-   ============================================================ */
-
-
 function importCSV(file) {
 
 
     if (!file) {
-
         return;
     }
 
@@ -4567,7 +4313,6 @@ function importCSV(file) {
 
 
                 if (!r.trim()) {
-
                     return;
                 }
 
@@ -4650,16 +4395,10 @@ function importCSV(file) {
 
 
 
-/* ============================================================
-   NEXT CARD
-   ============================================================ */
-
-
 function next() {
 
 
     if (dictMode) {
-
         return;
     }
 
@@ -5463,16 +5202,10 @@ function next() {
 
 
 
-/* ============================================================
-   FLIP
-   ============================================================ */
-
-
 function flip() {
 
 
     if (!currentCard) {
-
         return;
     }
 
@@ -5891,16 +5624,10 @@ function flip() {
 
 
 
-/* ============================================================
-   RETRY WRITING
-   ============================================================ */
-
-
 function retryCurrentWordWriting() {
 
 
     if (!currentCard) {
-
         return;
     }
 
@@ -6115,11 +5842,6 @@ function retryCurrentWordWriting() {
 
 
 
-/* ============================================================
-   MODALS
-   ============================================================ */
-
-
 function openModal() {
 
 
@@ -6146,16 +5868,10 @@ function closeModal() {
 
 
 
-/* ============================================================
-   TOGGLE FOCUS
-   ============================================================ */
-
-
 function toggleFocus() {
 
 
     if (!currentCard) {
-
         return;
     }
 
@@ -6336,16 +6052,10 @@ function toggleFocus() {
 
 
 
-/* ============================================================
-   MOVE CARD
-   ============================================================ */
-
-
 function move(step) {
 
 
     if (!currentCard) {
-
         return;
     }
 
@@ -6577,9 +6287,6 @@ function move(step) {
             ) {
 
 
-                /* gleicher Tag */
-
-
             } else {
 
 
@@ -6750,16 +6457,10 @@ function move(step) {
 
 
 
-/* ============================================================
-   MOVE TO BOX 6
-   ============================================================ */
-
-
 function moveToBox6() {
 
 
     if (!currentCard) {
-
         return;
     }
 
@@ -6836,11 +6537,6 @@ function moveToBox6() {
 
 
 
-/* ============================================================
-   RESET
-   ============================================================ */
-
-
 function resetSpeicher() {
 
 
@@ -6881,11 +6577,6 @@ function resetSpeicher() {
     }
 }
 
-
-
-/* ============================================================
-   BACKUP
-   ============================================================ */
 
 
 function exportProgress() {
@@ -6934,11 +6625,6 @@ function exportProgress() {
     dl.click();
 }
 
-
-
-/* ============================================================
-   RESTORE BACKUP
-   ============================================================ */
 
 
 function importProgress(file) {
@@ -7004,11 +6690,6 @@ function importProgress(file) {
 
 
 
-/* ============================================================
-   WRITER RESET
-   ============================================================ */
-
-
 function clearCanvas() {
 
 
@@ -7034,16 +6715,10 @@ function clearCanvas() {
 
 
 
-/* ============================================================
-   AUDIO
-   ============================================================ */
-
-
 function speak() {
 
 
     if (!currentCard) {
-
         return;
     }
 
@@ -7073,11 +6748,6 @@ function speak() {
         .speak(u);
 }
 
-
-
-/* ============================================================
-   INITIALIZE
-   ============================================================ */
 
 
 updateUI();
