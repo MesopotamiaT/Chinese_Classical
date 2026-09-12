@@ -1,1539 +1,647 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="HSK Trainer">
-    <title>HSK Trainer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;1,8..60,500;1,8..60,600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
-    <style>
-        /* Hochwertiges Farbkonzept — Gemini UI (Google) */
-        :root { 
-            --bg: #F0F4F9; 
-            --card: #FFFFFF; 
-            --text-main: #1F1F1F; 
-            --text-muted: #444746; 
-            --border-light: #E0E4E8; 
-            
-            --primary: #1A73E8; 
-            --primary-light: #D3E3FD;
-            --focus-color: #9334E6; 
-            
-            /* Status-Farben */
-            --box1: #EA4335; 
-            --box2: #F29900; 
-            --box3: #4285F4; 
-            --box4: #A142F4; 
-            --box5: #34A853; 
-            --box6: #E33371; 
-            
-            --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.04);
-            --shadow-card: 0 12px 28px -6px rgba(25, 26, 30, 0.12), 0 4px 8px -2px rgba(25, 26, 30, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
-            --radius-btn: 12px;
-            --radius-card: 20px;
+<style id="hsk-premium-ui-override">
+/* ============================================================
+   HSK TRAINER — PREMIUM UI OVERRIDE
+   Drop-in: Diesen Block ans ENDE des vorhandenen <style>-Blocks
+   setzen. Keine JS- oder HTML-Logik muss geändert werden.
+   ============================================================ */
 
-            /* Professionelle, plastische Button-Optik */
-            --btn-highlight: rgba(255, 255, 255, 0.5);
-            --btn-shade: rgba(0, 0, 0, 0.12);
-            --btn-shadow-raised: 
-                inset 0 2px 1px -1px var(--btn-highlight), 
-                inset 0 -3px 2px -1px var(--btn-shade), 
-                0 4px 6px -1px rgba(25,26,30,0.15), 
-                0 2px 4px -2px rgba(25,26,30,0.1);
-            --btn-shadow-pressed: 
-                inset 0 3px 6px rgba(25,26,30,0.25), 
-                inset 0 1px 3px rgba(25,26,30,0.15),
-                0 1px 1px rgba(255,255,255,0.6);
+:root {
+    --bg: #f4f7fb;
+    --bg-elevated: rgba(255, 255, 255, 0.82);
+    --card: #ffffff;
+    --card-soft: #f8fafc;
+    --text-main: #16181d;
+    --text-muted: #667085;
+    --text-faint: #98a2b3;
+    --border-light: rgba(16, 24, 40, 0.08);
+    --border-strong: rgba(16, 24, 40, 0.13);
 
-            --font-ui: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-read: 'Source Serif 4', Georgia, 'Songti SC', serif;
-        }
+    --primary: #2563eb;
+    --primary-strong: #1d4ed8;
+    --primary-light: #dbeafe;
+    --primary-soft: #eff6ff;
+    --focus-color: #7c3aed;
 
-        /* Eleganter Dark Mode — Gemini UI */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #131314; 
-                --card: #1E1F20; 
-                --text-main: #E3E3E3; 
-                --text-muted: #8E918F;
-                --border-light: #444746;
-                
-                --primary: #4C8BF5; 
-                --primary-light: #004A77;
-                --focus-color: #B265F6; 
-                
-                --box1: #D93025; 
-                --box2: #E37400; 
-                --box3: #1A73E8; 
-                --box4: #8A3FFC; 
-                --box5: #1E8E3E; 
-                --box6: #D81B60; 
-                
-                --shadow-card: 0 14px 30px -8px rgba(0, 0, 0, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+    --box1: #ef4444;
+    --box2: #f59e0b;
+    --box3: #3b82f6;
+    --box4: #8b5cf6;
+    --box5: #22c55e;
+    --box6: #ec4899;
 
-                --btn-highlight: rgba(255, 255, 255, 0.12);
-                --btn-shade: rgba(0, 0, 0, 0.4);
-                --btn-shadow-raised: 
-                    inset 0 2px 1px -1px var(--btn-highlight), 
-                    inset 0 -3px 2px -1px var(--btn-shade), 
-                    0 4px 6px -1px rgba(0,0,0,0.5), 
-                    0 2px 4px -2px rgba(0,0,0,0.4);
-                --btn-shadow-pressed: 
-                    inset 0 3px 6px rgba(0,0,0,0.6), 
-                    inset 0 1px 3px rgba(0,0,0,0.4),
-                    0 1px 1px rgba(255,255,255,0.05);
-            }
-        }
-        
-        * { box-sizing: border-box; }
-        
-        html, body {
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: var(--font-ui);
-            background: var(--bg); 
-            color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
-            letter-spacing: -0.015em;
-        }
-        
-        .container { 
-            width: 100%;
-            max-width: 500px;
-            height: 100vh;
-            margin: 0 auto; 
-            display: flex;
-            flex-direction: column;
-            padding: 12px; 
-            overflow-x: hidden;
-        }
-        
-        /* HEADER */
-        .header {
-            display: flex;
-            flex-direction: column;
-            gap: 10px; 
-            flex-shrink: 0;
-            margin-bottom: 12px;
-            width: 100%;
-        }
-        
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-        
-        .header-top h2 {
-            margin: 0;
-            font-size: 1.25rem; 
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            flex-shrink: 0;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        
-        .system-buttons { 
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            width: 100%;
-        }
-        
-        .system-buttons button {
-            flex-direction: column;
-            gap: 3px;
-            font-size: 0.6rem; 
-            padding: 9px 2px 8px; 
-            border-radius: var(--radius-btn);
-            background: var(--card);
-            color: var(--text-main);
-            border: 1px solid transparent;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            min-width: 0;
-        }
-        .system-buttons button span {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-        .btn-icon-svg { width: 17px; height: 17px; flex-shrink: 0; }
-        .system-buttons .btn-danger { color: var(--box1); }
-        .system-buttons .btn-action { background: var(--primary); color: #FFFFFF; }
-        .system-buttons .btn-stats { color: var(--box6); }
+    --shadow-subtle: 0 1px 2px rgba(16, 24, 40, 0.04), 0 2px 6px rgba(16, 24, 40, 0.05);
+    --shadow-card: 0 20px 50px rgba(16, 24, 40, 0.10), 0 6px 18px rgba(16, 24, 40, 0.06);
+    --shadow-float: 0 12px 28px rgba(16, 24, 40, 0.12), 0 4px 10px rgba(16, 24, 40, 0.05);
 
-        .filter-buttons { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px; 
-            width: 100%;
-        }
-        
-        .filter-buttons button {
-            min-width: 0;
-            font-size: 0.72rem; 
-            padding: 10px 4px; 
-            border-radius: var(--radius-btn);
-            border: 1px solid transparent;
-            background: var(--card);
-            color: var(--text-main);
-            font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    --radius-btn: 14px;
+    --radius-card: 24px;
+    --radius-pill: 999px;
 
-        /* BOX 6 TAGES-FORTSCHRITT */
-        #box6-daily-progress {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 10px 14px; 
-            border-radius: var(--radius-btn);
-            background: var(--card);
-            border: 1px solid var(--border-light);
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.5), 0 2px 6px rgba(0,0,0,0.03);
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            color: var(--box6);
-        }
-        
-        /* STATISTIK / BOXEN-FILTER */
-        .stats { 
-            display: grid; 
-            grid-template-columns: repeat(6, 1fr); 
-            gap: 6px; 
-            background: var(--card);
-            padding: 10px; 
-            border-radius: var(--radius-btn);
-            border: 1px solid var(--border-light);
-            flex-shrink: 0;
-            margin-bottom: 14px; 
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.04);
-        }
-        .stat-box { 
-            position: relative;
-            padding: 8px 2px; 
-            border-radius: 9px; 
-            text-align: center; 
-            font-size: 0.72rem; 
-            font-weight: 700; 
-            border: 2px solid transparent;
-            color: var(--text-muted);
-            background: transparent;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 1px 3px rgba(0,0,0,0.05);
-        }
-        #stat-box-1 { color: var(--box1); }
-        #stat-box-2 { color: var(--box2); }
-        #stat-box-3 { color: var(--box3); }
-        #stat-box-4 { color: var(--box4); }
-        #stat-box-5 { color: var(--box5); }
-        #stat-box-6 { color: var(--box6); }
-        
-        .stat-box.selected-box { 
-            border-color: currentColor !important; 
-            background: var(--bg) !important;
-            opacity: 1 !important;
-            transform: scale(1.05);
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .stat-box.active-box { 
-            border-color: var(--border-light); 
-            background: var(--bg);
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
-        }
-        .stat-box.inactive-box { opacity: 0.4; box-shadow: none; }
-
-        /* Badge für Tagesdurchläufe Box 2-5 */
-        .daily-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: var(--focus-color);
-            color: #FFFFFF;
-            font-size: 0.55rem;
-            font-weight: 800;
-            min-width: 16px;
-            height: 16px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            pointer-events: none;
-        }
-
-        /* HAUPTKARTE */
-        .card { 
-            background: var(--card); 
-            border-radius: var(--radius-card); 
-            box-shadow: var(--shadow-card); 
-            border: 1px solid var(--border-light);
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            overflow: hidden;
-            padding: 16px 20px; 
-        }
-        
-        .card-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px; 
-            flex-grow: 1;
-            text-align: center;
-        }
-
-        #v-box { 
-            font-size: 0.75rem; 
-            font-weight: 800; 
-            color: var(--text-muted); 
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            padding: 6px 14px;
-            background: var(--bg);
-            border-radius: 20px;
-            border: 1px solid var(--border-light);
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-        }
-
-        #v-de {
-            font-family: var(--font-read);
-            font-size: 1.5rem; 
-            font-weight: 600; 
-            color: var(--text-main); 
-            word-break: break-word; 
-            line-height: 1.35;
-            margin: 0;
-            letter-spacing: -0.005em;
-        }
-        
-        .char-tag {
-            display: block;
-            font-family: var(--font-ui);
-            font-size: 0.85rem;
-            color: var(--primary);
-            font-weight: 700;
-            margin-top: 8px;
-            letter-spacing: 0.01em;
-        }
-
-        #v-hz {
-            font-size: 5rem; 
-            color: var(--text-main);
-            font-weight: 400;
-            line-height: 1;
-            margin: 0;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-        #v-hz.long-char { font-size: 3.5rem; }
-
-        #v-py {
-            font-family: var(--font-read);
-            font-style: italic;
-            font-size: 1.3rem; 
-            color: var(--primary); 
-            font-weight: 600; 
-            margin: 0;
-            letter-spacing: 0.01em;
-        }
-        
-        #v-stats {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            background: var(--bg);
-            padding: 6px 14px;
-            border-radius: var(--radius-btn);
-            border: 1px solid var(--border-light);
-            font-weight: 500;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-        }
-        
-        /* ZEICHENBOX */
-        .writer-grid { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            width: 100%;
-        }
-        
-        .char-box { 
-            width: 100%;
-            height: 100%;
-            max-width: 400px;  
-            max-height: 400px; 
-            aspect-ratio: 1/1; 
-            border: 1px solid var(--border-light); 
-            border-radius: var(--radius-card); 
-            background-color: var(--bg); 
-            box-shadow: inset 0 3px 6px rgba(0,0,0,0.06), 0 1px 0 rgba(255,255,255,0.7);
-            transition: border-color 0.2s;
-            touch-action: none;
-        }
-        .char-box:active { border-color: var(--primary); }
-
-        @media (prefers-color-scheme: dark) {
-            .char-box {
-                box-shadow: inset 0 3px 6px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05);
-            }
-        }
-
-        /* ACTION BUTTONS */
-        .action-area {
-            margin-top: auto; 
-            padding-top: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        button { 
-            border: none; 
-            margin: 0; 
-            font-weight: 800; 
-            cursor: pointer; 
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            box-shadow: var(--btn-shadow-raised);
-            transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-        button:active { 
-            transform: translateY(2px) scale(0.98); 
-            box-shadow: var(--btn-shadow-pressed);
-            filter: brightness(0.95);
-        }
-        button:disabled { opacity: 0.4 !important; cursor: not-allowed; transform: none; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
-        
-        .row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
-        .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
-        
-        .btn-large { padding: 16px; border-radius: var(--radius-btn); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .btn-medium { padding: 14px; border-radius: var(--radius-btn); font-size: 0.95rem; }
-        
-        .btn-primary { background-color: var(--primary); color: #FFFFFF; }
-        .btn-secondary { background-color: var(--card); color: var(--text-main); border: 1px solid transparent; }
-        
-        .btn-tool { 
-            background-color: var(--card); 
-            color: var(--text-main); 
-            border: 1px solid transparent;
-            padding: 14px 4px; 
-            font-size: 0.9rem; 
-            border-radius: var(--radius-btn); 
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .btn-grade { color: #FFFFFF; padding: 16px 4px; font-size: 0.95rem; border-radius: var(--radius-btn); font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
-        
-        .hidden { display: none !important; }
-        
-        /* MODAL */
-        .modal-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
-            display: flex; justify-content: center; align-items: center; 
-            z-index: 1000; padding: 20px; 
-        }
-        .modal-content { 
-            background: var(--card); padding: 24px; border-radius: var(--radius-card); 
-            width: 100%; max-width: 400px; max-height: 80vh; 
-            display: flex; flex-direction: column; box-shadow: var(--shadow-card); 
-            border: 1px solid var(--border-light);
-        }
-        
-        /* Wörterbuch Styling */
-        #dict-search-input {
-            width: 100%; padding: 14px; border-radius: var(--radius-btn); 
-            border: 1px solid var(--border-light); font-size: 1rem; 
-            background: var(--bg); color: var(--text-main); 
-            font-family: inherit; outline: none;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        #dict-search-input:focus {
-            border-color: var(--primary);
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05), 0 0 0 3px var(--primary-light);
-        }
-
-        /* Box 6 Statistik Tabelle */
-        #box6-stats-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.82rem;
-        }
-        #box6-stats-table th {
-            cursor: pointer;
-            padding: 8px 6px;
-            text-align: left;
-            border-bottom: 2px solid var(--border-light);
-            color: var(--text-muted);
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            user-select: none;
-            white-space: nowrap;
-            position: sticky;
-            top: 0;
-            background: var(--card);
-            box-shadow: 0 1px 0 var(--border-light);
-        }
-        #box6-stats-table th:nth-child(n+2) { text-align: center; }
-        #box6-stats-table td {
-            padding: 8px 6px;
-            border-bottom: 1px solid var(--border-light);
-            vertical-align: middle;
-        }
-        #box6-stats-table td:nth-child(n+2) { text-align: center; }
-        #box6-stats-table th.sorted-asc::after { content: " \25B2"; color: var(--primary); }
-        #box6-stats-table th.sorted-desc::after { content: " \25BC"; color: var(--primary); }
-        #box6-stats-summary {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="header">
-        <div class="header-top">
-            <h2>HSK Trainer</h2>
-            <div class="system-buttons">
-                <input type="file" id="csvFile" class="hidden" onchange="importCSV(this.files[0])" accept=".csv">
-                <button class="btn-action" onclick="document.getElementById('csvFile').click()">CSV</button>
-                <button class="btn-stats" onclick="openBox6Stats()">BOX 6 STATS</button>
-                <button onclick="exportProgress()">Backup</button>
-                <input type="file" id="jsonFile" class="hidden" onchange="importProgress(this.files[0])" accept=".json">
-                <button onclick="document.getElementById('jsonFile').click()">Laden</button>
-                <button class="btn-danger" onclick="resetSpeicher()">Reset</button>
-            </div>
-        </div>
-        <div class="filter-buttons">
-            <button id="btn-toggle-only-focus" onclick="toggleOnlyFocusMode()">ALLE KARTEN (0)</button>
-            <button id="btn-toggle-random-mode" onclick="toggleRandomMode()">ZUFALLSMODUS AUS</button>
-            <button id="btn-toggle-dict" onclick="toggleDictMode()">WÖRTERBUCH</button>
-        </div>
-        <div id="box6-daily-progress">BOX 6 HEUTE: 0/100</div>
-    </div>
-
-    <div class="stats" id="stats"></div>
-
-    <div class="card">
-        
-        <div id="dict-view" class="hidden" style="display: flex; flex-direction: column; height: 100%;">
-            <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 12px; flex-shrink: 0;">
-                <input type="text" id="dict-search-input" placeholder="Nach Begriff suchen..." onkeypress="if(event.key === 'Enter') searchDict()">
-                <button class="btn-primary btn-medium" style="padding: 0 20px;" onclick="searchDict()">SUCHEN</button>
-            </div>
-            <div id="dict-results" style="overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 8px;"></div>
-        </div>
-
-        <div id="flashcard-content" class="card-content">
-            <div id="v-box"></div>
-            <div id="v-de">Bitte CSV laden...</div>
-            
-            <div id="v-hz" class="hidden"></div>
-            <div id="v-py" class="hidden"></div>
-            <div id="v-stats" class="hidden"></div>
-            
-            <div id="writer-container" class="writer-grid hidden"></div>
-        </div>
-        
-        <div class="action-area">
-            
-            <div id="drawing-controls" class="row-2 hidden">
-                <button id="btn-clear" class="btn-secondary btn-large" onclick="clearCanvas()">LÖSCHEN</button>
-                <button id="btn-show" class="btn-primary btn-large" onclick="flip()">LÖSUNG</button>
-            </div>
-
-            <div id="learning-tools" class="row-3 hidden">
-                <button class="btn-tool" onclick="speak()">AUDIO</button>
-                <button class="btn-tool" onclick="retryCurrentWordWriting()">ÜBEN</button>
-                <button id="btn-example-trigger" class="btn-tool" onclick="openModal()">BEISPIEL</button>
-            </div>
-            
-            <div id="special-actions" class="row-2 hidden">
-                <button id="btn-focus" class="btn-secondary btn-medium" style="color: var(--focus-color);" onclick="toggleFocus()">FOKUS AKTIVIEREN</button>
-                <button class="btn-secondary btn-medium" onclick="moveToBox6()">ZU BOX 6</button>
-            </div>
-            
-            <div id="controls" class="row-3 hidden">
-                <button class="btn-grade" style="background-color: var(--box1);" onclick="move(-1)">FALSCH</button>
-                <button class="btn-grade" style="background-color: var(--box2);" onclick="move(0)">HALTEN</button>
-                <button class="btn-grade" style="background-color: var(--box5);" onclick="move(1)">RICHTIG</button>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-<div id="exampleModal" class="modal-overlay hidden">
-    <div class="modal-content">
-        <h3 style="margin-top: 0; color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Beispielsatz</h3>
-        <div style="overflow-y: auto; flex-grow: 1; margin-bottom: 16px;">
-            <div id="ex-hz" style="font-size: 1.6rem; font-weight: 400; margin-bottom: 6px;"></div>
-            <div id="ex-py" style="color: var(--primary); margin-bottom: 12px; font-size: 1.1rem; font-weight: 700;"></div>
-            <div id="ex-de" style="background: var(--bg); padding: 16px; border-radius: var(--radius-btn); border-left: 4px solid var(--primary); font-size: 1rem; line-height: 1.5; color: var(--text-main); box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);"></div>
-        </div>
-        <button class="btn-secondary btn-large" onclick="closeModal()">SCHLIESSEN</button>
-    </div>
-</div>
-
-<div id="box6StatsModal" class="modal-overlay hidden">
-    <div class="modal-content" style="max-width: 480px;">
-        <h3 style="margin-top: 0; color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Box 6 Statistik</h3>
-        <div id="box6-stats-summary"></div>
-        <div style="overflow: auto; flex-grow: 1; margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 8px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.03);">
-            <table id="box6-stats-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortBox6Stats('hz')">Vokabel</th>
-                        <th onclick="sortBox6Stats('queries')">Abgefragt</th>
-                        <th onclick="sortBox6Stats('correct')">Richtig</th>
-                        <th onclick="sortBox6Stats('wrong')">Falsch</th>
-                        <th onclick="sortBox6Stats('rate')">Quote</th>
-                        <th onclick="sortBox6Stats('dueDays')">Fällig</th>
-                    </tr>
-                </thead>
-                <tbody id="box6-stats-body"></tbody>
-            </table>
-        </div>
-        <button class="btn-secondary btn-large" onclick="closeBox6Stats()">SCHLIESSEN</button>
-    </div>
-</div>
-
-<script>
-let state = JSON.parse(localStorage.getItem('hsk_data')) || { box1: [], box2: [], box3: [], box4: [], box5: [], box6: [] };
-if (!state.box6) state.box6 = [];
-if (!state.box6Daily) state.box6Daily = { date: new Date().toDateString(), count: 0 };
-
-let sessionQueue = []; 
-let currentCard = null;
-let currentBoxName = ""; 
-
-let currentQuizChars = [];
-let currentQuizCharIndex = 0;
-let currentWriter = null;
-let singleCharBox = null;
-
-let onlyFocusMode = false; 
-let randomMode = false;       
-let selectedBoxFilter = null; 
-let dictMode = false;       
-let currentDictResults = []; 
-
-let box6SortColumn = 'queries';
-let box6SortDirection = 'desc';
-
-document.getElementById('stats').innerHTML = [1,2,3,4,5,6].map(i => 
-    `<div id="stat-box-${i}" class="stat-box">BOX ${i}<br><span id="stat-count-${i}">0</span>
-     ${(i >= 2 && i <= 5) ? `<div id="daily-count-${i}" class="daily-badge">0</div>` : ''}
-     </div>`
-).join('');
-
-[1,2,3,4,5,6].forEach(i => {
-    document.getElementById(`stat-box-${i}`).addEventListener('click', () => {
-        if (dictMode) toggleDictMode();
-        
-        sessionQueue = []; 
-        
-        if (selectedBoxFilter === i) {
-            selectedBoxFilter = null; 
-        } else {
-            selectedBoxFilter = i;
-            if (randomMode) toggleRandomMode();
-            if (onlyFocusMode) toggleOnlyFocusMode();
-        }
-        updateUI();
-        next();
-    });
-});
-
-function countHanzi(str) {
-    if (!str) return 0;
-    let count = 0;
-    for (let i = 0; i < str.length; i++) {
-        let code = str.charCodeAt(i);
-        if ((code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF)) {
-            count++;
-        }
-    }
-    return count;
+    --btn-highlight: transparent;
+    --btn-shade: transparent;
+    --btn-shadow-raised: 0 6px 14px rgba(16, 24, 40, 0.08), 0 1px 3px rgba(16, 24, 40, 0.06);
+    --btn-shadow-pressed: inset 0 2px 6px rgba(16, 24, 40, 0.12), 0 1px 2px rgba(16, 24, 40, 0.04);
 }
 
-function daysBetween(dateStr1, dateStr2) {
-    let d1 = new Date(dateStr1);
-    let d2 = new Date(dateStr2);
-    return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
-}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0b0d12;
+        --bg-elevated: rgba(20, 23, 31, 0.82);
+        --card: #14171f;
+        --card-soft: #181c25;
+        --text-main: #f4f7fb;
+        --text-muted: #aeb7c6;
+        --text-faint: #7f8999;
+        --border-light: rgba(255, 255, 255, 0.08);
+        --border-strong: rgba(255, 255, 255, 0.13);
 
-function addDays(dateStr, days) {
-    let d = dateStr ? new Date(dateStr) : new Date();
-    d.setDate(d.getDate() + days);
-    return d.toDateString();
-}
+        --primary: #6ea8ff;
+        --primary-strong: #8ab8ff;
+        --primary-light: rgba(37, 99, 235, 0.22);
+        --primary-soft: rgba(37, 99, 235, 0.10);
+        --focus-color: #b08cff;
 
-function isBox6CardDue(c) {
-    if (!c.nextReviewDate) return true; 
-    let today = new Date(); today.setHours(0,0,0,0);
-    let due = new Date(c.nextReviewDate); due.setHours(0,0,0,0);
-    return due <= today;
-}
+        --box1: #ff6b6b;
+        --box2: #fbbf24;
+        --box3: #60a5fa;
+        --box4: #a78bfa;
+        --box5: #4ade80;
+        --box6: #f472b6;
 
-function box6DueInDays(c) {
-    if (!c.nextReviewDate) return -9999;
-    let today = new Date(); today.setHours(0,0,0,0);
-    let due = new Date(c.nextReviewDate); due.setHours(0,0,0,0);
-    return Math.round((due - today) / (1000 * 60 * 60 * 24));
-}
-
-function checkBox6DailyReset() {
-    let today = new Date().toDateString();
-    if (!state.box6Daily || state.box6Daily.date !== today) {
-        state.box6Daily = { date: today, count: 0 };
+        --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.26), 0 3px 10px rgba(0, 0, 0, 0.22);
+        --shadow-card: 0 22px 56px rgba(0, 0, 0, 0.42), 0 8px 20px rgba(0, 0, 0, 0.28);
+        --shadow-float: 0 14px 34px rgba(0, 0, 0, 0.38), 0 4px 12px rgba(0, 0, 0, 0.24);
+        --btn-shadow-raised: 0 7px 16px rgba(0, 0, 0, 0.28), 0 1px 3px rgba(0, 0, 0, 0.28);
+        --btn-shadow-pressed: inset 0 2px 7px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(255, 255, 255, 0.03);
     }
 }
 
-function updateBox6DailyDisplay() {
-    checkBox6DailyReset();
-    let el = document.getElementById('box6-daily-progress');
-    if (el) el.innerText = `BOX 6 HEUTE: ${state.box6Daily.count}/100`;
+html,
+body {
+    min-height: 100%;
+    background:
+        radial-gradient(circle at 12% 0%, rgba(37, 99, 235, 0.12), transparent 31rem),
+        radial-gradient(circle at 100% 18%, rgba(124, 58, 237, 0.08), transparent 26rem),
+        var(--bg);
 }
 
-function openBox6Stats() {
-    document.getElementById('box6StatsModal').classList.remove('hidden');
-    renderBox6StatsTable();
+body {
+    font-feature-settings: "ss01" on, "cv02" on, "cv03" on;
+    text-rendering: optimizeLegibility;
 }
 
-function closeBox6Stats() {
-    document.getElementById('box6StatsModal').classList.add('hidden');
+.container {
+    max-width: 560px;
+    padding:
+        max(14px, env(safe-area-inset-top))
+        max(14px, env(safe-area-inset-right))
+        max(14px, env(safe-area-inset-bottom))
+        max(14px, env(safe-area-inset-left));
 }
 
-function sortBox6Stats(column) {
-    if (box6SortColumn === column) {
-        box6SortDirection = box6SortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-        box6SortColumn = column;
-        box6SortDirection = (column === 'hz') ? 'asc' : 'desc';
-    }
-    renderBox6StatsTable();
+/* ---------- Header ---------- */
+.header {
+    gap: 9px;
+    margin-bottom: 11px;
 }
 
-function renderBox6StatsTable() {
-    let data = state.box6.map(c => {
-        let stats = c.stats || { queries: 0, correct: 0 };
-        let queries = stats.queries || 0;
-        let correct = stats.correct || 0;
-        let wrong = queries - correct;
-        let rate = queries > 0 ? (correct / queries) * 100 : 0;
-        let dueDays = box6DueInDays(c);
-        return { card: c, hz: c.hz || '', py: c.py || '', de: c.de || '', queries, correct, wrong, rate, dueDays };
-    });
-
-    data.sort((a, b) => {
-        let valA = a[box6SortColumn];
-        let valB = b[box6SortColumn];
-        let cmp;
-        if (typeof valA === 'string') {
-            cmp = valA.localeCompare(valB, 'zh');
-        } else {
-            cmp = valA - valB;
-        }
-        return box6SortDirection === 'asc' ? cmp : -cmp;
-    });
-
-    let summaryEl = document.getElementById('box6-stats-summary');
-    summaryEl.innerText = `${data.length} Vokabel${data.length === 1 ? '' : 'n'} in Box 6`;
-
-    let tbody = document.getElementById('box6-stats-body');
-    if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--text-muted);">Keine Vokabeln in Box 6</td></tr>`;
-    } else {
-        tbody.innerHTML = data.map(d => {
-            let dueLabel;
-            if (d.dueDays <= 0) {
-                dueLabel = `<span style="color: var(--box6); font-weight:700;">jetzt</span>`;
-            } else if (d.dueDays === 1) {
-                dueLabel = `in 1 Tag`;
-            } else {
-                dueLabel = `in ${d.dueDays} Tg.`;
-            }
-            return `
-            <tr>
-                <td>
-                    <div style="font-weight:700; font-size: 1rem;">${d.hz}</div>
-                    <div style="color: var(--primary); font-size:0.75rem; font-weight:600;">${d.py}</div>
-                </td>
-                <td>${d.queries}</td>
-                <td style="color: var(--box5); font-weight:700;">${d.correct}</td>
-                <td style="color: var(--box1); font-weight:700;">${d.wrong}</td>
-                <td style="font-weight:600;">${d.queries > 0 ? Math.round(d.rate) + '%' : '–'}</td>
-                <td style="font-size:0.75rem;">${dueLabel}</td>
-            </tr>
-        `;
-        }).join('');
-    }
-
-    let columnIndex = { hz: 0, queries: 1, correct: 2, wrong: 3, rate: 4, dueDays: 5 };
-    let ths = document.querySelectorAll('#box6-stats-table th');
-    ths.forEach(th => th.classList.remove('sorted-asc', 'sorted-desc'));
-    let activeTh = ths[columnIndex[box6SortColumn]];
-    if (activeTh) activeTh.classList.add(box6SortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc');
+.header-top {
+    gap: 10px;
 }
 
-function startQuizForCurrentChar() {
-    if (currentQuizCharIndex >= currentQuizChars.length) return;
-    
-    if (currentWriter) {
-        try { currentWriter.cancelQuiz(); } catch(e) {}
-        currentWriter = null;
-    }
-    
-    let container = document.getElementById('writer-container');
-    container.innerHTML = ''; 
-    
-    singleCharBox = document.createElement('div');
-    singleCharBox.className = 'char-box';
-    container.appendChild(singleCharBox);
-    
-    let char = currentQuizChars[currentQuizCharIndex];
-    
-    requestAnimationFrame(() => {
-        let boxSize = Math.min(window.innerHeight * 0.5, window.innerWidth * 0.9, 400);
-        
-        currentWriter = HanziWriter.create(singleCharBox, char, { 
-            width: boxSize, 
-            height: boxSize, 
-            showCharacter: false, 
-            showOutline: false, 
-            padding: Math.floor(boxSize * 0.05), 
-            strokeColor: '#1A73E8'
-        });
-        
-        currentWriter.quiz({
-            onComplete: function() {
-                setTimeout(() => {
-                    currentQuizCharIndex++;
-                    if (currentQuizCharIndex < currentQuizChars.length) {
-                        startQuizForCurrentChar();
-                    }
-                }, 300); 
-            }
-        });
-    });
+.header-top h2 {
+    font-size: clamp(1.2rem, 4vw, 1.45rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+    background: linear-gradient(110deg, var(--text-main), var(--primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
 }
 
-function getFocusCount() {
-    let count = 0;
-    for (let i = 1; i <= 6; i++) {
-        state['box' + i].forEach(c => {
-            if (c.inFocus) count++;
-        });
-    }
-    return count;
+.system-buttons,
+.filter-buttons {
+    gap: 7px;
 }
 
-function toggleDictMode() {
-    dictMode = !dictMode;
-    let btn = document.getElementById('btn-toggle-dict');
-    let dictView = document.getElementById('dict-view');
-    let flashcardElements = ['flashcard-content', 'drawing-controls', 'learning-tools', 'special-actions', 'controls'];
-    
-    if (dictMode) {
-        btn.style.backgroundColor = "var(--primary)";
-        btn.style.color = "#FFFFFF";
-        dictView.classList.remove('hidden');
-        
-        flashcardElements.forEach(id => {
-            let el = document.getElementById(id);
-            if (el) el.classList.add('hidden');
-        });
-        
-        document.getElementById('dict-search-input').value = "";
-        document.getElementById('dict-results').innerHTML = "";
-        document.getElementById('dict-search-input').focus();
-    } else {
-        btn.style.backgroundColor = "var(--card)";
-        btn.style.color = "var(--text-main)";
-        dictView.classList.add('hidden');
-        document.getElementById('flashcard-content').classList.remove('hidden');
-        next(); 
-    }
+.system-buttons button,
+.filter-buttons button {
+    min-height: 44px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-elevated);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow: var(--shadow-subtle);
+    text-shadow: none;
 }
 
-function searchDict() {
-    let query = document.getElementById('dict-search-input').value.trim().toLowerCase();
-    let resultsContainer = document.getElementById('dict-results');
-    resultsContainer.innerHTML = "";
-    
-    if (!query) return;
-
-    let allCards = [];
-    for (let i = 1; i <= 6; i++) {
-        state['box' + i].forEach(c => {
-            allCards.push({ card: c, boxNum: i });
-        });
-    }
-
-    currentDictResults = allCards.filter(item => 
-        item.card.de.toLowerCase().includes(query) || 
-        item.card.py.toLowerCase().includes(query) ||
-        item.card.hz.includes(query)
-    );
-
-    if (currentDictResults.length === 0) {
-        resultsContainer.innerHTML = "<p style='color: var(--text-muted); text-align: center; font-size: 0.95rem; margin-top: 20px; font-weight:600;'>Keine Ergebnisse gefunden.</p>";
-        return;
-    }
-
-    currentDictResults.forEach((item, index) => {
-        let c = item.card;
-        let boxNum = item.boxNum;
-        let div = document.createElement('div');
-        div.style.cssText = "background: var(--bg); padding: 16px; border-radius: var(--radius-btn); border: 1px solid var(--border-light); box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 2px 5px rgba(0,0,0,0.03);";
-        
-        let focusBtnBg = c.inFocus ? "var(--focus-color)" : "transparent";
-        let focusBtnColor = c.inFocus ? "#FFFFFF" : "var(--text-main)";
-        let focusBtnBorder = c.inFocus ? "transparent" : "var(--border-light)";
-        let focusBtnText = c.inFocus ? "FOKUS AKTIV" : "FOKUS";
-        let focusShadow = c.inFocus ? "var(--btn-shadow-raised)" : "none";
-
-        let html = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <div style="font-size: 1.5rem; font-weight: 700;">${c.hz}</div>
-                <div style="display: flex; gap: 6px;">
-                    <button onclick="toggleDictFocus(${index})" style="padding: 6px 10px; font-size: 0.75rem; border-radius: var(--radius-btn); background-color: ${focusBtnBg}; color: ${focusBtnColor}; border: 1px solid ${focusBtnBorder}; box-shadow: ${focusShadow}; font-weight:800;">${focusBtnText}</button>
-                    <select onchange="changeDictBox(${index}, this.value)" style="background: var(--box${boxNum}); color: white; padding: 6px 10px; border-radius: var(--radius-btn); font-size: 0.8rem; font-weight: 800; border: none; outline: none; box-shadow: var(--btn-shadow-raised);">
-                        <option value="1" style="color: black; background: white;" ${boxNum == 1 ? 'selected' : ''}>B1</option>
-                        <option value="2" style="color: black; background: white;" ${boxNum == 2 ? 'selected' : ''}>B2</option>
-                        <option value="3" style="color: black; background: white;" ${boxNum == 3 ? 'selected' : ''}>B3</option>
-                        <option value="4" style="color: black; background: white;" ${boxNum == 4 ? 'selected' : ''}>B4</option>
-                        <option value="5" style="color: black; background: white;" ${boxNum == 5 ? 'selected' : ''}>B5</option>
-                        <option value="6" style="color: black; background: white;" ${boxNum == 6 ? 'selected' : ''}>B6</option>
-                    </select>
-                </div>
-            </div>
-            <div style="color: var(--primary); font-size: 1rem; margin-bottom: 6px; font-weight:700;">${c.py}</div>
-            <div style="font-size: 1.05rem; font-weight: 600;">${c.de}</div>
-        `;
-        
-        if (c.sentenceHz) {
-            html += `
-                <div style="border-top: 1px solid var(--border-light); padding-top: 10px; margin-top: 10px; font-size: 0.9rem;">
-                    <div style="color: var(--text-main); font-weight: 600;">${c.sentenceHz}</div>
-                    <div style="color: var(--primary); margin: 4px 0; font-weight:700;">${c.sentencePy}</div>
-                    <div style="color: var(--text-muted); line-height: 1.4;">${c.sentenceDe}</div>
-                </div>
-            `;
-        }
-        
-        div.innerHTML = html;
-        resultsContainer.appendChild(div);
-    });
+.system-buttons button {
+    padding: 8px 3px;
+    font-size: 0.61rem;
+    letter-spacing: 0.025em;
 }
 
-function toggleDictFocus(index) {
-    let item = currentDictResults[index];
-    if (!item.card.inFocus && getFocusCount() >= 150) {
-        alert("Das Limit von 150 Vokabeln im Fokus ist erreicht.");
-        return;
-    }
-    item.card.inFocus = !item.card.inFocus;
-    if (item.card.inFocus) item.card.correctCount = 0;
-    sessionQueue = [];
-    updateUI(); searchDict(); 
+.system-buttons .btn-action {
+    background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+    color: #fff;
+    border-color: transparent;
 }
 
-function changeDictBox(index, newBoxLevel) {
-    let item = currentDictResults[index];
-    let oldBox = 'box' + item.boxNum;
-    let newBox = 'box' + newBoxLevel;
-    if (oldBox === newBox) return; 
-    state[oldBox] = state[oldBox].filter(c => c !== item.card);
-    item.card.lastMovedDate = new Date().toDateString();
-    if (newBox === 'box5') { item.card.box5Streak = 0; item.card.box5LastCorrectDate = null; }
-    state[newBox].push(item.card);
-    sessionQueue = [];
-    updateUI(); searchDict(); 
+.system-buttons .btn-stats {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--box6) 11%, var(--card)), var(--card));
+    color: var(--box6);
 }
 
-function updateUI() {
-    let today = new Date().toDateString();
-    [1,2,3,4,5,6].forEach(i => {
-        let countSpan = document.getElementById(`stat-count-${i}`);
-        if (countSpan) countSpan.innerText = state['box'+i].length;
-        
-        if (i >= 2 && i <= 5) {
-            let badge = document.getElementById(`daily-count-${i}`);
-            if (badge) {
-                let boxCards = state['box'+i];
-                if (boxCards.length === 0) {
-                    badge.innerText = 0;
-                } else {
-                    let minRounds = Infinity;
-                    boxCards.forEach(c => {
-                        let rounds = (c.lastSeenDate === today && typeof c.todayRounds === 'number') ? c.todayRounds : 0;
-                        if (rounds < minRounds) minRounds = rounds;
-                    });
-                    badge.innerText = (minRounds === Infinity) ? 0 : minRounds;
-                }
-            }
-        }
-    });
-
-    localStorage.setItem('hsk_data', JSON.stringify(state));
-    highlightActiveBox(); 
-    updateFocusButtonText();
-    updateBox6DailyDisplay();
+.system-buttons .btn-danger {
+    color: var(--box1);
 }
 
-function highlightActiveBox() {
-    [1,2,3,4,5,6].forEach(i => {
-        let element = document.getElementById(`stat-box-${i}`);
-        if (element) {
-            element.classList.remove('active-box', 'inactive-box', 'selected-box');
-            if (selectedBoxFilter === i) {
-                element.classList.add('selected-box');
-            } else if (selectedBoxFilter !== null) {
-                element.classList.add('inactive-box');
-            } else if (currentBoxName === 'box' + i) {
-                element.classList.add('active-box');
-            } else if (currentBoxName !== "") {
-                element.classList.add('inactive-box');
-            }
-        }
-    });
+.filter-buttons button {
+    padding: 10px 7px;
+    font-size: 0.72rem;
+    letter-spacing: -0.01em;
 }
 
-function updateFocusButtonText() {
-    let btn = document.getElementById('btn-toggle-only-focus');
-    let count = getFocusCount();
-    btn.innerText = `ALLE KARTEN (${count})`;
-    if (onlyFocusMode) {
-        btn.innerText = `FOKUS AKTIV (${count})`;
-    }
+/* ---------- Box 6 Tagesfortschritt ---------- */
+#box6-daily-progress {
+    position: relative;
+    overflow: hidden;
+    padding: 10px 14px 10px 42px;
+    min-height: 40px;
+    justify-content: center;
+    border: 1px solid color-mix(in srgb, var(--box6) 20%, var(--border-light));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--box6) 9%, var(--card)), var(--card));
+    box-shadow: var(--shadow-subtle);
+    font-size: 0.70rem;
+    letter-spacing: 0.045em;
 }
 
-function toggleOnlyFocusMode() {
-    onlyFocusMode = !onlyFocusMode;
-    sessionQueue = []; 
-    let btn = document.getElementById('btn-toggle-only-focus');
-    if (onlyFocusMode) {
-        btn.style.backgroundColor = "var(--focus-color)";
-        btn.style.color = "#FFFFFF";
-        selectedBoxFilter = null; 
-        if(randomMode) toggleRandomMode();
-    } else {
-        btn.style.backgroundColor = "var(--card)";
-        btn.style.color = "var(--text-main)";
-    }
-    updateUI();
-    next();
+#box6-daily-progress::before {
+    content: "6";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--box6);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    box-shadow: 0 6px 12px color-mix(in srgb, var(--box6) 28%, transparent);
 }
 
-function toggleRandomMode() {
-    randomMode = !randomMode;
-    sessionQueue = []; 
-    let btn = document.getElementById('btn-toggle-random-mode');
-    if (randomMode) {
-        btn.innerText = "ZUFALLSMODUS AKTIV";
-        btn.style.backgroundColor = "var(--box4)"; 
-        btn.style.color = "#FFFFFF";
-        selectedBoxFilter = null; 
-        if(onlyFocusMode) toggleOnlyFocusMode();
-    } else {
-        btn.innerText = "ZUFALLSMODUS AUS";
-        btn.style.backgroundColor = "var(--card)";
-        btn.style.color = "var(--text-main)";
-    }
-    updateUI();
-    next();
+/* ---------- Box-Statistik ---------- */
+.stats {
+    gap: 7px;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-elevated);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    box-shadow: var(--shadow-subtle);
 }
 
-function parseCSVLine(text) {
-    let fields = []; let field = ""; let inQuotes = false;
-    for (let i = 0; i < text.length; i++) {
-        let char = text[i];
-        if (char === '"' || char === '„' || char === '“' || char === '”') { inQuotes = !inQuotes; } 
-        else if (char === ',' && !inQuotes) { fields.push(cleanField(field)); field = ""; } 
-        else { field += char; }
-    }
-    fields.push(cleanField(field)); return fields;
+.stat-box {
+    min-height: 48px;
+    padding: 8px 2px 7px;
+    border-radius: 11px;
+    border-width: 1px;
+    background: transparent;
+    box-shadow: none;
+    font-size: 0.64rem;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
 }
 
-function cleanField(str) {
-    let t = str.trim();
-    if ((t.startsWith('"') && t.endsWith('"')) || (t.startsWith('„') && t.endsWith('“'))) { t = t.substring(1, t.length - 1); }
-    return t.trim();
+.stat-box span[id^="stat-count-"] {
+    display: inline-block;
+    margin-top: 2px;
+    font-size: 0.86rem;
+    font-weight: 800;
 }
 
-function importCSV(file) {
-    if(!file) return;
-    const targetBox = confirm("Vokabeln als bereits bekannt markieren (Box 5)?\nWählen Sie 'Abbrechen' für neue Vokabeln (Box 1).") ? 'box5' : 'box1';
-    let detectedLevel = "Import";
-    let match = file.name.toLowerCase().match(/hsk\s*([1-6])/);
-    if (match) detectedLevel = "HSK " + match[1];
-    
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const rows = e.target.result.replace(/\r/g, "").split('\n');
-        rows.forEach(r => {
-            if(!r.trim()) return;
-            const p = parseCSVLine(r);
-            if(p.length >= 3) {
-                state[targetBox].push({ 
-                    hz: p[0], py: p[1], de: p[2], 
-                    sentenceHz: p[3] || '', sentencePy: p[4] || '', sentenceDe: p[5] || '', 
-                    level: p[6] ? p[6].trim() : detectedLevel, 
-                    inFocus: false,
-                    stats: { queries: 0, correct: 0 }
-                });
-            }
-        });
-        sessionQueue = [];
-        updateUI(); next();
-    };
-    reader.readAsText(file);
+.stat-box.active-box {
+    background: var(--card-soft);
+    border-color: var(--border-strong);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
 }
 
-function next() {
-    if (dictMode) return; 
+.stat-box.selected-box {
+    transform: translateY(-1px);
+    background: color-mix(in srgb, currentColor 7%, var(--card)) !important;
+    box-shadow: 0 6px 16px color-mix(in srgb, currentColor 13%, transparent);
+}
 
-    if (sessionQueue.length === 0) {
-        let pool = [];
-        const boxWeights = [0, 16, 8, 4, 2, 1, 1]; 
-        
-        if (selectedBoxFilter === 6) {
-            let cards = [...state.box6];
-            
-            cards.sort((a, b) => {
-                let dateA = a.lastMovedDate ? new Date(a.lastMovedDate).getTime() : 0;
-                let dateB = b.lastMovedDate ? new Date(b.lastMovedDate).getTime() : 0;
-                return dateA - dateB;
-            });
+.stat-box.inactive-box {
+    opacity: 0.34;
+}
 
-            let targetBatch = cards.slice(0, 100);
-            
-            targetBatch.forEach(c => pool.push({c, box: 'box6'}));
+.daily-badge {
+    top: -5px;
+    right: -5px;
+    min-width: 17px;
+    height: 17px;
+    border: 2px solid var(--card);
+    font-size: 0.52rem;
+    box-shadow: 0 3px 8px rgba(16, 24, 40, 0.16);
+}
 
-            for (let i = pool.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [pool[i], pool[j]] = [pool[j], pool[i]];
-            }
+/* ---------- Hauptkarte ---------- */
+.card {
+    position: relative;
+    padding: 18px 18px 16px;
+    border-radius: 28px;
+    border: 1px solid var(--border-light);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.035), transparent 18%),
+        var(--card);
+    box-shadow: var(--shadow-card);
+}
 
-            sessionQueue = pool;
-        } 
-        else {
-            for(let i=1; i<=6; i++) {
-                if (selectedBoxFilter !== null && i !== selectedBoxFilter) continue;
-                
-                state['box'+i].forEach(c => {
-                    if (onlyFocusMode && !c.inFocus) return; 
-                    
-                    if (!c.stats) c.stats = { queries: 0, correct: 0 };
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), transparent 18%);
+    opacity: 0.7;
+}
 
-                    if (selectedBoxFilter !== null) {
-                        pool.push({c, box: 'box'+i});
-                    } else {
-                        let weight = 1;
-                        if (!randomMode) {
-                            if (i === 6) {
-                                if (!isBox6CardDue(c)) return;
-                                weight = 1;
-                            } else {
-                                weight = boxWeights[i]; 
-                            }
-                        }
+.card-content,
+#dict-view,
+.action-area {
+    position: relative;
+    z-index: 1;
+}
 
-                        for(let j=0; j<weight; j++) {
-                            pool.push({c, box: 'box'+i});
-                        }
-                        
-                        if (c.inFocus && !randomMode) {
-                            let additionalTickets = 7;
-                            for (let f = 0; f < additionalTickets; f++) pool.push({c, box: 'box'+i});
-                        }
-                    }
-                });
-            }
+.card-content {
+    gap: clamp(9px, 2vh, 14px);
+}
 
-            for (let i = pool.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [pool[i], pool[j]] = [pool[j], pool[i]];
-            }
+#v-box {
+    min-height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 13px;
+    border: 1px solid var(--border-light);
+    background: var(--card-soft);
+    border-radius: var(--radius-pill);
+    font-size: 0.66rem;
+    color: var(--text-muted);
+    letter-spacing: 0.075em;
+    box-shadow: none;
+}
 
-            sessionQueue = pool;
-        }
+#v-de {
+    width: min(100%, 440px);
+    font-size: clamp(1.25rem, 4.4vw, 1.65rem);
+    line-height: 1.28;
+    letter-spacing: -0.015em;
+}
 
-        if(pool.length === 0) {
-            currentBoxName = ""; currentCard = null;
-            document.getElementById('v-box').innerText = "SYSTEMSTATUS";
-            
-            if (selectedBoxFilter !== null) {
-                document.getElementById('v-de').innerText = `Box ${selectedBoxFilter} ist leer.`;
-            } else {
-                document.getElementById('v-de').innerText = onlyFocusMode ? "Keine Fokus-Karten vorhanden" : "Bitte laden Sie eine CSV-Datei...";
-            }
-            
-            document.getElementById('writer-container').classList.add('hidden');
-            document.getElementById('drawing-controls').classList.add('hidden');
-            document.getElementById('learning-tools').classList.add('hidden');
-            document.getElementById('special-actions').classList.add('hidden');
-            document.getElementById('controls').classList.add('hidden');
-            document.getElementById('v-stats').classList.add('hidden');
-            highlightActiveBox();
-            return;
-        }
-    }
-    
-    let selection = sessionQueue.pop();
-    currentCard = selection.c; 
-    currentBoxName = selection.box; 
-    
-    let statsInfo = "";
-    if (currentBoxName === 'box6' && currentCard.stats && currentCard.stats.queries > 0) {
-        let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
-        statsInfo = ` • ${percent}% ERFOLG`;
-    } else if (currentBoxName === 'box5') {
-        let streak = currentCard.box5Streak || 0;
-        statsInfo = ` • STREAK: ${streak}/3 TAGEN`;
-    }
+.char-tag {
+    width: fit-content;
+    margin: 8px auto 0;
+    padding: 4px 9px;
+    border-radius: var(--radius-pill);
+    background: var(--primary-soft);
+    font-size: 0.73rem;
+    color: var(--primary);
+}
 
-    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
-    
-    let hCount = countHanzi(currentCard.hz);
-    let tagHtml = hCount > 0 ? `<span class="char-tag">(${hCount} ${hCount === 1 ? 'Zeichen' : 'Zeichen'})</span>` : '';
-    document.getElementById('v-de').innerHTML = currentCard.de + tagHtml;
+#v-hz {
+    font-size: clamp(3.8rem, 16vw, 5.7rem);
+    letter-spacing: -0.05em;
+    text-shadow: 0 10px 22px rgba(16, 24, 40, 0.08);
+}
 
-    highlightActiveBox();
-    
-    document.getElementById('writer-container').classList.remove('hidden');
-    document.getElementById('writer-container').innerHTML = '';
-    
-    currentWriter = null; singleCharBox = null; currentQuizChars = [];
-    document.getElementById('v-hz').classList.add('hidden');
-    document.getElementById('v-hz').classList.remove('long-char');
-    document.getElementById('v-py').classList.add('hidden');
-    document.getElementById('v-stats').classList.add('hidden');
-    
-    document.getElementById('drawing-controls').classList.remove('hidden');
-    document.getElementById('learning-tools').classList.add('hidden');
-    document.getElementById('special-actions').classList.add('hidden');
-    document.getElementById('controls').classList.add('hidden');
-    closeModal();
+#v-hz.long-char {
+    font-size: clamp(2.5rem, 10vw, 3.8rem);
+    letter-spacing: -0.035em;
+}
 
-    let cleanHz = currentCard.hz ? currentCard.hz.replace(/\s/g, '') : '';
-    currentQuizChars = [];
-    for (let i = 0; i < cleanHz.length; i++) {
-        let code = cleanHz.charCodeAt(i);
-        if ((code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF)) {
-            currentQuizChars.push(cleanHz[i]);
-        }
-    }
-    currentQuizCharIndex = 0;
+#v-py {
+    font-size: clamp(1.05rem, 4vw, 1.35rem);
+    color: var(--primary);
+}
 
-    if (currentQuizChars.length > 0) {
-        startQuizForCurrentChar();
+#v-stats {
+    max-width: 100%;
+    margin-top: 2px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    background: var(--card-soft);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    box-shadow: none;
+}
+
+/* ---------- Schreibfläche ---------- */
+.writer-grid {
+    min-height: 0;
+}
+
+.char-box {
+    width: min(100%, 390px);
+    max-width: 390px;
+    max-height: 390px;
+    border-radius: 22px;
+    border: 1px solid var(--border-strong);
+    background:
+        linear-gradient(90deg, transparent 49.7%, color-mix(in srgb, var(--border-strong) 55%, transparent) 50%, transparent 50.3%),
+        linear-gradient(0deg, transparent 49.7%, color-mix(in srgb, var(--border-strong) 55%, transparent) 50%, transparent 50.3%),
+        var(--card-soft);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+.char-box:active {
+    border-color: color-mix(in srgb, var(--primary) 70%, var(--border-strong));
+    box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+/* ---------- Buttons ---------- */
+button {
+    min-height: 42px;
+    border: 1px solid transparent;
+    box-shadow: var(--btn-shadow-raised);
+    text-shadow: none;
+    letter-spacing: -0.005em;
+    transform: translateZ(0);
+}
+
+button:hover {
+    filter: brightness(1.015);
+}
+
+button:active {
+    transform: translateY(1px) scale(0.985);
+    filter: brightness(0.985);
+}
+
+.btn-large {
+    min-height: 52px;
+    padding: 13px 14px;
+    border-radius: 15px;
+    font-size: 0.92rem;
+    letter-spacing: 0.035em;
+}
+
+.btn-medium {
+    min-height: 46px;
+    padding: 11px 12px;
+    border-radius: 14px;
+    font-size: 0.86rem;
+}
+
+.btn-tool {
+    min-height: 48px;
+    padding: 11px 5px;
+    border-radius: 14px;
+    border: 1px solid var(--border-light);
+    background: var(--card-soft);
+    font-size: 0.78rem;
+    letter-spacing: 0.045em;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--primary) 24%, transparent);
+}
+
+.btn-secondary {
+    background: var(--card-soft);
+    color: var(--text-main);
+    border-color: var(--border-light);
+}
+
+.btn-grade {
+    min-height: 52px;
+    padding: 12px 4px;
+    border-radius: 15px;
+    font-size: 0.79rem;
+    letter-spacing: 0.04em;
+    box-shadow: 0 8px 18px rgba(16, 24, 40, 0.10);
+}
+
+#controls .btn-grade:nth-child(1) {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--box1) 92%, white), var(--box1)) !important;
+}
+
+#controls .btn-grade:nth-child(2) {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--box2) 92%, white), var(--box2)) !important;
+}
+
+#controls .btn-grade:nth-child(3) {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--box5) 92%, white), var(--box5)) !important;
+}
+
+.action-area {
+    padding-top: 14px;
+    gap: 9px;
+}
+
+.row-2,
+.row-3 {
+    gap: 9px;
+}
+
+/* ---------- Wörterbuch ---------- */
+#dict-view {
+    min-height: 0;
+}
+
+#dict-search-input {
+    min-height: 48px;
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    background: var(--card-soft);
+    box-shadow: none;
+    font-size: 0.95rem;
+}
+
+#dict-search-input::placeholder {
+    color: var(--text-faint);
+}
+
+#dict-search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+#dict-results {
+    padding-right: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+}
+
+#dict-results > div {
+    border-radius: 16px !important;
+    background: var(--card-soft) !important;
+    border-color: var(--border-light) !important;
+    box-shadow: none !important;
+}
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+    padding: max(18px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
+    background: rgba(8, 11, 18, 0.58);
+    backdrop-filter: blur(18px) saturate(125%);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+}
+
+.modal-content {
+    max-width: 430px;
+    max-height: min(82vh, 760px);
+    padding: 22px;
+    border-radius: 24px;
+    border: 1px solid var(--border-light);
+    background: var(--card);
+    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.28);
+}
+
+.modal-content h3 {
+    letter-spacing: 0.035em !important;
+}
+
+#box6StatsModal .modal-content {
+    max-width: min(94vw, 540px) !important;
+}
+
+#box6-stats-summary {
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: var(--card-soft);
+    color: var(--text-muted);
+}
+
+#box6-stats-table {
+    font-size: 0.80rem;
+}
+
+#box6-stats-table th {
+    padding: 10px 7px;
+    background: color-mix(in srgb, var(--card) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 0.62rem;
+    border-bottom-color: var(--border-strong);
+}
+
+#box6-stats-table td {
+    padding: 10px 7px;
+}
+
+/* ---------- Scrollbars ---------- */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 999px;
+}
+
+/* ---------- Accessibility ---------- */
+button:focus-visible,
+.stat-box:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--primary-soft), var(--shadow-subtle);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }
 
-function flip() {
-    if (!currentCard) return;
-    
-    let statsInfo = "";
-    if (currentBoxName === 'box6' && currentCard.stats && currentCard.stats.queries > 0) {
-        let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
-        statsInfo = ` • ${percent}% ERFOLG`;
-    } else if (currentBoxName === 'box5') {
-        let streak = currentCard.box5Streak || 0;
-        statsInfo = ` • STREAK: ${streak}/3 TAGEN`;
+/* ---------- Kleine Smartphones ---------- */
+@media (max-width: 390px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
-    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
-    document.getElementById('v-de').innerText = currentCard.de;
-
-    let hzElement = document.getElementById('v-hz');
-    let cleanHz = currentCard.hz ? currentCard.hz.replace(/\s/g, '') : '';
-    
-    hzElement.classList.toggle('long-char', cleanHz.length > 3);
-    hzElement.innerText = currentCard.hz;
-    document.getElementById('v-py').innerText = currentCard.py;
-    
-    hzElement.classList.remove('hidden');
-    document.getElementById('v-py').classList.remove('hidden');
-    
-    let statsElement = document.getElementById('v-stats');
-    let statsText = "";
-    if (currentCard.stats && currentCard.stats.queries > 0) {
-        let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
-        statsText = `Abgefragt: <b>${currentCard.stats.queries}x</b> &nbsp;|&nbsp; Richtig: <b>${currentCard.stats.correct}x</b> (${percent}%)`;
-    } else {
-        statsText = "<i>Noch keine Statistik vorhanden</i>";
+    .system-buttons,
+    .filter-buttons,
+    .stats,
+    .row-2,
+    .row-3 {
+        gap: 6px;
     }
 
-    if (currentBoxName === 'box5') {
-        let streak = currentCard.box5Streak || 0;
-        statsText += `<br><span style="color: var(--box5); font-weight:700;">Box 6 Fortschritt: ${streak} von 3 Tagen in Folge richtig</span>`;
+    .system-buttons button {
+        min-height: 40px;
+        font-size: 0.56rem;
     }
 
-    statsElement.innerHTML = statsText;
-    statsElement.classList.remove('hidden');
-    
-    let btnExample = document.getElementById('btn-example-trigger');
-    if (currentCard.sentenceHz) {
-        document.getElementById('ex-hz').innerText = currentCard.sentenceHz;
-        document.getElementById('ex-py').innerText = currentCard.sentencePy;
-        document.getElementById('ex-de').innerText = currentCard.sentenceDe;
-        btnExample.disabled = false;
-    } else {
-        btnExample.disabled = true;
+    .filter-buttons button {
+        font-size: 0.66rem;
     }
-    
-    let btnFocus = document.getElementById('btn-focus');
-    if (currentCard.inFocus) {
-        btnFocus.innerText = "FOKUS AKTIV";
-        btnFocus.style.backgroundColor = "var(--focus-color)";
-        btnFocus.style.color = "#FFFFFF";
-    } else {
-        btnFocus.innerText = "FOKUS AKTIVIEREN";
-        btnFocus.style.backgroundColor = "var(--card)";
-        btnFocus.style.color = "var(--focus-color)";
+
+    .stats {
+        padding: 7px;
     }
-    
-    document.getElementById('writer-container').classList.add('hidden');
-    document.getElementById('drawing-controls').classList.add('hidden');
-    
-    document.getElementById('learning-tools').classList.remove('hidden');
-    document.getElementById('special-actions').classList.remove('hidden');
-    document.getElementById('controls').classList.remove('hidden');
-}
 
-function retryCurrentWordWriting() {
-    if (!currentCard) return;
-    
-    let hCount = countHanzi(currentCard.hz);
-    let tagHtml = hCount > 0 ? `<span class="char-tag">(${hCount} ${hCount === 1 ? 'Zeichen' : 'Zeichen'})</span>` : '';
-    document.getElementById('v-de').innerHTML = currentCard.de + tagHtml;
-
-    document.getElementById('v-hz').classList.add('hidden');
-    document.getElementById('v-py').classList.add('hidden');
-    document.getElementById('v-stats').classList.add('hidden');
-    
-    document.getElementById('learning-tools').classList.add('hidden');
-    document.getElementById('special-actions').classList.add('hidden');
-    document.getElementById('controls').classList.add('hidden');
-    
-    document.getElementById('drawing-controls').classList.remove('hidden');
-    
-    const container = document.getElementById('writer-container');
-    container.innerHTML = '';
-    container.classList.remove('hidden');
-    
-    currentWriter = null; singleCharBox = null; currentQuizChars = [];
-    
-    let cleanHz = currentCard.hz ? currentCard.hz.replace(/\s/g, '') : '';
-    for (let i = 0; i < cleanHz.length; i++) {
-        let code = cleanHz.charCodeAt(i);
-        if ((code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF)) {
-            currentQuizChars.push(cleanHz[i]);
-        }
+    .stat-box {
+        min-height: 44px;
+        font-size: 0.58rem;
     }
-    currentQuizCharIndex = 0;
 
-    if (currentQuizChars.length > 0) {
-        startQuizForCurrentChar();
+    .card {
+        padding: 15px 14px 14px;
+        border-radius: 24px;
+    }
+
+    .btn-grade,
+    .btn-large {
+        min-height: 48px;
+    }
+
+    .btn-tool {
+        min-height: 45px;
+        font-size: 0.72rem;
     }
 }
 
-function openModal() { document.getElementById('exampleModal').classList.remove('hidden'); }
-function closeModal() { document.getElementById('exampleModal').classList.add('hidden'); }
+/* ---------- Foldables / breite Phones ---------- */
+@media (min-width: 500px) and (max-width: 900px) {
+    .container {
+        max-width: 620px;
+    }
 
-function toggleFocus() {
-    if (!currentCard) return;
-    if (!currentCard.inFocus && getFocusCount() >= 150) { alert("Das Limit von 150 Vokabeln im Fokus ist erreicht."); return; }
-    
-    currentCard.inFocus = !currentCard.inFocus;
-    if (currentCard.inFocus) currentCard.correctCount = 0;
-    
-    let btnFocus = document.getElementById('btn-focus');
-    if (currentCard.inFocus) {
-        btnFocus.innerText = "FOKUS AKTIV";
-        btnFocus.style.backgroundColor = "var(--focus-color)";
-        btnFocus.style.color = "#FFFFFF";
-    } else {
-        btnFocus.innerText = "FOKUS AKTIVIEREN";
-        btnFocus.style.backgroundColor = "var(--card)";
-        btnFocus.style.color = "var(--focus-color)";
+    .card {
+        padding-left: 22px;
+        padding-right: 22px;
     }
-    
-    let statsInfo = "";
-    if (currentBoxName === 'box6' && currentCard.stats && currentCard.stats.queries > 0) {
-        let percent = Math.round((currentCard.stats.correct / currentCard.stats.queries) * 100);
-        statsInfo = ` • ${percent}% ERFOLG`;
-    } else if (currentBoxName === 'box5') {
-        let streak = currentCard.box5Streak || 0;
-        statsInfo = ` • STREAK: ${streak}/3 TAGEN`;
-    }
-    
-    document.getElementById('v-box').innerText = (currentCard.level || "UNBEKANNT") + (currentCard.inFocus ? " • FOKUS" : "") + statsInfo;
-    sessionQueue = [];
-    updateUI();
 }
 
-function move(step) {
-    if (!currentCard) return;
-    
-    if (!currentCard.stats) currentCard.stats = { queries: 0, correct: 0 };
-    currentCard.stats.queries++;
-    if (step === 1) {
-        currentCard.stats.correct++;
-    }
-
-    let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
-    let today = new Date().toDateString(); 
-
-    // Zähler pro Karte für den heutigen Tag aktualisieren
-    if (currentCard.lastSeenDate !== today) {
-        currentCard.lastSeenDate = today;
-        currentCard.todayRounds = 0;
-    }
-    currentCard.todayRounds++;
-
-    if (oldBox === 'box6') {
-        checkBox6DailyReset();
-        state.box6Daily.count++;
-    }
-
-    let level = parseInt(oldBox.replace('box',''));
-    state[oldBox] = state[oldBox].filter(c => c !== currentCard);
-    
-    let effectiveStep = step;
-    if (currentCard.lastMovedDate === today) { 
-        effectiveStep = 0; 
-    } else {
-        currentCard.lastMovedDate = today; 
-    }
-
-    if (effectiveStep === 1 && currentCard.inFocus) {
-        if (!currentCard.correctCount) currentCard.correctCount = 0;
-        currentCard.correctCount++;
-        if (currentCard.correctCount >= 20) { currentCard.inFocus = false; currentCard.correctCount = 0; }
-    }
-
-    let newLevel;
-    if (oldBox === 'box5') {
-        if (step === 1) { 
-            if (!currentCard.box5Streak) currentCard.box5Streak = 0;
-            
-            let daysDiff = currentCard.box5LastCorrectDate ? daysBetween(currentCard.box5LastCorrectDate, today) : -1;
-            
-            if (daysDiff === 1) {
-                currentCard.box5Streak++;
-                currentCard.box5LastCorrectDate = today;
-            } else if (daysDiff === 0) {
-                // Gleicher Tag: Streak bleibt erhalten, kein Reset
-            } else {
-                currentCard.box5Streak = 1;
-                currentCard.box5LastCorrectDate = today;
-            }
-
-            if (currentCard.box5Streak >= 3) {
-                newLevel = 6;
-                currentCard.box5Streak = 0;
-                currentCard.box5LastCorrectDate = null;
-            } else {
-                newLevel = 5;
-            }
-        } else {
-            // Bei Falsch oder Halten wird der Streak zurückgesetzt
-            currentCard.box5Streak = 0;
-            currentCard.box5LastCorrectDate = null;
-            newLevel = Math.min(Math.max(level + effectiveStep, 1), 6);
-        }
-    } else {
-        newLevel = Math.min(Math.max(level + effectiveStep, 1), 6);
-    }
-
-    if (oldBox === 'box6') {
-        if (newLevel === 6) {
-            if (effectiveStep === 1) {
-                currentCard.box6Interval = currentCard.box6Interval ? Math.min(currentCard.box6Interval * 2, 60) : 2;
-            } else if (!currentCard.box6Interval) {
-                currentCard.box6Interval = 1;
-            }
-            currentCard.nextReviewDate = addDays(today, currentCard.box6Interval);
-        } else {
-            currentCard.box6Interval = 0;
-            currentCard.nextReviewDate = null;
-        }
-    }
-
-    state['box' + newLevel].push(currentCard);
-    updateUI(); next();
-}
-
-function moveToBox6() {
-    if (!currentCard) return;
-    let oldBox = Object.keys(state).find(k => state[k].includes(currentCard));
-    if (oldBox) state[oldBox] = state[oldBox].filter(c => c !== currentCard);
-    currentCard.lastMovedDate = new Date().toDateString();
-    currentCard.box5Streak = 0;
-    currentCard.box5LastCorrectDate = null;
-    currentCard.box6Interval = 1;
-    currentCard.nextReviewDate = null; 
-    state['box6'].push(currentCard);
-    updateUI(); next();
-}
-
-function resetSpeicher() { if(confirm("Möchten Sie den Lernstand wirklich vollständig löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.")) { state = { box1: [], box2: [], box3: [], box4: [], box5: [], box6: [] }; sessionQueue = []; updateUI(); location.reload(); } }
-function exportProgress() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "hsk_trainer_backup.json"); dl.click(); }
-
-function importProgress(file) { 
-    const reader = new FileReader(); 
-    reader.onload = (e) => { 
-        state = JSON.parse(e.target.result); 
-        if(!state.box6) state.box6 = []; 
-        sessionQueue = []; updateUI(); next(); 
-    }; 
-    reader.readAsText(file); 
-}
-
-function clearCanvas() { if (currentWriter) currentWriter.cancelQuiz(); currentQuizCharIndex = 0; startQuizForCurrentChar(); }
-function speak() { if(!currentCard) return; const u = new SpeechSynthesisUtterance(currentCard.hz); u.lang = 'zh-CN'; window.speechSynthesis.speak(u); }
-
-updateUI(); next();
-</script>
-</body>
-</html>
+</style>
