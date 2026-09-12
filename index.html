@@ -2,12 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HSK Trainer">
@@ -17,18 +12,12 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,500;1,8..60,600&display=swap"
-        rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,500;1,8..60,600&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
 
     <style>
-
         :root {
-
             --bg: #f3f6fa;
             --card: #ffffff;
             --surface: #f8fafc;
@@ -89,11 +78,8 @@
                 serif;
         }
 
-
         @media (prefers-color-scheme: dark) {
-
             :root {
-
                 --bg: #0d0f14;
                 --card: #16191f;
                 --surface: #1c2027;
@@ -132,30 +118,23 @@
             }
         }
 
-
         html {
             font-size: 17px;
         }
-
 
         * {
             box-sizing: border-box;
         }
 
-
         html,
         body {
-
             width: 100%;
             height: 100%;
-
             margin: 0;
             padding: 0;
-
             overflow: hidden;
 
             font-family: var(--font-ui);
-
             background: var(--bg);
             color: var(--text-main);
 
@@ -163,26 +142,20 @@
             text-rendering: optimizeLegibility;
         }
 
-
         body {
-
             background:
-
                 radial-gradient(
                     circle at 10% -10%,
                     rgba(37, 99, 235, 0.10),
                     transparent 34%
                 ),
-
                 radial-gradient(
                     circle at 110% 15%,
                     rgba(124, 58, 237, 0.07),
                     transparent 30%
                 ),
-
                 var(--bg);
         }
-
 
         button,
         input,
@@ -190,14 +163,10 @@
             font-family: inherit;
         }
 
-
         button {
-
             border: 0;
             outline: 0;
-
             cursor: pointer;
-
             font-weight: 800;
 
             display: flex;
@@ -213,28 +182,21 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-
         button:active {
             transform: scale(0.975);
         }
 
-
         button:disabled {
-
             opacity: 0.38;
             cursor: not-allowed;
-
             transform: none !important;
         }
-
 
         .hidden {
             display: none !important;
         }
 
-
         .container {
-
             width: 100%;
             max-width: 560px;
 
@@ -255,57 +217,37 @@
             overflow: hidden;
         }
 
-
         .header {
-
             flex-shrink: 0;
-
             display: flex;
             flex-direction: column;
-
             gap: 8px;
-
             margin-bottom: 10px;
         }
 
-
         .header-top {
-
             display: flex;
             flex-direction: column;
-
             gap: 10px;
-
             width: 100%;
         }
 
-
         .header-top h2 {
-
             margin: 0 2px;
-
             font-size: 1.48rem;
             line-height: 1.1;
-
             font-weight: 800;
-
             letter-spacing: -0.045em;
         }
 
-
         .system-buttons {
-
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-
             gap: 6px;
-
             width: 100%;
         }
 
-
         .system-buttons button {
-
             min-width: 0;
             min-height: 46px;
 
@@ -329,9 +271,7 @@
             text-overflow: ellipsis;
         }
 
-
         .system-buttons .btn-action {
-
             background:
                 linear-gradient(
                     145deg,
@@ -340,37 +280,28 @@
                 );
 
             border-color: transparent;
-
             color: white;
 
             box-shadow:
                 0 7px 16px rgba(37,99,235,0.20);
         }
 
-
         .system-buttons .btn-stats {
             color: var(--box6);
         }
-
 
         .system-buttons .btn-danger {
             color: var(--box1);
         }
 
-
         .filter-buttons {
-
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-
             gap: 6px;
-
             width: 100%;
         }
 
-
         .filter-buttons button {
-
             min-width: 0;
             min-height: 45px;
 
@@ -392,9 +323,7 @@
             text-overflow: ellipsis;
         }
 
-
         #box6-daily-progress {
-
             position: relative;
 
             min-height: 42px;
@@ -409,7 +338,6 @@
             border-radius: var(--radius-button);
 
             background: var(--card);
-
             color: var(--box6);
 
             box-shadow: var(--shadow-small);
@@ -420,13 +348,10 @@
             letter-spacing: 0.045em;
         }
 
-
         #box6-daily-progress::before {
-
             content: "6";
 
             position: absolute;
-
             left: 12px;
             top: 50%;
 
@@ -451,31 +376,24 @@
                 0 4px 10px rgba(223,63,125,0.24);
         }
 
-
         .stats {
-
             flex-shrink: 0;
 
             display: grid;
             grid-template-columns: repeat(6, 1fr);
 
             gap: 6px;
-
             padding: 7px;
-
             margin-bottom: 10px;
 
             border: 1px solid var(--border);
             border-radius: 16px;
 
             background: var(--card);
-
             box-shadow: var(--shadow-small);
         }
 
-
         .stat-box {
-
             position: relative;
 
             min-width: 0;
@@ -492,14 +410,12 @@
             border-radius: 10px;
 
             background: transparent;
-
             color: var(--text-muted);
 
             font-size: 0.67rem;
             font-weight: 700;
 
             line-height: 1.2;
-
             cursor: pointer;
 
             user-select: none;
@@ -511,15 +427,11 @@
                 border-color 0.12s ease;
         }
 
-
         .stat-box span {
-
             margin-top: 2px;
-
             font-size: 0.92rem;
             font-weight: 800;
         }
-
 
         #stat-box-1 { color: var(--box1); }
         #stat-box-2 { color: var(--box2); }
@@ -528,34 +440,23 @@
         #stat-box-5 { color: var(--box5); }
         #stat-box-6 { color: var(--box6); }
 
-
         .stat-box.active-box {
-
             border-color: var(--border);
-
             background: var(--surface);
         }
-
 
         .stat-box.selected-box {
-
             border-color: currentColor;
-
             background: var(--surface);
-
             transform: translateY(-1px);
-
             box-shadow: var(--shadow-small);
         }
-
 
         .stat-box.inactive-box {
             opacity: 0.32;
         }
 
-
         .daily-badge {
-
             position: absolute;
 
             top: -5px;
@@ -585,13 +486,9 @@
             pointer-events: none;
         }
 
-
         .card {
-
             position: relative;
-
             min-height: 0;
-
             flex-grow: 1;
 
             display: flex;
@@ -609,14 +506,11 @@
             box-shadow: var(--shadow-card);
         }
 
-
         .card-content {
-
             position: relative;
             z-index: 1;
 
             min-height: 0;
-
             flex-grow: 1;
 
             display: flex;
@@ -630,9 +524,7 @@
             text-align: center;
         }
 
-
         #v-box {
-
             max-width: 100%;
 
             padding: 7px 13px;
@@ -641,7 +533,6 @@
             border-radius: 999px;
 
             background: var(--surface);
-
             color: var(--text-muted);
 
             font-size: 0.76rem;
@@ -656,9 +547,7 @@
             text-overflow: ellipsis;
         }
 
-
         #v-de {
-
             width: min(100%, 460px);
 
             margin: 0;
@@ -673,47 +562,32 @@
                 );
 
             font-weight: 600;
-
             line-height: 1.25;
-
             letter-spacing: -0.012em;
 
             color: var(--text-main);
-
             word-break: break-word;
         }
 
-
         .char-tag {
-
             display: block;
 
             width: fit-content;
 
             margin: 9px auto 0;
-
             padding: 5px 10px;
 
             border-radius: 999px;
 
             background: var(--primary-soft);
-
             color: var(--primary);
 
             font-family: var(--font-ui);
-
             font-size: 0.79rem;
-
             font-weight: 700;
         }
 
-
-        /* WICHTIG:
-           Die chinesischen Zeichen nach dem Umdrehen
-           sind jetzt deutlich größer und dünner. */
-
         #v-hz {
-
             margin: 2px 0 0;
 
             font-size:
@@ -733,7 +607,6 @@
                 serif;
 
             line-height: 0.98;
-
             letter-spacing: -0.055em;
 
             color: var(--text-main);
@@ -741,9 +614,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-
         #v-hz.long-char {
-
             font-size:
                 clamp(
                     3.8rem,
@@ -752,15 +623,11 @@
                 );
 
             font-weight: 300;
-
             letter-spacing: -0.035em;
-
             line-height: 1.05;
         }
 
-
         #v-py {
-
             margin: 0;
 
             font-family: var(--font-read);
@@ -773,36 +640,28 @@
                 );
 
             font-style: italic;
-
             font-weight: 600;
 
             color: var(--primary);
         }
 
-
         #v-stats {
-
             max-width: 100%;
 
             margin-top: 2px;
-
             padding: 8px 13px;
 
             border: 1px solid var(--border);
             border-radius: 11px;
 
             background: var(--surface);
-
             color: var(--text-muted);
 
             font-size: 0.84rem;
-
             line-height: 1.5;
         }
 
-
         .writer-grid {
-
             width: 100%;
 
             display: flex;
@@ -812,13 +671,10 @@
             min-height: 0;
         }
 
-
         .char-box {
-
             position: relative;
 
             width: min(100%, 390px);
-
             max-width: 390px;
             max-height: 390px;
 
@@ -827,13 +683,11 @@
             overflow: hidden;
 
             border: 1px solid var(--border-strong);
-
             border-radius: 21px;
 
             background-color: var(--surface);
 
             background-image:
-
                 linear-gradient(
                     to right,
                     transparent 49.75%,
@@ -841,7 +695,6 @@
                     var(--border) 50.25%,
                     transparent 50.25%
                 ),
-
                 linear-gradient(
                     to bottom,
                     transparent 49.75%,
@@ -856,23 +709,18 @@
             touch-action: none;
         }
 
-
         .char-box:active {
-
             border-color: var(--primary);
 
             box-shadow:
                 0 0 0 3px var(--primary-soft);
         }
 
-
         .action-area {
-
             position: relative;
             z-index: 1;
 
             flex-shrink: 0;
-
             margin-top: auto;
 
             padding-top: 13px;
@@ -883,33 +731,25 @@
             gap: 8px;
         }
 
-
         .row-2 {
-
             width: 100%;
 
             display: grid;
-
             grid-template-columns: repeat(2, 1fr);
 
             gap: 8px;
         }
 
-
         .row-3 {
-
             width: 100%;
 
             display: grid;
-
             grid-template-columns: repeat(3, 1fr);
 
             gap: 8px;
         }
 
-
         .btn-large {
-
             min-height: 52px;
 
             padding: 13px 12px;
@@ -917,7 +757,6 @@
             border-radius: var(--radius-button);
 
             font-size: 0.99rem;
-
             font-weight: 800;
 
             letter-spacing: 0.03em;
@@ -925,9 +764,7 @@
             text-transform: uppercase;
         }
 
-
         .btn-medium {
-
             min-height: 47px;
 
             padding: 11px 8px;
@@ -935,13 +772,10 @@
             border-radius: var(--radius-button);
 
             font-size: 0.92rem;
-
             font-weight: 800;
         }
 
-
         .btn-primary {
-
             background:
                 linear-gradient(
                     145deg,
@@ -955,37 +789,29 @@
                 0 7px 16px rgba(37,99,235,0.20);
         }
 
-
         .btn-secondary {
-
             border: 1px solid var(--border);
 
             background: var(--surface);
-
             color: var(--text-main);
 
             box-shadow: var(--shadow-small);
         }
 
-
         .btn-tool {
-
             min-height: 49px;
 
             padding: 10px 4px;
 
             border: 1px solid var(--border);
-
             border-radius: var(--radius-button);
 
             background: var(--surface);
-
             color: var(--text-main);
 
             box-shadow: var(--shadow-small);
 
             font-size: 0.86rem;
-
             font-weight: 800;
 
             letter-spacing: 0.035em;
@@ -993,9 +819,7 @@
             text-transform: uppercase;
         }
 
-
         .btn-grade {
-
             min-height: 53px;
 
             padding: 12px 3px;
@@ -1005,7 +829,6 @@
             color: white;
 
             font-size: 0.89rem;
-
             font-weight: 800;
 
             letter-spacing: 0.03em;
@@ -1016,20 +839,14 @@
                 0 7px 15px rgba(16,24,40,0.11);
         }
 
-
         #dict-view {
-
             position: relative;
             z-index: 1;
-
             min-height: 0;
         }
 
-
         #dict-search-input {
-
             width: 100%;
-
             min-height: 49px;
 
             padding: 11px 13px;
@@ -1037,43 +854,32 @@
             outline: none;
 
             border: 1px solid var(--border-strong);
-
             border-radius: var(--radius-button);
 
             background: var(--surface);
-
             color: var(--text-main);
 
             font-size: 1rem;
         }
 
-
         #dict-search-input::placeholder {
             color: var(--text-soft);
         }
 
-
         #dict-search-input:focus {
-
             border-color: var(--primary);
 
             box-shadow:
                 0 0 0 3px var(--primary-soft);
         }
 
-
         .modal-overlay {
-
             position: fixed;
-
             inset: 0;
-
             z-index: 1000;
 
             display: flex;
-
             justify-content: center;
-
             align-items: center;
 
             padding:
@@ -1085,27 +891,20 @@
                 rgba(5,8,13,0.63);
 
             backdrop-filter: blur(15px);
-
             -webkit-backdrop-filter: blur(15px);
         }
 
-
         .modal-content {
-
             width: 100%;
-
             max-width: 420px;
-
             max-height: 82vh;
 
             padding: 21px;
 
             display: flex;
-
             flex-direction: column;
 
             border: 1px solid var(--border);
-
             border-radius: 23px;
 
             background: var(--card);
@@ -1116,23 +915,15 @@
             font-size: 1rem;
         }
 
-
         #box6-stats-table {
-
             width: 100%;
-
             border-collapse: collapse;
-
             font-size: 0.87rem;
         }
 
-
         #box6-stats-table th {
-
             position: sticky;
-
             top: 0;
-
             z-index: 1;
 
             padding: 9px 6px;
@@ -1141,32 +932,25 @@
                 1px solid var(--border-strong);
 
             background: var(--card);
-
             color: var(--text-muted);
 
             font-size: 0.67rem;
 
             text-transform: uppercase;
-
             letter-spacing: 0.025em;
 
             text-align: left;
-
             cursor: pointer;
 
             user-select: none;
-
             white-space: nowrap;
         }
-
 
         #box6-stats-table th:nth-child(n+2) {
             text-align: center;
         }
 
-
         #box6-stats-table td {
-
             padding: 10px 6px;
 
             border-bottom: 1px solid var(--border);
@@ -1174,182 +958,123 @@
             vertical-align: middle;
         }
 
-
         #box6-stats-table td:nth-child(n+2) {
             text-align: center;
         }
 
-
         #box6-stats-table th.sorted-asc::after {
-
             content: " ▲";
-
             color: var(--primary);
         }
-
 
         #box6-stats-table th.sorted-desc::after {
-
             content: " ▼";
-
             color: var(--primary);
         }
 
-
         #box6-stats-summary {
-
             margin-bottom: 10px;
-
             padding: 8px 10px;
 
             border-radius: 10px;
 
             background: var(--surface);
-
             color: var(--text-muted);
 
             font-size: 0.81rem;
-
             text-align: center;
         }
-
 
         button:focus-visible,
         input:focus-visible,
         select:focus-visible {
-
             outline: none;
 
             box-shadow:
                 0 0 0 3px var(--primary-soft);
         }
 
-
         * {
-
             scrollbar-width: thin;
-
-            scrollbar-color:
-                var(--border-strong)
-                transparent;
+            scrollbar-color: var(--border-strong) transparent;
         }
-
 
         *::-webkit-scrollbar {
-
             width: 6px;
-
             height: 6px;
         }
-
 
         *::-webkit-scrollbar-track {
             background: transparent;
         }
 
-
         *::-webkit-scrollbar-thumb {
-
             border-radius: 999px;
-
             background: var(--border-strong);
         }
 
-
         @media (max-width: 390px) {
-
             html {
                 font-size: 16.5px;
             }
 
-
             .container {
-
                 padding-left: 9px;
                 padding-right: 9px;
             }
 
-
             .header {
-
                 gap: 6px;
-
                 margin-bottom: 8px;
             }
 
-
             .header-top {
-
                 gap: 7px;
             }
 
-
             .header-top h2 {
-
                 font-size: 1.28rem;
             }
-
 
             .system-buttons,
             .filter-buttons,
             .stats,
             .row-2,
             .row-3 {
-
                 gap: 5px;
             }
 
-
             .system-buttons button {
-
                 min-height: 42px;
-
                 padding: 6px 2px;
-
                 font-size: 0.67rem;
             }
 
-
             .filter-buttons button {
-
                 min-height: 41px;
-
                 font-size: 0.70rem;
             }
 
-
             #box6-daily-progress {
-
                 min-height: 38px;
-
                 font-size: 0.71rem;
             }
 
-
             .stats {
-
                 padding: 5px;
-
                 margin-bottom: 8px;
             }
 
-
             .stat-box {
-
                 min-height: 45px;
-
                 font-size: 0.60rem;
             }
 
-
             .stat-box span {
-
                 font-size: 0.80rem;
             }
 
-
             .card {
-
                 padding:
                     14px
                     13px
@@ -1358,21 +1083,15 @@
                 border-radius: 21px;
             }
 
-
             .card-content {
-
                 gap: 8px;
             }
 
-
             #v-box {
-
                 font-size: 0.69rem;
             }
 
-
             #v-de {
-
                 font-size:
                     clamp(
                         1.55rem,
@@ -1381,9 +1100,7 @@
                     );
             }
 
-
             #v-hz {
-
                 font-size:
                     clamp(
                         5.5rem,
@@ -1394,9 +1111,7 @@
                 font-weight: 300;
             }
 
-
             #v-hz.long-char {
-
                 font-size:
                     clamp(
                         3.25rem,
@@ -1407,9 +1122,7 @@
                 font-weight: 300;
             }
 
-
             #v-py {
-
                 font-size:
                     clamp(
                         1.28rem,
@@ -1418,104 +1131,72 @@
                     );
             }
 
-
             #v-stats {
-
                 font-size: 0.78rem;
             }
 
-
             .action-area {
-
                 padding-top: 10px;
-
                 gap: 6px;
             }
 
-
             .btn-large {
-
                 min-height: 48px;
-
                 font-size: 0.89rem;
             }
 
-
             .btn-medium {
-
                 min-height: 44px;
-
                 font-size: 0.82rem;
             }
 
-
             .btn-tool {
-
                 min-height: 44px;
-
                 font-size: 0.76rem;
             }
 
-
             .btn-grade {
-
                 min-height: 49px;
-
                 font-size: 0.78rem;
             }
         }
 
-
         @media (max-height: 760px) {
-
             .header {
-
                 gap: 5px;
-
                 margin-bottom: 6px;
             }
-
 
             .system-buttons button {
                 min-height: 39px;
             }
 
-
             .filter-buttons button {
                 min-height: 39px;
             }
-
 
             #box6-daily-progress {
                 min-height: 35px;
             }
 
-
             .stats {
                 margin-bottom: 6px;
             }
-
 
             .stat-box {
                 min-height: 41px;
             }
 
-
             .card {
-
                 padding-top: 12px;
-
                 padding-bottom: 10px;
             }
-
 
             .card-content {
                 gap: 7px;
             }
 
-
             #v-hz {
-
                 font-size:
                     clamp(
                         5rem,
@@ -1524,9 +1205,7 @@
                     );
             }
 
-
             #v-hz.long-char {
-
                 font-size:
                     clamp(
                         3.1rem,
@@ -1535,64 +1214,44 @@
                     );
             }
 
-
             .action-area {
-
                 padding-top: 8px;
-
                 gap: 6px;
             }
 
-
             .btn-large,
             .btn-grade {
-
                 min-height: 45px;
             }
 
-
             .btn-tool {
-
                 min-height: 42px;
             }
         }
 
-
         @media (prefers-reduced-motion: reduce) {
-
             *,
             *::before,
             *::after {
-
                 animation-duration: 0.01ms !important;
-
                 transition-duration: 0.01ms !important;
-
                 animation-iteration-count: 1 !important;
             }
         }
-
     </style>
 </head>
 
-
 <body>
-
 
 <div class="container">
 
-
     <div class="header">
-
 
         <div class="header-top">
 
-
             <h2>HSK Trainer</h2>
 
-
             <div class="system-buttons">
-
 
                 <input
                     type="file"
@@ -1602,14 +1261,12 @@
                     accept=".csv"
                 >
 
-
                 <button
                     class="btn-action"
                     onclick="document.getElementById('csvFile').click()"
                 >
                     CSV
                 </button>
-
 
                 <button
                     class="btn-stats"
@@ -1618,11 +1275,9 @@
                     BOX 6 STATS
                 </button>
 
-
                 <button onclick="exportProgress()">
                     BACKUP
                 </button>
-
 
                 <input
                     type="file"
@@ -1632,13 +1287,11 @@
                     accept=".json"
                 >
 
-
                 <button
                     onclick="document.getElementById('jsonFile').click()"
                 >
                     LADEN
                 </button>
-
 
                 <button
                     class="btn-danger"
@@ -1647,15 +1300,11 @@
                     RESET
                 </button>
 
-
             </div>
-
 
         </div>
 
-
         <div class="filter-buttons">
-
 
             <button
                 id="btn-toggle-only-focus"
@@ -1664,14 +1313,12 @@
                 ALLE KARTEN (0)
             </button>
 
-
             <button
                 id="btn-toggle-random-mode"
                 onclick="toggleRandomMode()"
             >
                 ZUFALLSMODUS AUS
             </button>
-
 
             <button
                 id="btn-toggle-dict"
@@ -1680,26 +1327,17 @@
                 WÖRTERBUCH
             </button>
 
-
         </div>
-
 
         <div id="box6-daily-progress">
             BOX 6 HEUTE: 0/100
         </div>
 
-
     </div>
 
-
-    <div
-        class="stats"
-        id="stats"
-    ></div>
-
+    <div class="stats" id="stats"></div>
 
     <div class="card">
-
 
         <div
             id="dict-view"
@@ -1711,7 +1349,6 @@
             "
         >
 
-
             <div
                 style="
                     display:grid;
@@ -1722,14 +1359,12 @@
                 "
             >
 
-
                 <input
                     type="text"
                     id="dict-search-input"
-                    placeholder="Nach Begriff suchen..."
+                    placeholder="Deutsch, Pinyin oder Chinesisch..."
                     onkeypress="if(event.key === 'Enter') searchDict()"
                 >
-
 
                 <button
                     class="btn-primary btn-medium"
@@ -1739,9 +1374,7 @@
                     SUCHEN
                 </button>
 
-
             </div>
-
 
             <div
                 id="dict-results"
@@ -1754,59 +1387,47 @@
                 "
             ></div>
 
-
         </div>
-
 
         <div
             id="flashcard-content"
             class="card-content"
         >
 
-
             <div id="v-box"></div>
-
 
             <div id="v-de">
                 Bitte CSV laden...
             </div>
-
 
             <div
                 id="v-hz"
                 class="hidden"
             ></div>
 
-
             <div
                 id="v-py"
                 class="hidden"
             ></div>
-
 
             <div
                 id="v-stats"
                 class="hidden"
             ></div>
 
-
             <div
                 id="writer-container"
                 class="writer-grid hidden"
             ></div>
 
-
         </div>
 
-
         <div class="action-area">
-
 
             <div
                 id="drawing-controls"
                 class="row-2 hidden"
             >
-
 
                 <button
                     id="btn-clear"
@@ -1816,7 +1437,6 @@
                     LÖSCHEN
                 </button>
 
-
                 <button
                     id="btn-show"
                     class="btn-primary btn-large"
@@ -1825,15 +1445,12 @@
                     LÖSUNG
                 </button>
 
-
             </div>
-
 
             <div
                 id="learning-tools"
                 class="row-3 hidden"
             >
-
 
                 <button
                     class="btn-tool"
@@ -1842,14 +1459,12 @@
                     AUDIO
                 </button>
 
-
                 <button
                     class="btn-tool"
                     onclick="retryCurrentWordWriting()"
                 >
                     ÜBEN
                 </button>
-
 
                 <button
                     id="btn-example-trigger"
@@ -1859,15 +1474,12 @@
                     BEISPIEL
                 </button>
 
-
             </div>
-
 
             <div
                 id="special-actions"
                 class="row-2 hidden"
             >
-
 
                 <button
                     id="btn-focus"
@@ -1878,7 +1490,6 @@
                     FOKUS AKTIVIEREN
                 </button>
 
-
                 <button
                     class="btn-secondary btn-medium"
                     onclick="moveToBox6()"
@@ -1886,15 +1497,12 @@
                     ZU BOX 6
                 </button>
 
-
             </div>
-
 
             <div
                 id="controls"
                 class="row-3 hidden"
             >
-
 
                 <button
                     class="btn-grade"
@@ -1904,7 +1512,6 @@
                     FALSCH
                 </button>
 
-
                 <button
                     class="btn-grade"
                     style="background-color:var(--box2);"
@@ -1912,7 +1519,6 @@
                 >
                     HALTEN
                 </button>
-
 
                 <button
                     class="btn-grade"
@@ -1922,27 +1528,17 @@
                     RICHTIG
                 </button>
 
-
             </div>
-
 
         </div>
 
-
     </div>
-
 
 </div>
 
-
-<div
-    id="exampleModal"
-    class="modal-overlay hidden"
->
-
+<div id="exampleModal" class="modal-overlay hidden">
 
     <div class="modal-content">
-
 
         <h3
             style="
@@ -1960,7 +1556,6 @@
             Beispielsatz
         </h3>
 
-
         <div
             style="
                 overflow-y:auto;
@@ -1968,7 +1563,6 @@
                 margin-bottom:16px;
             "
         >
-
 
             <div
                 id="ex-hz"
@@ -1980,7 +1574,6 @@
                 "
             ></div>
 
-
             <div
                 id="ex-py"
                 style="
@@ -1990,7 +1583,6 @@
                     font-weight:700;
                 "
             ></div>
-
 
             <div
                 id="ex-de"
@@ -2005,9 +1597,7 @@
                 "
             ></div>
 
-
         </div>
-
 
         <button
             class="btn-secondary btn-large"
@@ -2016,24 +1606,16 @@
             SCHLIESSEN
         </button>
 
-
     </div>
-
 
 </div>
 
-
-<div
-    id="box6StatsModal"
-    class="modal-overlay hidden"
->
-
+<div id="box6StatsModal" class="modal-overlay hidden">
 
     <div
         class="modal-content"
         style="max-width:520px;"
     >
-
 
         <h3
             style="
@@ -2051,9 +1633,7 @@
             Box 6 Statistik
         </h3>
 
-
         <div id="box6-stats-summary"></div>
-
 
         <div
             style="
@@ -2065,51 +1645,24 @@
             "
         >
 
-
             <table id="box6-stats-table">
 
-
                 <thead>
-
                     <tr>
-
-                        <th onclick="sortBox6Stats('hz')">
-                            Vokabel
-                        </th>
-
-                        <th onclick="sortBox6Stats('queries')">
-                            Abgefragt
-                        </th>
-
-                        <th onclick="sortBox6Stats('correct')">
-                            Richtig
-                        </th>
-
-                        <th onclick="sortBox6Stats('wrong')">
-                            Falsch
-                        </th>
-
-                        <th onclick="sortBox6Stats('rate')">
-                            Quote
-                        </th>
-
-                        <th onclick="sortBox6Stats('dueDays')">
-                            Fällig
-                        </th>
-
+                        <th onclick="sortBox6Stats('hz')">Vokabel</th>
+                        <th onclick="sortBox6Stats('queries')">Abgefragt</th>
+                        <th onclick="sortBox6Stats('correct')">Richtig</th>
+                        <th onclick="sortBox6Stats('wrong')">Falsch</th>
+                        <th onclick="sortBox6Stats('rate')">Quote</th>
+                        <th onclick="sortBox6Stats('dueDays')">Fällig</th>
                     </tr>
-
                 </thead>
-
 
                 <tbody id="box6-stats-body"></tbody>
 
-
             </table>
 
-
         </div>
-
 
         <button
             class="btn-secondary btn-large"
@@ -2118,12 +1671,9 @@
             SCHLIESSEN
         </button>
 
-
     </div>
 
-
 </div>
-
 
 <script>
 
@@ -2139,52 +1689,34 @@ let state =
         box6: []
     };
 
-
 if (!state.box6) {
     state.box6 = [];
 }
 
-
 if (!state.box6Daily) {
-
     state.box6Daily = {
         date: new Date().toDateString(),
         count: 0
     };
 }
 
-
 let sessionQueue = [];
-
 let currentCard = null;
-
 let currentBoxName = "";
 
-
 let currentQuizChars = [];
-
 let currentQuizCharIndex = 0;
-
 let currentWriter = null;
-
 let singleCharBox = null;
 
-
 let onlyFocusMode = false;
-
 let randomMode = false;
-
 let selectedBoxFilter = null;
-
 let dictMode = false;
-
 let currentDictResults = [];
 
-
 let box6SortColumn = 'queries';
-
 let box6SortDirection = 'desc';
-
 
 
 document.getElementById('stats').innerHTML =
@@ -2207,9 +1739,7 @@ document.getElementById('stats').innerHTML =
 
                 ${
                     (i >= 2 && i <= 5)
-
                     ?
-
                     `
                     <div
                         id="daily-count-${i}"
@@ -2218,9 +1748,7 @@ document.getElementById('stats').innerHTML =
                         0
                     </div>
                     `
-
                     :
-
                     ''
                 }
 
@@ -2230,9 +1758,7 @@ document.getElementById('stats').innerHTML =
         .join('');
 
 
-
 [1,2,3,4,5,6].forEach(i => {
-
 
     document
         .getElementById(`stat-box-${i}`)
@@ -2240,37 +1766,27 @@ document.getElementById('stats').innerHTML =
             'click',
             () => {
 
-
                 if (dictMode) {
                     toggleDictMode();
                 }
 
-
                 sessionQueue = [];
 
-
                 if (selectedBoxFilter === i) {
-
                     selectedBoxFilter = null;
-
                 } else {
-
                     selectedBoxFilter = i;
-
 
                     if (randomMode) {
                         toggleRandomMode();
                     }
-
 
                     if (onlyFocusMode) {
                         toggleOnlyFocusMode();
                     }
                 }
 
-
                 updateUI();
-
                 next();
             }
         );
@@ -2278,65 +1794,39 @@ document.getElementById('stats').innerHTML =
 });
 
 
-
 function countHanzi(str) {
-
 
     if (!str) {
         return 0;
     }
 
-
     let count = 0;
-
 
     for (let i = 0; i < str.length; i++) {
 
-
-        let code =
-            str.charCodeAt(i);
-
+        let code = str.charCodeAt(i);
 
         if (
-
             (code >= 0x4E00 && code <= 0x9FFF)
-
             ||
-
             (code >= 0x3400 && code <= 0x4DBF)
-
         ) {
-
             count++;
         }
     }
-
 
     return count;
 }
 
 
+function daysBetween(dateStr1, dateStr2) {
 
-function daysBetween(
-    dateStr1,
-    dateStr2
-) {
-
-
-    let d1 =
-        new Date(dateStr1);
-
-
-    let d2 =
-        new Date(dateStr2);
-
+    let d1 = new Date(dateStr1);
+    let d2 = new Date(dateStr2);
 
     return Math.round(
-
         (d2 - d1)
-
         /
-
         (
             1000 *
             60 *
@@ -2347,114 +1837,60 @@ function daysBetween(
 }
 
 
-
-function addDays(
-    dateStr,
-    days
-) {
-
+function addDays(dateStr, days) {
 
     let d =
         dateStr
-
         ?
-
         new Date(dateStr)
-
         :
-
         new Date();
-
 
     d.setDate(
         d.getDate() + days
     );
 
-
     return d.toDateString();
 }
 
 
-
 function isBox6CardDue(c) {
-
 
     if (!c.nextReviewDate) {
         return true;
     }
 
+    let today = new Date();
 
-    let today =
-        new Date();
-
-
-    today.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
+    today.setHours(0,0,0,0);
 
     let due =
-        new Date(
-            c.nextReviewDate
-        );
+        new Date(c.nextReviewDate);
 
-
-    due.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
+    due.setHours(0,0,0,0);
 
     return due <= today;
 }
 
 
-
 function box6DueInDays(c) {
-
 
     if (!c.nextReviewDate) {
         return -9999;
     }
 
+    let today = new Date();
 
-    let today =
-        new Date();
-
-
-    today.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
+    today.setHours(0,0,0,0);
 
     let due =
-        new Date(
-            c.nextReviewDate
-        );
+        new Date(c.nextReviewDate);
 
-
-    due.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
+    due.setHours(0,0,0,0);
 
     return Math.round(
-
         (due - today)
-
         /
-
         (
             1000 *
             60 *
@@ -2465,48 +1901,34 @@ function box6DueInDays(c) {
 }
 
 
-
 function checkBox6DailyReset() {
-
 
     let today =
         new Date()
             .toDateString();
 
-
     if (
-
         !state.box6Daily
-
         ||
-
         state.box6Daily.date !== today
-
     ) {
 
-
         state.box6Daily = {
-
             date: today,
-
             count: 0
         };
     }
 }
 
 
-
 function updateBox6DailyDisplay() {
 
-
     checkBox6DailyReset();
-
 
     let el =
         document.getElementById(
             'box6-daily-progress'
         );
-
 
     if (el) {
 
@@ -2516,9 +1938,7 @@ function updateBox6DailyDisplay() {
 }
 
 
-
 function openBox6Stats() {
-
 
     document
         .getElementById(
@@ -2527,14 +1947,11 @@ function openBox6Stats() {
         .classList
         .remove('hidden');
 
-
     renderBox6StatsTable();
 }
 
 
-
 function closeBox6Stats() {
-
 
     document
         .getElementById(
@@ -2545,58 +1962,40 @@ function closeBox6Stats() {
 }
 
 
-
 function sortBox6Stats(column) {
-
 
     if (
         box6SortColumn === column
     ) {
 
-
         box6SortDirection =
             box6SortDirection === 'asc'
-
             ?
-
             'desc'
-
             :
-
             'asc';
 
-
     } else {
-
 
         box6SortColumn =
             column;
 
-
         box6SortDirection =
             column === 'hz'
-
             ?
-
             'asc'
-
             :
-
             'desc';
     }
-
 
     renderBox6StatsTable();
 }
 
 
-
 function renderBox6StatsTable() {
-
 
     let data =
         state.box6.map(c => {
-
 
             let stats =
                 c.stats || {
@@ -2604,78 +2003,53 @@ function renderBox6StatsTable() {
                     correct: 0
                 };
 
-
             let queries =
                 stats.queries || 0;
-
 
             let correct =
                 stats.correct || 0;
 
-
             let wrong =
                 queries - correct;
 
-
             let rate =
                 queries > 0
-
                 ?
-
                 (correct / queries) * 100
-
                 :
-
                 0;
-
 
             let dueDays =
                 box6DueInDays(c);
 
-
             return {
-
                 card: c,
-
                 hz: c.hz || '',
-
                 py: c.py || '',
-
                 de: c.de || '',
-
                 queries,
-
                 correct,
-
                 wrong,
-
                 rate,
-
                 dueDays
             };
         });
 
 
-
     data.sort(
         (a, b) => {
-
 
             let valA =
                 a[box6SortColumn];
 
-
             let valB =
                 b[box6SortColumn];
 
-
             let cmp;
-
 
             if (
                 typeof valA === 'string'
             ) {
-
 
                 cmp =
                     valA.localeCompare(
@@ -2683,29 +2057,21 @@ function renderBox6StatsTable() {
                         'zh'
                     );
 
-
             } else {
-
 
                 cmp =
                     valA - valB;
             }
 
-
             return (
                 box6SortDirection === 'asc'
             )
-
                 ?
-
                 cmp
-
                 :
-
                 -cmp;
         }
     );
-
 
 
     let summaryEl =
@@ -2713,9 +2079,7 @@ function renderBox6StatsTable() {
             'box6-stats-summary'
         );
 
-
     summaryEl.innerText =
-
         `${data.length} Vokabel${
             data.length === 1
             ?
@@ -2725,18 +2089,15 @@ function renderBox6StatsTable() {
         } in Box 6`;
 
 
-
     let tbody =
         document.getElementById(
             'box6-stats-body'
         );
 
 
-
     if (
         data.length === 0
     ) {
-
 
         tbody.innerHTML =
 
@@ -2757,23 +2118,18 @@ function renderBox6StatsTable() {
             </tr>
             `;
 
-
     } else {
-
 
         tbody.innerHTML =
 
             data
             .map(d => {
 
-
                 let dueLabel;
-
 
                 if (
                     d.dueDays <= 0
                 ) {
-
 
                     dueLabel =
 
@@ -2788,23 +2144,18 @@ function renderBox6StatsTable() {
                         </span>
                         `;
 
-
                 } else if (
                     d.dueDays === 1
                 ) {
 
-
                     dueLabel =
                         `in 1 Tag`;
 
-
                 } else {
-
 
                     dueLabel =
                         `in ${d.dueDays} Tg.`;
                 }
-
 
                 return `
 
@@ -2864,14 +2215,10 @@ function renderBox6StatsTable() {
 
                             ${
                                 d.queries > 0
-
                                 ?
-
                                 Math.round(d.rate)
                                 + '%'
-
                                 :
-
                                 '–'
                             }
 
@@ -2893,22 +2240,14 @@ function renderBox6StatsTable() {
     }
 
 
-
     let columnIndex = {
-
         hz: 0,
-
         queries: 1,
-
         correct: 2,
-
         wrong: 3,
-
         rate: 4,
-
         dueDays: 5
     };
-
 
 
     let ths =
@@ -2926,7 +2265,6 @@ function renderBox6StatsTable() {
     );
 
 
-
     let activeTh =
         ths[
             columnIndex[
@@ -2935,54 +2273,39 @@ function renderBox6StatsTable() {
         ];
 
 
-
     if (activeTh) {
-
 
         activeTh.classList.add(
 
             box6SortDirection === 'asc'
-
             ?
-
             'sorted-asc'
-
             :
-
             'sorted-desc'
         );
     }
 }
 
 
-
 function startQuizForCurrentChar() {
-
 
     if (
         currentQuizCharIndex
         >=
         currentQuizChars.length
     ) {
-
         return;
     }
 
 
-
     if (currentWriter) {
 
-
         try {
-
             currentWriter.cancelQuiz();
-
         } catch(e) {}
-
 
         currentWriter = null;
     }
-
 
 
     let container =
@@ -2990,9 +2313,7 @@ function startQuizForCurrentChar() {
             'writer-container'
         );
 
-
     container.innerHTML = '';
-
 
 
     singleCharBox =
@@ -3000,15 +2321,12 @@ function startQuizForCurrentChar() {
             'div'
         );
 
-
     singleCharBox.className =
         'char-box';
-
 
     container.appendChild(
         singleCharBox
     );
-
 
 
     let char =
@@ -3017,10 +2335,8 @@ function startQuizForCurrentChar() {
         ];
 
 
-
     requestAnimationFrame(
         () => {
-
 
             let boxSize =
                 Math.min(
@@ -3028,7 +2344,6 @@ function startQuizForCurrentChar() {
                     window.innerWidth * 0.86,
                     390
                 );
-
 
 
             currentWriter =
@@ -3039,13 +2354,9 @@ function startQuizForCurrentChar() {
                     char,
 
                     {
-
                         width: boxSize,
-
                         height: boxSize,
-
                         showCharacter: false,
-
                         showOutline: false,
 
                         padding:
@@ -3059,34 +2370,26 @@ function startQuizForCurrentChar() {
                 );
 
 
-
             currentWriter.quiz({
 
                 onComplete:
                     function() {
 
-
                         setTimeout(
                             () => {
 
-
                                 currentQuizCharIndex++;
 
-
                                 if (
-
                                     currentQuizCharIndex
                                     <
                                     currentQuizChars.length
-
                                 ) {
-
 
                                     startQuizForCurrentChar();
                                 }
 
                             },
-
                             300
                         );
                     }
@@ -3096,12 +2399,9 @@ function startQuizForCurrentChar() {
 }
 
 
-
 function getFocusCount() {
 
-
     let count = 0;
-
 
     for (
         let i = 1;
@@ -3109,32 +2409,25 @@ function getFocusCount() {
         i++
     ) {
 
-
         state[
             'box' + i
         ]
         .forEach(c => {
 
-
             if (c.inFocus) {
-
                 count++;
             }
         });
     }
 
-
     return count;
 }
 
 
-
 function toggleDictMode() {
-
 
     dictMode =
         !dictMode;
-
 
 
     let btn =
@@ -3150,46 +2443,34 @@ function toggleDictMode() {
 
 
     let flashcardElements = [
-
         'flashcard-content',
-
         'drawing-controls',
-
         'learning-tools',
-
         'special-actions',
-
         'controls'
     ];
 
 
-
     if (dictMode) {
-
 
         btn.style.backgroundColor =
             "var(--primary)";
 
-
         btn.style.color =
             "#FFFFFF";
-
 
         dictView.classList.remove(
             'hidden'
         );
 
 
-
         flashcardElements
         .forEach(id => {
-
 
             let el =
                 document.getElementById(
                     id
                 );
-
 
             if (el) {
 
@@ -3198,7 +2479,6 @@ function toggleDictMode() {
                 );
             }
         });
-
 
 
         document
@@ -3221,22 +2501,17 @@ function toggleDictMode() {
             )
             .focus();
 
-
     } else {
-
 
         btn.style.backgroundColor =
             "var(--card)";
 
-
         btn.style.color =
             "var(--text-main)";
-
 
         dictView.classList.add(
             'hidden'
         );
-
 
         document
             .getElementById(
@@ -3245,51 +2520,98 @@ function toggleDictMode() {
             .classList
             .remove('hidden');
 
-
         next();
     }
 }
 
 
+/* ============================================================
+   NEU: PINYIN NORMALISIERUNG
+
+   Beispiele:
+   nǐ hǎo  -> nihao
+   ni hao  -> nihao
+   ni-hao  -> nihao
+   xuéshēng -> xuesheng
+   nǚ -> nu
+   nv -> nu
+   ============================================================ */
+
+function normalizePinyin(text) {
+
+    if (!text) {
+        return "";
+    }
+
+    return text
+        .toLowerCase()
+
+        /*
+        "v" wird häufig als Ersatz für ü eingegeben.
+        Deshalb werden beide gleich behandelt.
+        */
+
+        .replace(/ü/g, "u")
+        .replace(/v/g, "u")
+
+        /*
+        Tonzeichen entfernen.
+        */
+
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+
+        /*
+        Leerzeichen, Apostrophe, Bindestriche,
+        Punkte usw. entfernen.
+        */
+
+        .replace(/[^a-z0-9]/g, "");
+}
+
+
+/* ============================================================
+   ERWEITERTE WÖRTERBUCHSUCHE
+   ============================================================ */
 
 function searchDict() {
 
-
-    let query =
-
+    let rawQuery =
         document
             .getElementById(
                 'dict-search-input'
             )
             .value
-            .trim()
-            .toLowerCase();
-
+            .trim();
 
 
     let resultsContainer =
-
         document
             .getElementById(
                 'dict-results'
             );
 
 
-
     resultsContainer.innerHTML =
         "";
 
 
-
-    if (!query) {
-
+    if (!rawQuery) {
         return;
     }
 
 
+    let query =
+        rawQuery.toLowerCase();
+
+
+    let pinyinQuery =
+        normalizePinyin(
+            rawQuery
+        );
+
 
     let allCards = [];
-
 
 
     for (
@@ -3298,12 +2620,10 @@ function searchDict() {
         i++
     ) {
 
-
         state[
             'box' + i
         ]
         .forEach(c => {
-
 
             allCards.push({
 
@@ -3315,35 +2635,93 @@ function searchDict() {
     }
 
 
-
     currentDictResults =
 
         allCards.filter(
-            item =>
+            item => {
+
+                let card =
+                    item.card;
 
 
-                item.card.de
-                    .toLowerCase()
-                    .includes(query)
+                let german =
+                    (
+                        card.de || ""
+                    )
+                    .toLowerCase();
 
-                ||
 
-                item.card.py
-                    .toLowerCase()
-                    .includes(query)
+                let hanzi =
+                    card.hz || "";
 
-                ||
 
-                item.card.hz
-                    .includes(query)
+                let originalPinyin =
+                    (
+                        card.py || ""
+                    )
+                    .toLowerCase();
+
+
+                let normalizedPinyin =
+                    normalizePinyin(
+                        card.py || ""
+                    );
+
+
+                return (
+
+                    /*
+                    Deutsche Suche
+                    */
+
+                    german.includes(
+                        query
+                    )
+
+                    ||
+
+                    /*
+                    Suche direkt nach Hanzi
+                    */
+
+                    hanzi.includes(
+                        rawQuery
+                    )
+
+                    ||
+
+                    /*
+                    Pinyin mit vorhandenen Tonzeichen
+                    */
+
+                    originalPinyin.includes(
+                        query
+                    )
+
+                    ||
+
+                    /*
+                    Pinyin ohne Tonzeichen,
+                    Leerzeichen oder Bindestriche
+                    */
+
+                    (
+                        pinyinQuery.length > 0
+
+                        &&
+
+                        normalizedPinyin.includes(
+                            pinyinQuery
+                        )
+                    )
+                );
+            }
         );
-
 
 
     if (
         currentDictResults.length === 0
     ) {
-
 
         resultsContainer.innerHTML =
 
@@ -3361,16 +2739,13 @@ function searchDict() {
             </p>
             `;
 
-
         return;
     }
-
 
 
     currentDictResults
     .forEach(
         (item, index) => {
-
 
             let c =
                 item.card;
@@ -3386,7 +2761,6 @@ function searchDict() {
                 );
 
 
-
             div.style.cssText =
 
                 `
@@ -3398,58 +2772,39 @@ function searchDict() {
                 `;
 
 
-
             let focusBtnBg =
                 c.inFocus
-
                 ?
-
                 "var(--focus-color)"
-
                 :
-
                 "var(--card)";
 
 
             let focusBtnColor =
                 c.inFocus
-
                 ?
-
                 "#FFFFFF"
-
                 :
-
                 "var(--text-main)";
 
 
             let focusBtnBorder =
                 c.inFocus
-
                 ?
-
                 "transparent"
-
                 :
-
                 "var(--border)";
 
 
             let focusBtnText =
                 c.inFocus
-
                 ?
-
                 "FOKUS AKTIV"
-
                 :
-
                 "FOKUS";
 
 
-
             let html = `
-
 
                 <div
                     style="
@@ -3460,7 +2815,6 @@ function searchDict() {
                         margin-bottom:8px;
                     "
                 >
-
 
                     <div
                         style="
@@ -3479,7 +2833,6 @@ function searchDict() {
                             gap:6px;
                         "
                     >
-
 
                         <button
                             onclick="toggleDictFocus(${index})"
@@ -3529,9 +2882,7 @@ function searchDict() {
 
                         </select>
 
-
                     </div>
-
 
                 </div>
 
@@ -3560,12 +2911,9 @@ function searchDict() {
             `;
 
 
-
             if (c.sentenceHz) {
 
-
                 html += `
-
 
                     <div
                         style="
@@ -3575,7 +2923,6 @@ function searchDict() {
                             font-size:0.96rem;
                         "
                     >
-
 
                         <div
                             style="
@@ -3609,12 +2956,10 @@ function searchDict() {
                             ${c.sentenceDe}
                         </div>
 
-
                     </div>
 
                 `;
             }
-
 
 
             div.innerHTML =
@@ -3630,15 +2975,12 @@ function searchDict() {
 }
 
 
-
 function toggleDictFocus(index) {
-
 
     let item =
         currentDictResults[
             index
         ];
-
 
 
     if (
@@ -3647,49 +2989,39 @@ function toggleDictFocus(index) {
         getFocusCount() >= 150
     ) {
 
-
         alert(
             "Das Limit von 150 Vokabeln im Fokus ist erreicht."
         );
 
-
         return;
     }
-
 
 
     item.card.inFocus =
         !item.card.inFocus;
 
 
-
     if (
         item.card.inFocus
     ) {
-
 
         item.card.correctCount =
             0;
     }
 
 
-
     sessionQueue = [];
-
 
     updateUI();
 
-
     searchDict();
 }
-
 
 
 function changeDictBox(
     index,
     newBoxLevel
 ) {
-
 
     let item =
         currentDictResults[
@@ -3705,14 +3037,11 @@ function changeDictBox(
         'box' + newBoxLevel;
 
 
-
     if (
         oldBox === newBox
     ) {
-
         return;
     }
-
 
 
     state[
@@ -3728,26 +3057,21 @@ function changeDictBox(
         );
 
 
-
     item.card.lastMovedDate =
         new Date()
             .toDateString();
-
 
 
     if (
         newBox === 'box5'
     ) {
 
-
         item.card.box5Streak =
             0;
-
 
         item.card.box5LastCorrectDate =
             null;
     }
-
 
 
     state[
@@ -3759,27 +3083,21 @@ function changeDictBox(
 
     sessionQueue = [];
 
-
     updateUI();
-
 
     searchDict();
 }
 
 
-
 function updateUI() {
-
 
     let today =
         new Date()
             .toDateString();
 
 
-
     [1,2,3,4,5,6]
     .forEach(i => {
-
 
         let countSpan =
             document.getElementById(
@@ -3789,13 +3107,11 @@ function updateUI() {
 
         if (countSpan) {
 
-
             countSpan.innerText =
                 state[
                     'box'+i
                 ].length;
         }
-
 
 
         if (
@@ -3804,16 +3120,13 @@ function updateUI() {
             i <= 5
         ) {
 
-
             let badge =
                 document.getElementById(
                     `daily-count-${i}`
                 );
 
 
-
             if (badge) {
-
 
                 let boxCards =
                     state[
@@ -3821,27 +3134,21 @@ function updateUI() {
                     ];
 
 
-
                 if (
                     boxCards.length === 0
                 ) {
 
-
                     badge.innerText =
                         0;
 
-
                 } else {
-
 
                     let minRounds =
                         Infinity;
 
 
-
                     boxCards
                     .forEach(c => {
-
 
                         let rounds =
 
@@ -3862,17 +3169,14 @@ function updateUI() {
                             0;
 
 
-
                         if (
                             rounds < minRounds
                         ) {
-
 
                             minRounds =
                                 rounds;
                         }
                     });
-
 
 
                     badge.innerText =
@@ -3894,7 +3198,6 @@ function updateUI() {
     });
 
 
-
     localStorage.setItem(
 
         'hsk_data',
@@ -3905,24 +3208,18 @@ function updateUI() {
     );
 
 
-
     highlightActiveBox();
 
-
     updateFocusButtonText();
-
 
     updateBox6DailyDisplay();
 }
 
 
-
 function highlightActiveBox() {
-
 
     [1,2,3,4,5,6]
     .forEach(i => {
-
 
         let element =
             document.getElementById(
@@ -3930,56 +3227,43 @@ function highlightActiveBox() {
             );
 
 
-
         if (element) {
 
-
             element.classList.remove(
-
                 'active-box',
-
                 'inactive-box',
-
                 'selected-box'
             );
-
 
 
             if (
                 selectedBoxFilter === i
             ) {
 
-
                 element.classList.add(
                     'selected-box'
                 );
-
 
             } else if (
                 selectedBoxFilter !== null
             ) {
 
-
                 element.classList.add(
                     'inactive-box'
                 );
-
 
             } else if (
                 currentBoxName ===
                 'box' + i
             ) {
 
-
                 element.classList.add(
                     'active-box'
                 );
 
-
             } else if (
                 currentBoxName !== ""
             ) {
-
 
                 element.classList.add(
                     'inactive-box'
@@ -3990,28 +3274,22 @@ function highlightActiveBox() {
 }
 
 
-
 function updateFocusButtonText() {
-
 
     let btn =
         document.getElementById(
             'btn-toggle-only-focus'
         );
 
-
     let count =
         getFocusCount();
-
 
 
     btn.innerText =
         `ALLE KARTEN (${count})`;
 
 
-
     if (onlyFocusMode) {
-
 
         btn.innerText =
             `FOKUS AKTIV (${count})`;
@@ -4019,13 +3297,10 @@ function updateFocusButtonText() {
 }
 
 
-
 function toggleOnlyFocusMode() {
-
 
     onlyFocusMode =
         !onlyFocusMode;
-
 
     sessionQueue = [];
 
@@ -4036,59 +3311,45 @@ function toggleOnlyFocusMode() {
         );
 
 
-
     if (onlyFocusMode) {
-
 
         btn.style.backgroundColor =
             "var(--focus-color)";
 
-
         btn.style.color =
             "#FFFFFF";
 
-
         selectedBoxFilter =
             null;
-
 
 
         if (
             randomMode
         ) {
 
-
             toggleRandomMode();
         }
 
-
     } else {
-
 
         btn.style.backgroundColor =
             "var(--card)";
-
 
         btn.style.color =
             "var(--text-main)";
     }
 
 
-
     updateUI();
-
 
     next();
 }
 
 
-
 function toggleRandomMode() {
-
 
     randomMode =
         !randomMode;
-
 
     sessionQueue = [];
 
@@ -4099,70 +3360,52 @@ function toggleRandomMode() {
         );
 
 
-
     if (randomMode) {
-
 
         btn.innerText =
             "ZUFALLSMODUS AKTIV";
 
-
         btn.style.backgroundColor =
             "var(--box4)";
-
 
         btn.style.color =
             "#FFFFFF";
 
-
         selectedBoxFilter =
             null;
-
 
 
         if (
             onlyFocusMode
         ) {
 
-
             toggleOnlyFocusMode();
         }
 
-
     } else {
-
 
         btn.innerText =
             "ZUFALLSMODUS AUS";
 
-
         btn.style.backgroundColor =
             "var(--card)";
-
 
         btn.style.color =
             "var(--text-main)";
     }
 
 
-
     updateUI();
-
 
     next();
 }
 
 
-
 function parseCSVLine(text) {
 
-
     let fields = [];
-
     let field = "";
-
     let inQuotes = false;
-
 
 
     for (
@@ -4171,62 +3414,41 @@ function parseCSVLine(text) {
         i++
     ) {
 
-
         let char =
             text[i];
 
 
-
         if (
-
             char === '"'
-
             ||
-
             char === '„'
-
             ||
-
             char === '“'
-
             ||
-
             char === '”'
-
         ) {
-
 
             inQuotes =
                 !inQuotes;
 
-
         } else if (
-
             char === ','
-
             &&
-
             !inQuotes
-
         ) {
-
 
             fields.push(
                 cleanField(field)
             );
 
-
             field = "";
 
-
         } else {
-
 
             field +=
                 char;
         }
     }
-
 
 
     fields.push(
@@ -4238,37 +3460,25 @@ function parseCSVLine(text) {
 }
 
 
-
 function cleanField(str) {
-
 
     let t =
         str.trim();
 
 
-
     if (
-
         (
             t.startsWith('"')
-
             &&
-
             t.endsWith('"')
         )
-
         ||
-
         (
             t.startsWith('„')
-
             &&
-
             t.endsWith('“')
         )
-
     ) {
-
 
         t =
             t.substring(
@@ -4278,19 +3488,15 @@ function cleanField(str) {
     }
 
 
-
     return t.trim();
 }
 
 
-
 function importCSV(file) {
-
 
     if (!file) {
         return;
     }
-
 
 
     const targetBox =
@@ -4310,10 +3516,8 @@ function importCSV(file) {
         'box1';
 
 
-
     let detectedLevel =
         "Import";
-
 
 
     let match =
@@ -4325,24 +3529,19 @@ function importCSV(file) {
             );
 
 
-
     if (match) {
-
 
         detectedLevel =
             "HSK " + match[1];
     }
 
 
-
     const reader =
         new FileReader();
 
 
-
     reader.onload =
         (e) => {
-
 
             const rows =
 
@@ -4351,25 +3550,20 @@ function importCSV(file) {
                     .split('\n');
 
 
-
             rows.forEach(r => {
-
 
                 if (!r.trim()) {
                     return;
                 }
 
 
-
                 const p =
                     parseCSVLine(r);
-
 
 
                 if (
                     p.length >= 3
                 ) {
-
 
                     state[
                         targetBox
@@ -4409,9 +3603,7 @@ function importCSV(file) {
                             false,
 
                         stats: {
-
                             queries: 0,
-
                             correct: 0
                         }
                     });
@@ -4419,16 +3611,12 @@ function importCSV(file) {
             });
 
 
-
             sessionQueue = [];
-
 
             updateUI();
 
-
             next();
         };
-
 
 
     reader.readAsText(
@@ -4437,89 +3625,63 @@ function importCSV(file) {
 }
 
 
-
 function next() {
-
 
     if (dictMode) {
         return;
     }
 
 
-
     if (
         sessionQueue.length === 0
     ) {
-
 
         let pool = [];
 
 
         const boxWeights = [
-
             0,
-
             16,
-
             8,
-
             4,
-
             2,
-
             1,
-
             1
         ];
-
 
 
         if (
             selectedBoxFilter === 6
         ) {
 
-
             let cards =
                 [...state.box6];
-
 
 
             cards.sort(
                 (a, b) => {
 
-
                     let dateA =
                         a.lastMovedDate
-
                         ?
-
                         new Date(
                             a.lastMovedDate
                         ).getTime()
-
                         :
-
                         0;
-
 
                     let dateB =
                         b.lastMovedDate
-
                         ?
-
                         new Date(
                             b.lastMovedDate
                         ).getTime()
-
                         :
-
                         0;
-
 
                     return dateA - dateB;
                 }
             );
-
 
 
             let targetBatch =
@@ -4527,7 +3689,6 @@ function next() {
                     0,
                     100
                 );
-
 
 
             targetBatch
@@ -4540,18 +3701,12 @@ function next() {
                 );
 
 
-
             for (
-
                 let i =
                     pool.length - 1;
-
                 i > 0;
-
                 i--
-
             ) {
-
 
                 const j =
                     Math.floor(
@@ -4559,7 +3714,6 @@ function next() {
                         *
                         (i + 1)
                     );
-
 
 
                 [
@@ -4574,13 +3728,11 @@ function next() {
             }
 
 
-
             sessionQueue =
                 pool;
 
 
         } else {
-
 
             for (
                 let i = 1;
@@ -4588,20 +3740,13 @@ function next() {
                 i++
             ) {
 
-
                 if (
-
                     selectedBoxFilter !== null
-
                     &&
-
                     i !== selectedBoxFilter
-
                 ) {
-
                     continue;
                 }
-
 
 
                 state[
@@ -4609,86 +3754,61 @@ function next() {
                 ]
                 .forEach(c => {
 
-
                     if (
-
                         onlyFocusMode
-
                         &&
-
                         !c.inFocus
-
                     ) {
-
                         return;
                     }
 
 
-
                     if (!c.stats) {
 
-
                         c.stats = {
-
                             queries: 0,
-
                             correct: 0
                         };
                     }
-
 
 
                     if (
                         selectedBoxFilter !== null
                     ) {
 
-
                         pool.push({
-
                             c,
-
                             box:
                                 'box'+i
                         });
 
-
                     } else {
-
 
                         let weight =
                             1;
 
 
-
                         if (!randomMode) {
-
 
                             if (
                                 i === 6
                             ) {
 
-
                                 if (
                                     !isBox6CardDue(c)
                                 ) {
-
-
                                     return;
                                 }
-
 
                                 weight =
                                     1;
 
-
                             } else {
-
 
                                 weight =
                                     boxWeights[i];
                             }
                         }
-
 
 
                         for (
@@ -4697,32 +3817,22 @@ function next() {
                             j++
                         ) {
 
-
                             pool.push({
-
                                 c,
-
                                 box:
                                     'box'+i
                             });
                         }
 
 
-
                         if (
-
                             c.inFocus
-
                             &&
-
                             !randomMode
-
                         ) {
-
 
                             let additionalTickets =
                                 7;
-
 
 
                             for (
@@ -4731,11 +3841,8 @@ function next() {
                                 f++
                             ) {
 
-
                                 pool.push({
-
                                     c,
-
                                     box:
                                         'box'+i
                                 });
@@ -4746,18 +3853,12 @@ function next() {
             }
 
 
-
             for (
-
                 let i =
                     pool.length - 1;
-
                 i > 0;
-
                 i--
-
             ) {
-
 
                 const j =
                     Math.floor(
@@ -4765,7 +3866,6 @@ function next() {
                         *
                         (i + 1)
                     );
-
 
 
                 [
@@ -4780,25 +3880,20 @@ function next() {
             }
 
 
-
             sessionQueue =
                 pool;
         }
-
 
 
         if (
             pool.length === 0
         ) {
 
-
             currentBoxName =
                 "";
 
-
             currentCard =
                 null;
-
 
 
             document
@@ -4809,11 +3904,9 @@ function next() {
                     "SYSTEMSTATUS";
 
 
-
             if (
                 selectedBoxFilter !== null
             ) {
-
 
                 document
                     .getElementById(
@@ -4823,9 +3916,7 @@ function next() {
 
                         `Box ${selectedBoxFilter} ist leer.`;
 
-
             } else {
-
 
                 document
                     .getElementById(
@@ -4845,14 +3936,12 @@ function next() {
             }
 
 
-
             document
                 .getElementById(
                     'writer-container'
                 )
                 .classList
                 .add('hidden');
-
 
 
             document
@@ -4863,14 +3952,12 @@ function next() {
                 .add('hidden');
 
 
-
             document
                 .getElementById(
                     'learning-tools'
                 )
                 .classList
                 .add('hidden');
-
 
 
             document
@@ -4881,14 +3968,12 @@ function next() {
                 .add('hidden');
 
 
-
             document
                 .getElementById(
                     'controls'
                 )
                 .classList
                 .add('hidden');
-
 
 
             document
@@ -4899,49 +3984,35 @@ function next() {
                 .add('hidden');
 
 
-
             highlightActiveBox();
-
 
             return;
         }
     }
 
 
-
     let selection =
         sessionQueue.pop();
-
 
 
     currentCard =
         selection.c;
 
-
     currentBoxName =
         selection.box;
-
 
 
     let statsInfo =
         "";
 
 
-
     if (
-
         currentBoxName === 'box6'
-
         &&
-
         currentCard.stats
-
         &&
-
         currentCard.stats.queries > 0
-
     ) {
-
 
         let percent =
 
@@ -4949,9 +4020,7 @@ function next() {
 
                 (
                     currentCard.stats.correct
-
                     /
-
                     currentCard.stats.queries
                 )
 
@@ -4964,22 +4033,16 @@ function next() {
         statsInfo =
             ` • ${percent}% ERFOLG`;
 
-
     } else if (
-
         currentBoxName === 'box5'
-
     ) {
-
 
         let streak =
             currentCard.box5Streak || 0;
 
-
         statsInfo =
             ` • STREAK: ${streak}/3 TAGEN`;
     }
-
 
 
     document
@@ -4998,13 +4061,9 @@ function next() {
 
             (
                 currentCard.inFocus
-
                 ?
-
                 " • FOKUS"
-
                 :
-
                 ""
             )
 
@@ -5013,12 +4072,10 @@ function next() {
             statsInfo;
 
 
-
     let hCount =
         countHanzi(
             currentCard.hz
         );
-
 
 
     let tagHtml =
@@ -5038,7 +4095,6 @@ function next() {
         '';
 
 
-
     document
         .getElementById(
             'v-de'
@@ -5052,9 +4108,7 @@ function next() {
             tagHtml;
 
 
-
     highlightActiveBox();
-
 
 
     document
@@ -5063,7 +4117,6 @@ function next() {
         )
         .classList
         .remove('hidden');
-
 
 
     document
@@ -5074,18 +4127,14 @@ function next() {
             '';
 
 
-
     currentWriter =
         null;
-
 
     singleCharBox =
         null;
 
-
     currentQuizChars =
         [];
-
 
 
     document
@@ -5094,7 +4143,6 @@ function next() {
         )
         .classList
         .add('hidden');
-
 
 
     document
@@ -5105,14 +4153,12 @@ function next() {
         .remove('long-char');
 
 
-
     document
         .getElementById(
             'v-py'
         )
         .classList
         .add('hidden');
-
 
 
     document
@@ -5123,14 +4169,12 @@ function next() {
         .add('hidden');
 
 
-
     document
         .getElementById(
             'drawing-controls'
         )
         .classList
         .remove('hidden');
-
 
 
     document
@@ -5141,14 +4185,12 @@ function next() {
         .add('hidden');
 
 
-
     document
         .getElementById(
             'special-actions'
         )
         .classList
         .add('hidden');
-
 
 
     document
@@ -5159,31 +4201,23 @@ function next() {
         .add('hidden');
 
 
-
     closeModal();
-
 
 
     let cleanHz =
 
         currentCard.hz
-
         ?
-
         currentCard.hz.replace(
             /\s/g,
             ''
         )
-
         :
-
         '';
-
 
 
     currentQuizChars =
         [];
-
 
 
     for (
@@ -5192,34 +4226,23 @@ function next() {
         i++
     ) {
 
-
         let code =
             cleanHz.charCodeAt(i);
 
 
-
         if (
-
             (
                 code >= 0x4E00
-
                 &&
-
                 code <= 0x9FFF
             )
-
             ||
-
             (
                 code >= 0x3400
-
                 &&
-
                 code <= 0x4DBF
             )
-
         ) {
-
 
             currentQuizChars.push(
                 cleanHz[i]
@@ -5228,51 +4251,37 @@ function next() {
     }
 
 
-
     currentQuizCharIndex =
         0;
-
 
 
     if (
         currentQuizChars.length > 0
     ) {
 
-
         startQuizForCurrentChar();
     }
 }
 
 
-
 function flip() {
-
 
     if (!currentCard) {
         return;
     }
 
 
-
     let statsInfo =
         "";
 
 
-
     if (
-
         currentBoxName === 'box6'
-
         &&
-
         currentCard.stats
-
         &&
-
         currentCard.stats.queries > 0
-
     ) {
-
 
         let percent =
 
@@ -5280,9 +4289,7 @@ function flip() {
 
                 (
                     currentCard.stats.correct
-
                     /
-
                     currentCard.stats.queries
                 )
 
@@ -5295,22 +4302,16 @@ function flip() {
         statsInfo =
             ` • ${percent}% ERFOLG`;
 
-
     } else if (
-
         currentBoxName === 'box5'
-
     ) {
-
 
         let streak =
             currentCard.box5Streak || 0;
 
-
         statsInfo =
             ` • STREAK: ${streak}/3 TAGEN`;
     }
-
 
 
     document
@@ -5329,20 +4330,15 @@ function flip() {
 
             (
                 currentCard.inFocus
-
                 ?
-
                 " • FOKUS"
-
                 :
-
                 ""
             )
 
             +
 
             statsInfo;
-
 
 
     document
@@ -5353,29 +4349,22 @@ function flip() {
             currentCard.de;
 
 
-
     let hzElement =
         document.getElementById(
             'v-hz'
         );
 
 
-
     let cleanHz =
 
         currentCard.hz
-
         ?
-
         currentCard.hz.replace(
             /\s/g,
             ''
         )
-
         :
-
         '';
-
 
 
     hzElement
@@ -5386,10 +4375,8 @@ function flip() {
         );
 
 
-
     hzElement.innerText =
         currentCard.hz;
-
 
 
     document
@@ -5400,11 +4387,9 @@ function flip() {
             currentCard.py;
 
 
-
     hzElement
         .classList
         .remove('hidden');
-
 
 
     document
@@ -5415,29 +4400,21 @@ function flip() {
         .remove('hidden');
 
 
-
     let statsElement =
         document.getElementById(
             'v-stats'
         );
 
 
-
     let statsText =
         "";
 
 
-
     if (
-
         currentCard.stats
-
         &&
-
         currentCard.stats.queries > 0
-
     ) {
-
 
         let percent =
 
@@ -5445,9 +4422,7 @@ function flip() {
 
                 (
                     currentCard.stats.correct
-
                     /
-
                     currentCard.stats.queries
                 )
 
@@ -5455,7 +4430,6 @@ function flip() {
 
                 100
             );
-
 
 
         statsText =
@@ -5476,9 +4450,7 @@ function flip() {
             (${percent}%)
             `;
 
-
     } else {
-
 
         statsText =
 
@@ -5486,15 +4458,12 @@ function flip() {
     }
 
 
-
     if (
         currentBoxName === 'box5'
     ) {
 
-
         let streak =
             currentCard.box5Streak || 0;
-
 
 
         statsText +=
@@ -5516,16 +4485,13 @@ function flip() {
     }
 
 
-
     statsElement.innerHTML =
         statsText;
-
 
 
     statsElement
         .classList
         .remove('hidden');
-
 
 
     let btnExample =
@@ -5534,11 +4500,9 @@ function flip() {
         );
 
 
-
     if (
         currentCard.sentenceHz
     ) {
-
 
         document
             .getElementById(
@@ -5546,7 +4510,6 @@ function flip() {
             )
             .innerText =
                 currentCard.sentenceHz;
-
 
 
         document
@@ -5557,7 +4520,6 @@ function flip() {
                 currentCard.sentencePy;
 
 
-
         document
             .getElementById(
                 'ex-de'
@@ -5566,18 +4528,14 @@ function flip() {
                 currentCard.sentenceDe;
 
 
-
         btnExample.disabled =
             false;
 
-
     } else {
-
 
         btnExample.disabled =
             true;
     }
-
 
 
     let btnFocus =
@@ -5586,39 +4544,30 @@ function flip() {
         );
 
 
-
     if (
         currentCard.inFocus
     ) {
 
-
         btnFocus.innerText =
             "FOKUS AKTIV";
 
-
         btnFocus.style.backgroundColor =
             "var(--focus-color)";
-
 
         btnFocus.style.color =
             "#FFFFFF";
 
-
     } else {
-
 
         btnFocus.innerText =
             "FOKUS AKTIVIEREN";
 
-
         btnFocus.style.backgroundColor =
             "var(--surface)";
-
 
         btnFocus.style.color =
             "var(--focus-color)";
     }
-
 
 
     document
@@ -5629,14 +4578,12 @@ function flip() {
         .add('hidden');
 
 
-
     document
         .getElementById(
             'drawing-controls'
         )
         .classList
         .add('hidden');
-
 
 
     document
@@ -5647,14 +4594,12 @@ function flip() {
         .remove('hidden');
 
 
-
     document
         .getElementById(
             'special-actions'
         )
         .classList
         .remove('hidden');
-
 
 
     document
@@ -5666,21 +4611,17 @@ function flip() {
 }
 
 
-
 function retryCurrentWordWriting() {
-
 
     if (!currentCard) {
         return;
     }
 
 
-
     let hCount =
         countHanzi(
             currentCard.hz
         );
-
 
 
     let tagHtml =
@@ -5700,7 +4641,6 @@ function retryCurrentWordWriting() {
         '';
 
 
-
     document
         .getElementById(
             'v-de'
@@ -5714,14 +4654,12 @@ function retryCurrentWordWriting() {
             tagHtml;
 
 
-
     document
         .getElementById(
             'v-hz'
         )
         .classList
         .add('hidden');
-
 
 
     document
@@ -5732,14 +4670,12 @@ function retryCurrentWordWriting() {
         .add('hidden');
 
 
-
     document
         .getElementById(
             'v-stats'
         )
         .classList
         .add('hidden');
-
 
 
     document
@@ -5750,14 +4686,12 @@ function retryCurrentWordWriting() {
         .add('hidden');
 
 
-
     document
         .getElementById(
             'special-actions'
         )
         .classList
         .add('hidden');
-
 
 
     document
@@ -5768,7 +4702,6 @@ function retryCurrentWordWriting() {
         .add('hidden');
 
 
-
     document
         .getElementById(
             'drawing-controls'
@@ -5777,17 +4710,14 @@ function retryCurrentWordWriting() {
         .remove('hidden');
 
 
-
     const container =
         document.getElementById(
             'writer-container'
         );
 
 
-
     container.innerHTML =
         '';
-
 
 
     container
@@ -5795,35 +4725,26 @@ function retryCurrentWordWriting() {
         .remove('hidden');
 
 
-
     currentWriter =
         null;
 
-
     singleCharBox =
         null;
-
 
     currentQuizChars =
         [];
 
 
-
     let cleanHz =
 
         currentCard.hz
-
         ?
-
         currentCard.hz.replace(
             /\s/g,
             ''
         )
-
         :
-
         '';
-
 
 
     for (
@@ -5832,34 +4753,23 @@ function retryCurrentWordWriting() {
         i++
     ) {
 
-
         let code =
             cleanHz.charCodeAt(i);
 
 
-
         if (
-
             (
                 code >= 0x4E00
-
                 &&
-
                 code <= 0x9FFF
             )
-
             ||
-
             (
                 code >= 0x3400
-
                 &&
-
                 code <= 0x4DBF
             )
-
         ) {
-
 
             currentQuizChars.push(
                 cleanHz[i]
@@ -5868,25 +4778,20 @@ function retryCurrentWordWriting() {
     }
 
 
-
     currentQuizCharIndex =
         0;
-
 
 
     if (
         currentQuizChars.length > 0
     ) {
 
-
         startQuizForCurrentChar();
     }
 }
 
 
-
 function openModal() {
-
 
     document
         .getElementById(
@@ -5897,9 +4802,7 @@ function openModal() {
 }
 
 
-
 function closeModal() {
-
 
     document
         .getElementById(
@@ -5910,51 +4813,38 @@ function closeModal() {
 }
 
 
-
 function toggleFocus() {
-
 
     if (!currentCard) {
         return;
     }
 
 
-
     if (
-
         !currentCard.inFocus
-
         &&
-
         getFocusCount() >= 150
-
     ) {
-
 
         alert(
             "Das Limit von 150 Vokabeln im Fokus ist erreicht."
         );
 
-
         return;
     }
-
 
 
     currentCard.inFocus =
         !currentCard.inFocus;
 
 
-
     if (
         currentCard.inFocus
     ) {
 
-
         currentCard.correctCount =
             0;
     }
-
 
 
     let btnFocus =
@@ -5963,60 +4853,43 @@ function toggleFocus() {
         );
 
 
-
     if (
         currentCard.inFocus
     ) {
 
-
         btnFocus.innerText =
             "FOKUS AKTIV";
-
 
         btnFocus.style.backgroundColor =
             "var(--focus-color)";
 
-
         btnFocus.style.color =
             "#FFFFFF";
 
-
     } else {
-
 
         btnFocus.innerText =
             "FOKUS AKTIVIEREN";
 
-
         btnFocus.style.backgroundColor =
             "var(--surface)";
-
 
         btnFocus.style.color =
             "var(--focus-color)";
     }
 
 
-
     let statsInfo =
         "";
 
 
-
     if (
-
         currentBoxName === 'box6'
-
         &&
-
         currentCard.stats
-
         &&
-
         currentCard.stats.queries > 0
-
     ) {
-
 
         let percent =
 
@@ -6024,9 +4897,7 @@ function toggleFocus() {
 
                 (
                     currentCard.stats.correct
-
                     /
-
                     currentCard.stats.queries
                 )
 
@@ -6039,20 +4910,16 @@ function toggleFocus() {
         statsInfo =
             ` • ${percent}% ERFOLG`;
 
-
     } else if (
         currentBoxName === 'box5'
     ) {
 
-
         let streak =
             currentCard.box5Streak || 0;
-
 
         statsInfo =
             ` • STREAK: ${streak}/3 TAGEN`;
     }
-
 
 
     document
@@ -6071,13 +4938,9 @@ function toggleFocus() {
 
             (
                 currentCard.inFocus
-
                 ?
-
                 " • FOKUS"
-
                 :
-
                 ""
             )
 
@@ -6086,49 +4949,37 @@ function toggleFocus() {
             statsInfo;
 
 
-
     sessionQueue = [];
-
 
     updateUI();
 }
 
 
-
 function move(step) {
-
 
     if (!currentCard) {
         return;
     }
 
 
-
     if (!currentCard.stats) {
 
-
         currentCard.stats = {
-
             queries: 0,
-
             correct: 0
         };
     }
 
 
-
     currentCard.stats.queries++;
-
 
 
     if (
         step === 1
     ) {
 
-
         currentCard.stats.correct++;
     }
-
 
 
     let oldBox =
@@ -6143,43 +4994,34 @@ function move(step) {
             );
 
 
-
     let today =
         new Date()
             .toDateString();
-
 
 
     if (
         currentCard.lastSeenDate !== today
     ) {
 
-
         currentCard.lastSeenDate =
             today;
-
 
         currentCard.todayRounds =
             0;
     }
 
 
-
     currentCard.todayRounds++;
-
 
 
     if (
         oldBox === 'box6'
     ) {
 
-
         checkBox6DailyReset();
-
 
         state.box6Daily.count++;
     }
-
 
 
     let level =
@@ -6189,7 +5031,6 @@ function move(step) {
                 ''
             )
         );
-
 
 
     state[
@@ -6205,64 +5046,48 @@ function move(step) {
         );
 
 
-
     let effectiveStep =
         step;
-
 
 
     if (
         currentCard.lastMovedDate === today
     ) {
 
-
         effectiveStep =
             0;
 
-
     } else {
-
 
         currentCard.lastMovedDate =
             today;
     }
 
 
-
     if (
-
         effectiveStep === 1
-
         &&
-
         currentCard.inFocus
-
     ) {
-
 
         if (
             !currentCard.correctCount
         ) {
-
 
             currentCard.correctCount =
                 0;
         }
 
 
-
         currentCard.correctCount++;
-
 
 
         if (
             currentCard.correctCount >= 20
         ) {
 
-
             currentCard.inFocus =
                 false;
-
 
             currentCard.correctCount =
                 0;
@@ -6270,30 +5095,24 @@ function move(step) {
     }
 
 
-
     let newLevel;
-
 
 
     if (
         oldBox === 'box5'
     ) {
 
-
         if (
             step === 1
         ) {
-
 
             if (
                 !currentCard.box5Streak
             ) {
 
-
                 currentCard.box5Streak =
                     0;
             }
-
 
 
             let daysDiff =
@@ -6312,75 +5131,57 @@ function move(step) {
                 -1;
 
 
-
             if (
                 daysDiff === 1
             ) {
 
-
                 currentCard.box5Streak++;
-
 
                 currentCard.box5LastCorrectDate =
                     today;
-
 
             } else if (
                 daysDiff === 0
             ) {
 
-
                 // gleicher Tag
 
-
             } else {
-
 
                 currentCard.box5Streak =
                     1;
 
-
                 currentCard.box5LastCorrectDate =
                     today;
             }
-
 
 
             if (
                 currentCard.box5Streak >= 3
             ) {
 
-
                 newLevel =
                     6;
-
 
                 currentCard.box5Streak =
                     0;
 
-
                 currentCard.box5LastCorrectDate =
                     null;
 
-
             } else {
-
 
                 newLevel =
                     5;
             }
 
-
         } else {
-
 
             currentCard.box5Streak =
                 0;
 
-
             currentCard.box5LastCorrectDate =
                 null;
-
 
 
             newLevel =
@@ -6400,9 +5201,7 @@ function move(step) {
                 );
         }
 
-
     } else {
-
 
         newLevel =
 
@@ -6422,21 +5221,17 @@ function move(step) {
     }
 
 
-
     if (
         oldBox === 'box6'
     ) {
-
 
         if (
             newLevel === 6
         ) {
 
-
             if (
                 effectiveStep === 1
             ) {
-
 
                 currentCard.box6Interval =
 
@@ -6453,16 +5248,13 @@ function move(step) {
 
                     2;
 
-
             } else if (
                 !currentCard.box6Interval
             ) {
 
-
                 currentCard.box6Interval =
                     1;
             }
-
 
 
             currentCard.nextReviewDate =
@@ -6472,19 +5264,15 @@ function move(step) {
                     currentCard.box6Interval
                 );
 
-
         } else {
-
 
             currentCard.box6Interval =
                 0;
-
 
             currentCard.nextReviewDate =
                 null;
         }
     }
-
 
 
     state[
@@ -6494,22 +5282,17 @@ function move(step) {
     );
 
 
-
     updateUI();
-
 
     next();
 }
 
 
-
 function moveToBox6() {
-
 
     if (!currentCard) {
         return;
     }
-
 
 
     let oldBox =
@@ -6524,9 +5307,7 @@ function moveToBox6() {
             );
 
 
-
     if (oldBox) {
-
 
         state[
             oldBox
@@ -6542,31 +5323,22 @@ function moveToBox6() {
     }
 
 
-
     currentCard.lastMovedDate =
         new Date()
             .toDateString();
 
 
-
     currentCard.box5Streak =
         0;
-
-
 
     currentCard.box5LastCorrectDate =
         null;
 
-
-
     currentCard.box6Interval =
         1;
 
-
-
     currentCard.nextReviewDate =
         null;
-
 
 
     state.box6.push(
@@ -6574,59 +5346,39 @@ function moveToBox6() {
     );
 
 
-
     updateUI();
-
 
     next();
 }
 
 
-
 function resetSpeicher() {
 
-
     if (
-
         confirm(
-
             "Möchten Sie den Lernstand wirklich vollständig löschen? Dieser Vorgang kann nicht rückgängig gemacht werden."
-
         )
-
     ) {
 
-
         state = {
-
             box1: [],
-
             box2: [],
-
             box3: [],
-
             box4: [],
-
             box5: [],
-
             box6: []
         };
 
-
         sessionQueue = [];
 
-
         updateUI();
-
 
         location.reload();
     }
 }
 
 
-
 function exportProgress() {
-
 
     const dataStr =
 
@@ -6642,12 +5394,10 @@ function exportProgress() {
         );
 
 
-
     const dl =
         document.createElement(
             'a'
         );
-
 
 
     dl.setAttribute(
@@ -6656,30 +5406,24 @@ function exportProgress() {
     );
 
 
-
     dl.setAttribute(
         "download",
         "hsk_trainer_backup.json"
     );
 
 
-
     dl.click();
 }
 
 
-
 function importProgress(file) {
-
 
     const reader =
         new FileReader();
 
 
-
     reader.onload =
         (e) => {
-
 
             state =
                 JSON.parse(
@@ -6687,21 +5431,16 @@ function importProgress(file) {
                 );
 
 
-
             if (!state.box6) {
-
 
                 state.box6 =
                     [];
             }
 
 
-
             if (!state.box6Daily) {
 
-
                 state.box6Daily = {
-
                     date:
                         new Date()
                             .toDateString(),
@@ -6712,17 +5451,13 @@ function importProgress(file) {
             }
 
 
-
             sessionQueue =
                 [];
 
-
             updateUI();
-
 
             next();
         };
-
 
 
     reader.readAsText(
@@ -6731,45 +5466,34 @@ function importProgress(file) {
 }
 
 
-
 function clearCanvas() {
-
 
     if (currentWriter) {
 
-
         try {
-
             currentWriter.cancelQuiz();
-
         } catch(e) {}
     }
-
 
 
     currentQuizCharIndex =
         0;
 
 
-
     startQuizForCurrentChar();
 }
 
 
-
 function speak() {
-
 
     if (!currentCard) {
         return;
     }
 
 
-
     window
         .speechSynthesis
         .cancel();
-
 
 
     const u =
@@ -6779,10 +5503,8 @@ function speak() {
         );
 
 
-
     u.lang =
         'zh-CN';
-
 
 
     window
@@ -6791,14 +5513,11 @@ function speak() {
 }
 
 
-
 updateUI();
 
 next();
 
-
 </script>
-
 
 </body>
 </html>
