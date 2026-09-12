@@ -1,647 +1,7092 @@
-<style id="hsk-premium-ui-override">
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HSK Trainer">
+
+    <meta name="theme-color" content="#f4f7fb">
+
+    <title>HSK Trainer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;1,8..60,500;1,8..60,600&display=swap"
+        rel="stylesheet"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+
+    <style>
+
+        /* =========================================================
+           HSK TRAINER — PROFESSIONAL UI
+           ========================================================= */
+
+        :root {
+
+            /* BASE */
+            --bg: #f3f6fa;
+            --card: #ffffff;
+            --surface: #f8fafc;
+            --surface-2: #f1f5f9;
+
+            --text-main: #15171c;
+            --text-muted: #667085;
+            --text-soft: #98a2b3;
+
+            --border: #e7eaf0;
+            --border-strong: #d8dde6;
+
+            /* BRAND */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-soft: #eaf1ff;
+
+            --focus-color: #7c3aed;
+            --focus-soft: #f2eafe;
+
+            /* BOX COLORS */
+            --box1: #e5484d;
+            --box2: #e99a14;
+            --box3: #3b82f6;
+            --box4: #8b5cf6;
+            --box5: #27a65a;
+            --box6: #df3f7d;
+
+            /* SHADOW */
+            --shadow-small:
+                0 1px 2px rgba(16, 24, 40, 0.04),
+                0 3px 8px rgba(16, 24, 40, 0.05);
+
+            --shadow-medium:
+                0 8px 24px rgba(16, 24, 40, 0.08),
+                0 2px 8px rgba(16, 24, 40, 0.04);
+
+            --shadow-card:
+                0 20px 48px rgba(16, 24, 40, 0.09),
+                0 4px 16px rgba(16, 24, 40, 0.05);
+
+            /* DIMENSIONS */
+            --radius-small: 10px;
+            --radius-button: 13px;
+            --radius-card: 24px;
+
+            /* FONT */
+            --font-ui:
+                'Manrope',
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+
+            --font-read:
+                'Source Serif 4',
+                Georgia,
+                'Songti SC',
+                serif;
+        }
+
+
+        /* =========================================================
+           DARK MODE
+           ========================================================= */
+
+        @media (prefers-color-scheme: dark) {
+
+            :root {
+
+                --bg: #0d0f14;
+                --card: #16191f;
+                --surface: #1c2027;
+                --surface-2: #222731;
+
+                --text-main: #f2f4f7;
+                --text-muted: #a7b0bf;
+                --text-soft: #778292;
+
+                --border: #292e38;
+                --border-strong: #363d49;
+
+                --primary: #6da4ff;
+                --primary-dark: #4e8ef7;
+                --primary-soft: #192b4b;
+
+                --focus-color: #ae8aff;
+                --focus-soft: #291f3c;
+
+                --box1: #f06166;
+                --box2: #f0aa34;
+                --box3: #64a2ff;
+                --box4: #a68bfa;
+                --box5: #46bd74;
+                --box6: #ee6a9c;
+
+                --shadow-small:
+                    0 2px 7px rgba(0,0,0,0.22);
+
+                --shadow-medium:
+                    0 10px 28px rgba(0,0,0,0.30);
+
+                --shadow-card:
+                    0 22px 50px rgba(0,0,0,0.38),
+                    0 4px 14px rgba(0,0,0,0.22);
+            }
+        }
+
+
+        /* =========================================================
+           RESET
+           ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+
+            width: 100%;
+            height: 100%;
+
+            margin: 0;
+            padding: 0;
+
+            overflow: hidden;
+
+            font-family: var(--font-ui);
+
+            background: var(--bg);
+            color: var(--text-main);
+
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+
+        body {
+
+            background:
+                radial-gradient(
+                    circle at 10% -10%,
+                    rgba(37, 99, 235, 0.10),
+                    transparent 34%
+                ),
+                radial-gradient(
+                    circle at 110% 15%,
+                    rgba(124, 58, 237, 0.07),
+                    transparent 30%
+                ),
+                var(--bg);
+        }
+
+
+        button,
+        input,
+        select {
+
+            font-family: inherit;
+        }
+
+
+        button {
+
+            border: 0;
+            outline: 0;
+
+            cursor: pointer;
+
+            font-weight: 800;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            transition:
+                transform 0.12s ease,
+                box-shadow 0.12s ease,
+                filter 0.12s ease,
+                background-color 0.12s ease;
+
+            -webkit-tap-highlight-color: transparent;
+        }
+
+
+        button:active {
+
+            transform: scale(0.975);
+        }
+
+
+        button:disabled {
+
+            opacity: 0.38;
+            cursor: not-allowed;
+
+            transform: none !important;
+        }
+
+
+        .hidden {
+
+            display: none !important;
+        }
+
+
+        /* =========================================================
+           APP CONTAINER
+           ========================================================= */
+
+        .container {
+
+            width: 100%;
+            max-width: 560px;
+
+            height: 100vh;
+            height: 100dvh;
+
+            margin: 0 auto;
+
+            display: flex;
+            flex-direction: column;
+
+            padding:
+                max(12px, env(safe-area-inset-top))
+                max(12px, env(safe-area-inset-right))
+                max(12px, env(safe-area-inset-bottom))
+                max(12px, env(safe-area-inset-left));
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================================
+           HEADER
+           ========================================================= */
+
+        .header {
+
+            flex-shrink: 0;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .header-top {
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 10px;
+
+            width: 100%;
+        }
+
+
+        .header-top h2 {
+
+            margin: 0 2px;
+
+            font-size: 1.35rem;
+            line-height: 1.1;
+
+            font-weight: 800;
+
+            letter-spacing: -0.045em;
+        }
+
+
+        /* =========================================================
+           SYSTEM BUTTONS
+           ========================================================= */
+
+        .system-buttons {
+
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 6px;
+
+            width: 100%;
+        }
+
+
+        .system-buttons button {
+
+            min-width: 0;
+            min-height: 42px;
+
+            padding: 7px 3px;
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius-button);
+
+            background: var(--card);
+            color: var(--text-main);
+
+            box-shadow: var(--shadow-small);
+
+            font-size: 0.61rem;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .system-buttons .btn-action {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--primary),
+                    var(--primary-dark)
+                );
+
+            border-color: transparent;
+
+            color: #ffffff;
+
+            box-shadow:
+                0 7px 16px rgba(37, 99, 235, 0.20);
+        }
+
+
+        .system-buttons .btn-stats {
+
+            color: var(--box6);
+        }
+
+
+        .system-buttons .btn-danger {
+
+            color: var(--box1);
+        }
+
+
+        /* =========================================================
+           MODE BUTTONS
+           ========================================================= */
+
+        .filter-buttons {
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 6px;
+
+            width: 100%;
+        }
+
+
+        .filter-buttons button {
+
+            min-width: 0;
+            min-height: 43px;
+
+            padding: 8px 5px;
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius-button);
+
+            background: var(--card);
+            color: var(--text-main);
+
+            box-shadow: var(--shadow-small);
+
+            font-size: 0.69rem;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        /* =========================================================
+           BOX 6 DAILY
+           ========================================================= */
+
+        #box6-daily-progress {
+
+            position: relative;
+
+            min-height: 40px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 9px 14px 9px 42px;
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius-button);
+
+            background: var(--card);
+
+            color: var(--box6);
+
+            box-shadow: var(--shadow-small);
+
+            font-size: 0.69rem;
+
+            font-weight: 800;
+
+            letter-spacing: 0.05em;
+        }
+
+
+        #box6-daily-progress::before {
+
+            content: "6";
+
+            position: absolute;
+
+            left: 12px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 22px;
+            height: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: var(--box6);
+
+            color: white;
+
+            font-size: 0.65rem;
+            font-weight: 800;
+
+            box-shadow:
+                0 4px 10px rgba(223, 63, 125, 0.24);
+        }
+
+
+        /* =========================================================
+           BOX NAVIGATION
+           ========================================================= */
+
+        .stats {
+
+            flex-shrink: 0;
+
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+
+            gap: 6px;
+
+            padding: 7px;
+
+            margin-bottom: 10px;
+
+            border: 1px solid var(--border);
+            border-radius: 16px;
+
+            background: var(--card);
+
+            box-shadow: var(--shadow-small);
+        }
+
+
+        .stat-box {
+
+            position: relative;
+
+            min-width: 0;
+            min-height: 48px;
+
+            padding: 7px 1px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            border: 1px solid transparent;
+            border-radius: 10px;
+
+            background: transparent;
+
+            color: var(--text-muted);
+
+            font-size: 0.61rem;
+            font-weight: 700;
+
+            line-height: 1.2;
+
+            cursor: pointer;
+
+            user-select: none;
+
+            transition:
+                transform 0.12s ease,
+                opacity 0.12s ease,
+                background 0.12s ease,
+                border-color 0.12s ease;
+        }
+
+
+        .stat-box span {
+
+            margin-top: 2px;
+
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
+
+        #stat-box-1 { color: var(--box1); }
+        #stat-box-2 { color: var(--box2); }
+        #stat-box-3 { color: var(--box3); }
+        #stat-box-4 { color: var(--box4); }
+        #stat-box-5 { color: var(--box5); }
+        #stat-box-6 { color: var(--box6); }
+
+
+        .stat-box.active-box {
+
+            border-color: var(--border);
+
+            background: var(--surface);
+        }
+
+
+        .stat-box.selected-box {
+
+            border-color: currentColor;
+
+            background: var(--surface);
+
+            transform: translateY(-1px);
+
+            box-shadow: var(--shadow-small);
+        }
+
+
+        .stat-box.inactive-box {
+
+            opacity: 0.32;
+        }
+
+
+        .daily-badge {
+
+            position: absolute;
+
+            top: -5px;
+            right: -4px;
+
+            min-width: 17px;
+            height: 17px;
+
+            padding: 0 4px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border: 2px solid var(--card);
+
+            border-radius: 999px;
+
+            background: var(--focus-color);
+
+            color: white;
+
+            font-size: 0.51rem;
+            font-weight: 800;
+
+            box-shadow:
+                0 3px 7px rgba(16,24,40,0.18);
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================================
+           MAIN CARD
+           ========================================================= */
+
+        .card {
+
+            position: relative;
+
+            min-height: 0;
+
+            flex-grow: 1;
+
+            display: flex;
+            flex-direction: column;
+
+            overflow: hidden;
+
+            padding: 17px 18px 15px;
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+
+            background: var(--card);
+
+            box-shadow: var(--shadow-card);
+        }
+
+
+        .card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 8%;
+            right: 8%;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,0.65),
+                    transparent
+                );
+
+            pointer-events: none;
+        }
+
+
+        .card-content {
+
+            position: relative;
+            z-index: 1;
+
+            min-height: 0;
+
+            flex-grow: 1;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 11px;
+
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           CARD LABEL
+           ========================================================= */
+
+        #v-box {
+
+            max-width: 100%;
+
+            padding: 6px 12px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 999px;
+
+            background: var(--surface);
+
+            color: var(--text-muted);
+
+            font-size: 0.64rem;
+
+            font-weight: 800;
+
+            letter-spacing: 0.07em;
+
+            text-transform: uppercase;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        /* =========================================================
+           GERMAN WORD
+           ========================================================= */
+
+        #v-de {
+
+            width: min(100%, 430px);
+
+            margin: 0;
+
+            font-family: var(--font-read);
+
+            font-size:
+                clamp(
+                    1.25rem,
+                    4.5vw,
+                    1.62rem
+                );
+
+            font-weight: 600;
+
+            line-height: 1.3;
+
+            letter-spacing: -0.012em;
+
+            color: var(--text-main);
+
+            word-break: break-word;
+        }
+
+
+        .char-tag {
+
+            display: block;
+
+            width: fit-content;
+
+            margin: 7px auto 0;
+
+            padding: 4px 9px;
+
+            border-radius: 999px;
+
+            background: var(--primary-soft);
+
+            color: var(--primary);
+
+            font-family: var(--font-ui);
+
+            font-size: 0.70rem;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+           CHINESE
+           ========================================================= */
+
+        #v-hz {
+
+            margin: 0;
+
+            font-size:
+                clamp(
+                    3.7rem,
+                    16vw,
+                    5.4rem
+                );
+
+            font-weight: 400;
+
+            line-height: 1;
+
+            letter-spacing: -0.045em;
+
+            color: var(--text-main);
+        }
+
+
+        #v-hz.long-char {
+
+            font-size:
+                clamp(
+                    2.45rem,
+                    10vw,
+                    3.55rem
+                );
+
+            letter-spacing: -0.035em;
+        }
+
+
+        #v-py {
+
+            margin: 0;
+
+            font-family: var(--font-read);
+
+            font-size:
+                clamp(
+                    1.05rem,
+                    4vw,
+                    1.3rem
+                );
+
+            font-style: italic;
+
+            font-weight: 600;
+
+            color: var(--primary);
+        }
+
+
+        /* =========================================================
+           CARD STATS
+           ========================================================= */
+
+        #v-stats {
+
+            max-width: 100%;
+
+            margin-top: 1px;
+
+            padding: 7px 12px;
+
+            border: 1px solid var(--border);
+            border-radius: 11px;
+
+            background: var(--surface);
+
+            color: var(--text-muted);
+
+            font-size: 0.75rem;
+
+            line-height: 1.45;
+        }
+
+
+        /* =========================================================
+           HANZI WRITER
+           ========================================================= */
+
+        .writer-grid {
+
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 0;
+        }
+
+
+        .char-box {
+
+            position: relative;
+
+            width: min(100%, 390px);
+
+            max-width: 390px;
+            max-height: 390px;
+
+            aspect-ratio: 1 / 1;
+
+            overflow: hidden;
+
+            border: 1px solid var(--border-strong);
+
+            border-radius: 21px;
+
+            background-color: var(--surface);
+
+            background-image:
+
+                linear-gradient(
+                    to right,
+                    transparent 49.75%,
+                    var(--border) 49.75%,
+                    var(--border) 50.25%,
+                    transparent 50.25%
+                ),
+
+                linear-gradient(
+                    to bottom,
+                    transparent 49.75%,
+                    var(--border) 49.75%,
+                    var(--border) 50.25%,
+                    transparent 50.25%
+                );
+
+            box-shadow:
+                inset 0 1px 4px rgba(16,24,40,0.03);
+
+            touch-action: none;
+
+            transition:
+                border-color 0.15s ease,
+                box-shadow 0.15s ease;
+        }
+
+
+        .char-box:active {
+
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 0 3px var(--primary-soft);
+        }
+
+
+        /* =========================================================
+           ACTION AREA
+           ========================================================= */
+
+        .action-area {
+
+            position: relative;
+            z-index: 1;
+
+            flex-shrink: 0;
+
+            margin-top: auto;
+
+            padding-top: 13px;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+
+        .row-2 {
+
+            width: 100%;
+
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 8px;
+        }
+
+
+        .row-3 {
+
+            width: 100%;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 8px;
+        }
+
+
+        /* =========================================================
+           BUTTONS
+           ========================================================= */
+
+        .btn-large {
+
+            min-height: 50px;
+
+            padding: 13px 12px;
+
+            border-radius: var(--radius-button);
+
+            font-size: 0.88rem;
+
+            letter-spacing: 0.035em;
+
+            text-transform: uppercase;
+        }
+
+
+        .btn-medium {
+
+            min-height: 45px;
+
+            padding: 11px 8px;
+
+            border-radius: var(--radius-button);
+
+            font-size: 0.82rem;
+        }
+
+
+        .btn-primary {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--primary),
+                    var(--primary-dark)
+                );
+
+            color: white;
+
+            box-shadow:
+                0 7px 16px rgba(37, 99, 235, 0.20);
+        }
+
+
+        .btn-secondary {
+
+            border: 1px solid var(--border);
+
+            background: var(--surface);
+
+            color: var(--text-main);
+
+            box-shadow: var(--shadow-small);
+        }
+
+
+        .btn-tool {
+
+            min-height: 46px;
+
+            padding: 10px 4px;
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius-button);
+
+            background: var(--surface);
+
+            color: var(--text-main);
+
+            box-shadow: var(--shadow-small);
+
+            font-size: 0.75rem;
+
+            letter-spacing: 0.04em;
+
+            text-transform: uppercase;
+        }
+
+
+        .btn-grade {
+
+            min-height: 51px;
+
+            padding: 12px 3px;
+
+            border-radius: var(--radius-button);
+
+            color: white;
+
+            font-size: 0.78rem;
+
+            font-weight: 800;
+
+            letter-spacing: 0.035em;
+
+            text-transform: uppercase;
+
+            box-shadow:
+                0 7px 15px rgba(16,24,40,0.11);
+        }
+
+
+        /* =========================================================
+           DICTIONARY
+           ========================================================= */
+
+        #dict-view {
+
+            position: relative;
+            z-index: 1;
+
+            min-height: 0;
+        }
+
+
+        #dict-search-input {
+
+            width: 100%;
+
+            min-height: 47px;
+
+            padding: 11px 13px;
+
+            outline: none;
+
+            border: 1px solid var(--border-strong);
+
+            border-radius: var(--radius-button);
+
+            background: var(--surface);
+
+            color: var(--text-main);
+
+            font-size: 0.93rem;
+
+            transition:
+                border-color 0.15s ease,
+                box-shadow 0.15s ease;
+        }
+
+
+        #dict-search-input::placeholder {
+
+            color: var(--text-soft);
+        }
+
+
+        #dict-search-input:focus {
+
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 0 3px var(--primary-soft);
+        }
+
+
+        #dict-results {
+
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-strong) transparent;
+        }
+
+
+        /* =========================================================
+           MODAL
+           ========================================================= */
+
+        .modal-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 1000;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding:
+                max(18px, env(safe-area-inset-top))
+                18px
+                max(18px, env(safe-area-inset-bottom));
+
+            background:
+                rgba(5, 8, 13, 0.63);
+
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+
+        .modal-content {
+
+            width: 100%;
+            max-width: 420px;
+
+            max-height: 82vh;
+
+            padding: 21px;
+
+            display: flex;
+            flex-direction: column;
+
+            border: 1px solid var(--border);
+
+            border-radius: 23px;
+
+            background: var(--card);
+
+            box-shadow:
+                0 28px 70px rgba(0,0,0,0.30);
+        }
+
+
+        /* =========================================================
+           BOX 6 STATISTICS
+           ========================================================= */
+
+        #box6-stats-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            font-size: 0.78rem;
+        }
+
+
+        #box6-stats-table th {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1;
+
+            padding: 9px 6px;
+
+            border-bottom:
+                1px solid var(--border-strong);
+
+            background: var(--card);
+
+            color: var(--text-muted);
+
+            font-size: 0.60rem;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.025em;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            user-select: none;
+
+            white-space: nowrap;
+        }
+
+
+        #box6-stats-table th:nth-child(n+2) {
+
+            text-align: center;
+        }
+
+
+        #box6-stats-table td {
+
+            padding: 9px 6px;
+
+            border-bottom:
+                1px solid var(--border);
+
+            vertical-align: middle;
+        }
+
+
+        #box6-stats-table td:nth-child(n+2) {
+
+            text-align: center;
+        }
+
+
+        #box6-stats-table th.sorted-asc::after {
+
+            content: " ▲";
+
+            color: var(--primary);
+        }
+
+
+        #box6-stats-table th.sorted-desc::after {
+
+            content: " ▼";
+
+            color: var(--primary);
+        }
+
+
+        #box6-stats-summary {
+
+            margin-bottom: 10px;
+
+            padding: 7px 10px;
+
+            border-radius: 10px;
+
+            background: var(--surface);
+
+            color: var(--text-muted);
+
+            font-size: 0.72rem;
+
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           FOCUS
+           ========================================================= */
+
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+
+            outline: none;
+
+            box-shadow:
+                0 0 0 3px var(--primary-soft);
+        }
+
+
+        /* =========================================================
+           SCROLLBAR
+           ========================================================= */
+
+        * {
+
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-strong) transparent;
+        }
+
+
+        *::-webkit-scrollbar {
+
+            width: 6px;
+            height: 6px;
+        }
+
+
+        *::-webkit-scrollbar-track {
+
+            background: transparent;
+        }
+
+
+        *::-webkit-scrollbar-thumb {
+
+            border-radius: 999px;
+
+            background: var(--border-strong);
+        }
+
+
+        /* =========================================================
+           SMALL SCREENS
+           ========================================================= */
+
+        @media (max-width: 390px) {
+
+            .container {
+
+                padding-left: 9px;
+                padding-right: 9px;
+            }
+
+
+            .header {
+
+                gap: 6px;
+
+                margin-bottom: 8px;
+            }
+
+
+            .header-top {
+
+                gap: 7px;
+            }
+
+
+            .header-top h2 {
+
+                font-size: 1.17rem;
+            }
+
+
+            .system-buttons,
+            .filter-buttons,
+            .stats,
+            .row-2,
+            .row-3 {
+
+                gap: 5px;
+            }
+
+
+            .system-buttons button {
+
+                min-height: 38px;
+
+                padding: 5px 2px;
+
+                font-size: 0.54rem;
+            }
+
+
+            .filter-buttons button {
+
+                min-height: 39px;
+
+                font-size: 0.62rem;
+            }
+
+
+            #box6-daily-progress {
+
+                min-height: 36px;
+
+                padding-top: 7px;
+                padding-bottom: 7px;
+            }
+
+
+            .stats {
+
+                padding: 5px;
+
+                margin-bottom: 8px;
+            }
+
+
+            .stat-box {
+
+                min-height: 43px;
+
+                font-size: 0.55rem;
+            }
+
+
+            .stat-box span {
+
+                font-size: 0.72rem;
+            }
+
+
+            .card {
+
+                padding:
+                    14px
+                    13px
+                    12px;
+
+                border-radius: 21px;
+            }
+
+
+            .card-content {
+
+                gap: 8px;
+            }
+
+
+            .action-area {
+
+                padding-top: 10px;
+
+                gap: 6px;
+            }
+
+
+            .btn-large {
+
+                min-height: 46px;
+
+                font-size: 0.81rem;
+            }
+
+
+            .btn-medium {
+
+                min-height: 42px;
+
+                font-size: 0.75rem;
+            }
+
+
+            .btn-tool {
+
+                min-height: 42px;
+
+                font-size: 0.68rem;
+            }
+
+
+            .btn-grade {
+
+                min-height: 47px;
+
+                font-size: 0.70rem;
+            }
+        }
+
+
+        /* =========================================================
+           SHORT SCREENS
+           ========================================================= */
+
+        @media (max-height: 760px) {
+
+            .header {
+
+                gap: 5px;
+
+                margin-bottom: 6px;
+            }
+
+
+            .system-buttons button {
+
+                min-height: 36px;
+            }
+
+
+            .filter-buttons button {
+
+                min-height: 37px;
+            }
+
+
+            #box6-daily-progress {
+
+                min-height: 34px;
+            }
+
+
+            .stats {
+
+                margin-bottom: 6px;
+            }
+
+
+            .stat-box {
+
+                min-height: 40px;
+            }
+
+
+            .card {
+
+                padding-top: 12px;
+                padding-bottom: 10px;
+            }
+
+
+            .card-content {
+
+                gap: 7px;
+            }
+
+
+            .action-area {
+
+                padding-top: 8px;
+
+                gap: 6px;
+            }
+
+
+            .btn-large,
+            .btn-grade {
+
+                min-height: 44px;
+            }
+
+
+            .btn-tool {
+
+                min-height: 40px;
+            }
+        }
+
+
+        /* =========================================================
+           REDUCED MOTION
+           ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration: 0.01ms !important;
+
+                transition-duration: 0.01ms !important;
+
+                animation-iteration-count: 1 !important;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =======================================================
+         HEADER
+         ======================================================= -->
+
+    <div class="header">
+
+
+        <div class="header-top">
+
+
+            <h2>HSK Trainer</h2>
+
+
+            <div class="system-buttons">
+
+
+                <input
+                    type="file"
+                    id="csvFile"
+                    class="hidden"
+                    onchange="importCSV(this.files[0])"
+                    accept=".csv"
+                >
+
+
+                <button
+                    class="btn-action"
+                    onclick="document.getElementById('csvFile').click()"
+                >
+                    CSV
+                </button>
+
+
+                <button
+                    class="btn-stats"
+                    onclick="openBox6Stats()"
+                >
+                    BOX 6 STATS
+                </button>
+
+
+                <button onclick="exportProgress()">
+                    BACKUP
+                </button>
+
+
+                <input
+                    type="file"
+                    id="jsonFile"
+                    class="hidden"
+                    onchange="importProgress(this.files[0])"
+                    accept=".json"
+                >
+
+
+                <button
+                    onclick="document.getElementById('jsonFile').click()"
+                >
+                    LADEN
+                </button>
+
+
+                <button
+                    class="btn-danger"
+                    onclick="resetSpeicher()"
+                >
+                    RESET
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="filter-buttons">
+
+
+            <button
+                id="btn-toggle-only-focus"
+                onclick="toggleOnlyFocusMode()"
+            >
+                ALLE KARTEN (0)
+            </button>
+
+
+            <button
+                id="btn-toggle-random-mode"
+                onclick="toggleRandomMode()"
+            >
+                ZUFALLSMODUS AUS
+            </button>
+
+
+            <button
+                id="btn-toggle-dict"
+                onclick="toggleDictMode()"
+            >
+                WÖRTERBUCH
+            </button>
+
+
+        </div>
+
+
+        <div id="box6-daily-progress">
+            BOX 6 HEUTE: 0/100
+        </div>
+
+
+    </div>
+
+
+    <!-- =======================================================
+         BOX NAVIGATION
+         ======================================================= -->
+
+    <div
+        class="stats"
+        id="stats"
+    ></div>
+
+
+    <!-- =======================================================
+         MAIN CARD
+         ======================================================= -->
+
+    <div class="card">
+
+
+        <!-- ===================================================
+             DICTIONARY
+             =================================================== -->
+
+        <div
+            id="dict-view"
+            class="hidden"
+            style="
+                display:flex;
+                flex-direction:column;
+                height:100%;
+            "
+        >
+
+
+            <div
+                style="
+                    display:grid;
+                    grid-template-columns:1fr auto;
+                    gap:8px;
+                    margin-bottom:12px;
+                    flex-shrink:0;
+                "
+            >
+
+
+                <input
+                    type="text"
+                    id="dict-search-input"
+                    placeholder="Nach Begriff suchen..."
+                    onkeypress="
+                        if(event.key === 'Enter') searchDict()
+                    "
+                >
+
+
+                <button
+                    class="btn-primary btn-medium"
+                    style="padding:0 18px;"
+                    onclick="searchDict()"
+                >
+                    SUCHEN
+                </button>
+
+
+            </div>
+
+
+            <div
+                id="dict-results"
+                style="
+                    overflow-y:auto;
+                    flex-grow:1;
+                    display:flex;
+                    flex-direction:column;
+                    gap:8px;
+                "
+            ></div>
+
+
+        </div>
+
+
+        <!-- ===================================================
+             FLASHCARD
+             =================================================== -->
+
+        <div
+            id="flashcard-content"
+            class="card-content"
+        >
+
+
+            <div id="v-box"></div>
+
+
+            <div id="v-de">
+                Bitte CSV laden...
+            </div>
+
+
+            <div
+                id="v-hz"
+                class="hidden"
+            ></div>
+
+
+            <div
+                id="v-py"
+                class="hidden"
+            ></div>
+
+
+            <div
+                id="v-stats"
+                class="hidden"
+            ></div>
+
+
+            <div
+                id="writer-container"
+                class="writer-grid hidden"
+            ></div>
+
+
+        </div>
+
+
+        <!-- ===================================================
+             ACTION BUTTONS
+             =================================================== -->
+
+        <div class="action-area">
+
+
+            <div
+                id="drawing-controls"
+                class="row-2 hidden"
+            >
+
+
+                <button
+                    id="btn-clear"
+                    class="btn-secondary btn-large"
+                    onclick="clearCanvas()"
+                >
+                    LÖSCHEN
+                </button>
+
+
+                <button
+                    id="btn-show"
+                    class="btn-primary btn-large"
+                    onclick="flip()"
+                >
+                    LÖSUNG
+                </button>
+
+
+            </div>
+
+
+            <div
+                id="learning-tools"
+                class="row-3 hidden"
+            >
+
+
+                <button
+                    class="btn-tool"
+                    onclick="speak()"
+                >
+                    AUDIO
+                </button>
+
+
+                <button
+                    class="btn-tool"
+                    onclick="retryCurrentWordWriting()"
+                >
+                    ÜBEN
+                </button>
+
+
+                <button
+                    id="btn-example-trigger"
+                    class="btn-tool"
+                    onclick="openModal()"
+                >
+                    BEISPIEL
+                </button>
+
+
+            </div>
+
+
+            <div
+                id="special-actions"
+                class="row-2 hidden"
+            >
+
+
+                <button
+                    id="btn-focus"
+                    class="btn-secondary btn-medium"
+                    style="color:var(--focus-color);"
+                    onclick="toggleFocus()"
+                >
+                    FOKUS AKTIVIEREN
+                </button>
+
+
+                <button
+                    class="btn-secondary btn-medium"
+                    onclick="moveToBox6()"
+                >
+                    ZU BOX 6
+                </button>
+
+
+            </div>
+
+
+            <div
+                id="controls"
+                class="row-3 hidden"
+            >
+
+
+                <button
+                    class="btn-grade"
+                    style="background-color:var(--box1);"
+                    onclick="move(-1)"
+                >
+                    FALSCH
+                </button>
+
+
+                <button
+                    class="btn-grade"
+                    style="background-color:var(--box2);"
+                    onclick="move(0)"
+                >
+                    HALTEN
+                </button>
+
+
+                <button
+                    class="btn-grade"
+                    style="background-color:var(--box5);"
+                    onclick="move(1)"
+                >
+                    RICHTIG
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     EXAMPLE MODAL
+     ========================================================= -->
+
+<div
+    id="exampleModal"
+    class="modal-overlay hidden"
+>
+
+
+    <div class="modal-content">
+
+
+        <h3
+            style="
+                margin-top:0;
+                color:var(--text-main);
+                font-size:1rem;
+                border-bottom:1px solid var(--border);
+                padding-bottom:12px;
+                margin-bottom:16px;
+                font-weight:800;
+                text-transform:uppercase;
+                letter-spacing:0.04em;
+            "
+        >
+            Beispielsatz
+        </h3>
+
+
+        <div
+            style="
+                overflow-y:auto;
+                flex-grow:1;
+                margin-bottom:16px;
+            "
+        >
+
+
+            <div
+                id="ex-hz"
+                style="
+                    font-size:1.6rem;
+                    font-weight:500;
+                    margin-bottom:6px;
+                "
+            ></div>
+
+
+            <div
+                id="ex-py"
+                style="
+                    color:var(--primary);
+                    margin-bottom:12px;
+                    font-size:1.05rem;
+                    font-weight:700;
+                "
+            ></div>
+
+
+            <div
+                id="ex-de"
+                style="
+                    background:var(--surface);
+                    padding:15px;
+                    border-radius:12px;
+                    border-left:3px solid var(--primary);
+                    font-size:0.95rem;
+                    line-height:1.5;
+                    color:var(--text-main);
+                "
+            ></div>
+
+
+        </div>
+
+
+        <button
+            class="btn-secondary btn-large"
+            onclick="closeModal()"
+        >
+            SCHLIESSEN
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     BOX 6 STATISTICS MODAL
+     ========================================================= -->
+
+<div
+    id="box6StatsModal"
+    class="modal-overlay hidden"
+>
+
+
+    <div
+        class="modal-content"
+        style="max-width:520px;"
+    >
+
+
+        <h3
+            style="
+                margin-top:0;
+                color:var(--text-main);
+                font-size:1rem;
+                border-bottom:1px solid var(--border);
+                padding-bottom:12px;
+                margin-bottom:12px;
+                font-weight:800;
+                text-transform:uppercase;
+                letter-spacing:0.04em;
+            "
+        >
+            Box 6 Statistik
+        </h3>
+
+
+        <div id="box6-stats-summary"></div>
+
+
+        <div
+            style="
+                overflow:auto;
+                flex-grow:1;
+                margin-bottom:16px;
+                border:1px solid var(--border);
+                border-radius:10px;
+            "
+        >
+
+
+            <table id="box6-stats-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th onclick="sortBox6Stats('hz')">
+                            Vokabel
+                        </th>
+
+                        <th onclick="sortBox6Stats('queries')">
+                            Abgefragt
+                        </th>
+
+                        <th onclick="sortBox6Stats('correct')">
+                            Richtig
+                        </th>
+
+                        <th onclick="sortBox6Stats('wrong')">
+                            Falsch
+                        </th>
+
+                        <th onclick="sortBox6Stats('rate')">
+                            Quote
+                        </th>
+
+                        <th onclick="sortBox6Stats('dueDays')">
+                            Fällig
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="box6-stats-body"></tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+        <button
+            class="btn-secondary btn-large"
+            onclick="closeBox6Stats()"
+        >
+            SCHLIESSEN
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
 /* ============================================================
-   HSK TRAINER — PREMIUM UI OVERRIDE
-   Drop-in: Diesen Block ans ENDE des vorhandenen <style>-Blocks
-   setzen. Keine JS- oder HTML-Logik muss geändert werden.
+   STATE
    ============================================================ */
 
-:root {
-    --bg: #f4f7fb;
-    --bg-elevated: rgba(255, 255, 255, 0.82);
-    --card: #ffffff;
-    --card-soft: #f8fafc;
-    --text-main: #16181d;
-    --text-muted: #667085;
-    --text-faint: #98a2b3;
-    --border-light: rgba(16, 24, 40, 0.08);
-    --border-strong: rgba(16, 24, 40, 0.13);
 
-    --primary: #2563eb;
-    --primary-strong: #1d4ed8;
-    --primary-light: #dbeafe;
-    --primary-soft: #eff6ff;
-    --focus-color: #7c3aed;
+let state =
+    JSON.parse(
+        localStorage.getItem('hsk_data')
+    ) || {
+        box1: [],
+        box2: [],
+        box3: [],
+        box4: [],
+        box5: [],
+        box6: []
+    };
 
-    --box1: #ef4444;
-    --box2: #f59e0b;
-    --box3: #3b82f6;
-    --box4: #8b5cf6;
-    --box5: #22c55e;
-    --box6: #ec4899;
 
-    --shadow-subtle: 0 1px 2px rgba(16, 24, 40, 0.04), 0 2px 6px rgba(16, 24, 40, 0.05);
-    --shadow-card: 0 20px 50px rgba(16, 24, 40, 0.10), 0 6px 18px rgba(16, 24, 40, 0.06);
-    --shadow-float: 0 12px 28px rgba(16, 24, 40, 0.12), 0 4px 10px rgba(16, 24, 40, 0.05);
+if (!state.box6) {
 
-    --radius-btn: 14px;
-    --radius-card: 24px;
-    --radius-pill: 999px;
-
-    --btn-highlight: transparent;
-    --btn-shade: transparent;
-    --btn-shadow-raised: 0 6px 14px rgba(16, 24, 40, 0.08), 0 1px 3px rgba(16, 24, 40, 0.06);
-    --btn-shadow-pressed: inset 0 2px 6px rgba(16, 24, 40, 0.12), 0 1px 2px rgba(16, 24, 40, 0.04);
+    state.box6 = [];
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #0b0d12;
-        --bg-elevated: rgba(20, 23, 31, 0.82);
-        --card: #14171f;
-        --card-soft: #181c25;
-        --text-main: #f4f7fb;
-        --text-muted: #aeb7c6;
-        --text-faint: #7f8999;
-        --border-light: rgba(255, 255, 255, 0.08);
-        --border-strong: rgba(255, 255, 255, 0.13);
 
-        --primary: #6ea8ff;
-        --primary-strong: #8ab8ff;
-        --primary-light: rgba(37, 99, 235, 0.22);
-        --primary-soft: rgba(37, 99, 235, 0.10);
-        --focus-color: #b08cff;
+if (!state.box6Daily) {
 
-        --box1: #ff6b6b;
-        --box2: #fbbf24;
-        --box3: #60a5fa;
-        --box4: #a78bfa;
-        --box5: #4ade80;
-        --box6: #f472b6;
+    state.box6Daily = {
+        date: new Date().toDateString(),
+        count: 0
+    };
+}
 
-        --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.26), 0 3px 10px rgba(0, 0, 0, 0.22);
-        --shadow-card: 0 22px 56px rgba(0, 0, 0, 0.42), 0 8px 20px rgba(0, 0, 0, 0.28);
-        --shadow-float: 0 14px 34px rgba(0, 0, 0, 0.38), 0 4px 12px rgba(0, 0, 0, 0.24);
-        --btn-shadow-raised: 0 7px 16px rgba(0, 0, 0, 0.28), 0 1px 3px rgba(0, 0, 0, 0.28);
-        --btn-shadow-pressed: inset 0 2px 7px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(255, 255, 255, 0.03);
+
+let sessionQueue = [];
+
+let currentCard = null;
+
+let currentBoxName = "";
+
+
+let currentQuizChars = [];
+
+let currentQuizCharIndex = 0;
+
+let currentWriter = null;
+
+let singleCharBox = null;
+
+
+let onlyFocusMode = false;
+
+let randomMode = false;
+
+let selectedBoxFilter = null;
+
+let dictMode = false;
+
+let currentDictResults = [];
+
+
+let box6SortColumn = 'queries';
+
+let box6SortDirection = 'desc';
+
+
+
+/* ============================================================
+   BOX UI
+   ============================================================ */
+
+
+document.getElementById('stats').innerHTML =
+    [1,2,3,4,5,6]
+        .map(i =>
+
+            `
+            <div
+                id="stat-box-${i}"
+                class="stat-box"
+            >
+
+                BOX ${i}
+
+                <br>
+
+                <span id="stat-count-${i}">
+                    0
+                </span>
+
+                ${
+                    (i >= 2 && i <= 5)
+
+                    ?
+
+                    `
+                    <div
+                        id="daily-count-${i}"
+                        class="daily-badge"
+                    >
+                        0
+                    </div>
+                    `
+
+                    :
+
+                    ''
+                }
+
+            </div>
+            `
+        )
+        .join('');
+
+
+
+[1,2,3,4,5,6].forEach(i => {
+
+
+    document
+        .getElementById(`stat-box-${i}`)
+        .addEventListener(
+            'click',
+            () => {
+
+
+                if (dictMode) {
+
+                    toggleDictMode();
+                }
+
+
+                sessionQueue = [];
+
+
+                if (selectedBoxFilter === i) {
+
+                    selectedBoxFilter = null;
+
+                } else {
+
+                    selectedBoxFilter = i;
+
+
+                    if (randomMode) {
+
+                        toggleRandomMode();
+                    }
+
+
+                    if (onlyFocusMode) {
+
+                        toggleOnlyFocusMode();
+                    }
+                }
+
+
+                updateUI();
+
+                next();
+            }
+        );
+
+});
+
+
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+
+function countHanzi(str) {
+
+
+    if (!str) {
+
+        return 0;
+    }
+
+
+    let count = 0;
+
+
+    for (let i = 0; i < str.length; i++) {
+
+
+        let code =
+            str.charCodeAt(i);
+
+
+        if (
+
+            (code >= 0x4E00 && code <= 0x9FFF)
+
+            ||
+
+            (code >= 0x3400 && code <= 0x4DBF)
+
+        ) {
+
+            count++;
+        }
+    }
+
+
+    return count;
+}
+
+
+
+function daysBetween(
+    dateStr1,
+    dateStr2
+) {
+
+
+    let d1 =
+        new Date(dateStr1);
+
+
+    let d2 =
+        new Date(dateStr2);
+
+
+    return Math.round(
+
+        (d2 - d1)
+
+        /
+
+        (
+            1000 *
+            60 *
+            60 *
+            24
+        )
+    );
+}
+
+
+
+function addDays(
+    dateStr,
+    days
+) {
+
+
+    let d =
+        dateStr
+
+        ?
+
+        new Date(dateStr)
+
+        :
+
+        new Date();
+
+
+    d.setDate(
+        d.getDate() + days
+    );
+
+
+    return d.toDateString();
+}
+
+
+
+function isBox6CardDue(c) {
+
+
+    if (!c.nextReviewDate) {
+
+        return true;
+    }
+
+
+    let today =
+        new Date();
+
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    let due =
+        new Date(
+            c.nextReviewDate
+        );
+
+
+    due.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    return due <= today;
+}
+
+
+
+function box6DueInDays(c) {
+
+
+    if (!c.nextReviewDate) {
+
+        return -9999;
+    }
+
+
+    let today =
+        new Date();
+
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    let due =
+        new Date(
+            c.nextReviewDate
+        );
+
+
+    due.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    return Math.round(
+
+        (due - today)
+
+        /
+
+        (
+            1000 *
+            60 *
+            60 *
+            24
+        )
+    );
+}
+
+
+
+/* ============================================================
+   BOX 6 DAILY
+   ============================================================ */
+
+
+function checkBox6DailyReset() {
+
+
+    let today =
+        new Date()
+            .toDateString();
+
+
+    if (
+
+        !state.box6Daily
+
+        ||
+
+        state.box6Daily.date !== today
+
+    ) {
+
+
+        state.box6Daily = {
+
+            date: today,
+
+            count: 0
+        };
     }
 }
 
-html,
-body {
-    min-height: 100%;
-    background:
-        radial-gradient(circle at 12% 0%, rgba(37, 99, 235, 0.12), transparent 31rem),
-        radial-gradient(circle at 100% 18%, rgba(124, 58, 237, 0.08), transparent 26rem),
-        var(--bg);
-}
 
-body {
-    font-feature-settings: "ss01" on, "cv02" on, "cv03" on;
-    text-rendering: optimizeLegibility;
-}
 
-.container {
-    max-width: 560px;
-    padding:
-        max(14px, env(safe-area-inset-top))
-        max(14px, env(safe-area-inset-right))
-        max(14px, env(safe-area-inset-bottom))
-        max(14px, env(safe-area-inset-left));
-}
+function updateBox6DailyDisplay() {
 
-/* ---------- Header ---------- */
-.header {
-    gap: 9px;
-    margin-bottom: 11px;
-}
 
-.header-top {
-    gap: 10px;
-}
+    checkBox6DailyReset();
 
-.header-top h2 {
-    font-size: clamp(1.2rem, 4vw, 1.45rem);
-    line-height: 1;
-    letter-spacing: -0.045em;
-    background: linear-gradient(110deg, var(--text-main), var(--primary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: none;
-}
 
-.system-buttons,
-.filter-buttons {
-    gap: 7px;
-}
+    let el =
+        document.getElementById(
+            'box6-daily-progress'
+        );
 
-.system-buttons button,
-.filter-buttons button {
-    min-height: 44px;
-    border: 1px solid var(--border-light);
-    background: var(--bg-elevated);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    box-shadow: var(--shadow-subtle);
-    text-shadow: none;
-}
 
-.system-buttons button {
-    padding: 8px 3px;
-    font-size: 0.61rem;
-    letter-spacing: 0.025em;
-}
+    if (el) {
 
-.system-buttons .btn-action {
-    background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-    color: #fff;
-    border-color: transparent;
-}
-
-.system-buttons .btn-stats {
-    background: linear-gradient(135deg, color-mix(in srgb, var(--box6) 11%, var(--card)), var(--card));
-    color: var(--box6);
-}
-
-.system-buttons .btn-danger {
-    color: var(--box1);
-}
-
-.filter-buttons button {
-    padding: 10px 7px;
-    font-size: 0.72rem;
-    letter-spacing: -0.01em;
-}
-
-/* ---------- Box 6 Tagesfortschritt ---------- */
-#box6-daily-progress {
-    position: relative;
-    overflow: hidden;
-    padding: 10px 14px 10px 42px;
-    min-height: 40px;
-    justify-content: center;
-    border: 1px solid color-mix(in srgb, var(--box6) 20%, var(--border-light));
-    background: linear-gradient(135deg, color-mix(in srgb, var(--box6) 9%, var(--card)), var(--card));
-    box-shadow: var(--shadow-subtle);
-    font-size: 0.70rem;
-    letter-spacing: 0.045em;
-}
-
-#box6-daily-progress::before {
-    content: "6";
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 22px;
-    height: 22px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: var(--box6);
-    color: #fff;
-    font-size: 0.68rem;
-    font-weight: 800;
-    box-shadow: 0 6px 12px color-mix(in srgb, var(--box6) 28%, transparent);
-}
-
-/* ---------- Box-Statistik ---------- */
-.stats {
-    gap: 7px;
-    padding: 8px;
-    margin-bottom: 12px;
-    border-radius: 16px;
-    border: 1px solid var(--border-light);
-    background: var(--bg-elevated);
-    backdrop-filter: blur(18px) saturate(140%);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    box-shadow: var(--shadow-subtle);
-}
-
-.stat-box {
-    min-height: 48px;
-    padding: 8px 2px 7px;
-    border-radius: 11px;
-    border-width: 1px;
-    background: transparent;
-    box-shadow: none;
-    font-size: 0.64rem;
-    line-height: 1.25;
-    letter-spacing: 0.01em;
-}
-
-.stat-box span[id^="stat-count-"] {
-    display: inline-block;
-    margin-top: 2px;
-    font-size: 0.86rem;
-    font-weight: 800;
-}
-
-.stat-box.active-box {
-    background: var(--card-soft);
-    border-color: var(--border-strong);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-}
-
-.stat-box.selected-box {
-    transform: translateY(-1px);
-    background: color-mix(in srgb, currentColor 7%, var(--card)) !important;
-    box-shadow: 0 6px 16px color-mix(in srgb, currentColor 13%, transparent);
-}
-
-.stat-box.inactive-box {
-    opacity: 0.34;
-}
-
-.daily-badge {
-    top: -5px;
-    right: -5px;
-    min-width: 17px;
-    height: 17px;
-    border: 2px solid var(--card);
-    font-size: 0.52rem;
-    box-shadow: 0 3px 8px rgba(16, 24, 40, 0.16);
-}
-
-/* ---------- Hauptkarte ---------- */
-.card {
-    position: relative;
-    padding: 18px 18px 16px;
-    border-radius: 28px;
-    border: 1px solid var(--border-light);
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.035), transparent 18%),
-        var(--card);
-    box-shadow: var(--shadow-card);
-}
-
-.card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border-radius: inherit;
-    background: linear-gradient(180deg, rgba(255,255,255,0.10), transparent 18%);
-    opacity: 0.7;
-}
-
-.card-content,
-#dict-view,
-.action-area {
-    position: relative;
-    z-index: 1;
-}
-
-.card-content {
-    gap: clamp(9px, 2vh, 14px);
-}
-
-#v-box {
-    min-height: 30px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 7px 13px;
-    border: 1px solid var(--border-light);
-    background: var(--card-soft);
-    border-radius: var(--radius-pill);
-    font-size: 0.66rem;
-    color: var(--text-muted);
-    letter-spacing: 0.075em;
-    box-shadow: none;
-}
-
-#v-de {
-    width: min(100%, 440px);
-    font-size: clamp(1.25rem, 4.4vw, 1.65rem);
-    line-height: 1.28;
-    letter-spacing: -0.015em;
-}
-
-.char-tag {
-    width: fit-content;
-    margin: 8px auto 0;
-    padding: 4px 9px;
-    border-radius: var(--radius-pill);
-    background: var(--primary-soft);
-    font-size: 0.73rem;
-    color: var(--primary);
-}
-
-#v-hz {
-    font-size: clamp(3.8rem, 16vw, 5.7rem);
-    letter-spacing: -0.05em;
-    text-shadow: 0 10px 22px rgba(16, 24, 40, 0.08);
-}
-
-#v-hz.long-char {
-    font-size: clamp(2.5rem, 10vw, 3.8rem);
-    letter-spacing: -0.035em;
-}
-
-#v-py {
-    font-size: clamp(1.05rem, 4vw, 1.35rem);
-    color: var(--primary);
-}
-
-#v-stats {
-    max-width: 100%;
-    margin-top: 2px;
-    padding: 8px 12px;
-    border-radius: 12px;
-    border: 1px solid var(--border-light);
-    background: var(--card-soft);
-    font-size: 0.78rem;
-    line-height: 1.45;
-    box-shadow: none;
-}
-
-/* ---------- Schreibfläche ---------- */
-.writer-grid {
-    min-height: 0;
-}
-
-.char-box {
-    width: min(100%, 390px);
-    max-width: 390px;
-    max-height: 390px;
-    border-radius: 22px;
-    border: 1px solid var(--border-strong);
-    background:
-        linear-gradient(90deg, transparent 49.7%, color-mix(in srgb, var(--border-strong) 55%, transparent) 50%, transparent 50.3%),
-        linear-gradient(0deg, transparent 49.7%, color-mix(in srgb, var(--border-strong) 55%, transparent) 50%, transparent 50.3%),
-        var(--card-soft);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), inset 0 0 0 1px rgba(255,255,255,0.02);
-}
-
-.char-box:active {
-    border-color: color-mix(in srgb, var(--primary) 70%, var(--border-strong));
-    box-shadow: 0 0 0 4px var(--primary-soft);
-}
-
-/* ---------- Buttons ---------- */
-button {
-    min-height: 42px;
-    border: 1px solid transparent;
-    box-shadow: var(--btn-shadow-raised);
-    text-shadow: none;
-    letter-spacing: -0.005em;
-    transform: translateZ(0);
-}
-
-button:hover {
-    filter: brightness(1.015);
-}
-
-button:active {
-    transform: translateY(1px) scale(0.985);
-    filter: brightness(0.985);
-}
-
-.btn-large {
-    min-height: 52px;
-    padding: 13px 14px;
-    border-radius: 15px;
-    font-size: 0.92rem;
-    letter-spacing: 0.035em;
-}
-
-.btn-medium {
-    min-height: 46px;
-    padding: 11px 12px;
-    border-radius: 14px;
-    font-size: 0.86rem;
-}
-
-.btn-tool {
-    min-height: 48px;
-    padding: 11px 5px;
-    border-radius: 14px;
-    border: 1px solid var(--border-light);
-    background: var(--card-soft);
-    font-size: 0.78rem;
-    letter-spacing: 0.045em;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-    color: #fff;
-    border-color: transparent;
-    box-shadow: 0 8px 18px color-mix(in srgb, var(--primary) 24%, transparent);
-}
-
-.btn-secondary {
-    background: var(--card-soft);
-    color: var(--text-main);
-    border-color: var(--border-light);
-}
-
-.btn-grade {
-    min-height: 52px;
-    padding: 12px 4px;
-    border-radius: 15px;
-    font-size: 0.79rem;
-    letter-spacing: 0.04em;
-    box-shadow: 0 8px 18px rgba(16, 24, 40, 0.10);
-}
-
-#controls .btn-grade:nth-child(1) {
-    background: linear-gradient(135deg, color-mix(in srgb, var(--box1) 92%, white), var(--box1)) !important;
-}
-
-#controls .btn-grade:nth-child(2) {
-    background: linear-gradient(135deg, color-mix(in srgb, var(--box2) 92%, white), var(--box2)) !important;
-}
-
-#controls .btn-grade:nth-child(3) {
-    background: linear-gradient(135deg, color-mix(in srgb, var(--box5) 92%, white), var(--box5)) !important;
-}
-
-.action-area {
-    padding-top: 14px;
-    gap: 9px;
-}
-
-.row-2,
-.row-3 {
-    gap: 9px;
-}
-
-/* ---------- Wörterbuch ---------- */
-#dict-view {
-    min-height: 0;
-}
-
-#dict-search-input {
-    min-height: 48px;
-    border: 1px solid var(--border-strong);
-    border-radius: 14px;
-    background: var(--card-soft);
-    box-shadow: none;
-    font-size: 0.95rem;
-}
-
-#dict-search-input::placeholder {
-    color: var(--text-faint);
-}
-
-#dict-search-input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-soft);
-}
-
-#dict-results {
-    padding-right: 2px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-strong) transparent;
-}
-
-#dict-results > div {
-    border-radius: 16px !important;
-    background: var(--card-soft) !important;
-    border-color: var(--border-light) !important;
-    box-shadow: none !important;
-}
-
-/* ---------- Modal ---------- */
-.modal-overlay {
-    padding: max(18px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
-    background: rgba(8, 11, 18, 0.58);
-    backdrop-filter: blur(18px) saturate(125%);
-    -webkit-backdrop-filter: blur(18px) saturate(125%);
-}
-
-.modal-content {
-    max-width: 430px;
-    max-height: min(82vh, 760px);
-    padding: 22px;
-    border-radius: 24px;
-    border: 1px solid var(--border-light);
-    background: var(--card);
-    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.28);
-}
-
-.modal-content h3 {
-    letter-spacing: 0.035em !important;
-}
-
-#box6StatsModal .modal-content {
-    max-width: min(94vw, 540px) !important;
-}
-
-#box6-stats-summary {
-    padding: 8px 10px;
-    border-radius: 10px;
-    background: var(--card-soft);
-    color: var(--text-muted);
-}
-
-#box6-stats-table {
-    font-size: 0.80rem;
-}
-
-#box6-stats-table th {
-    padding: 10px 7px;
-    background: color-mix(in srgb, var(--card) 92%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    font-size: 0.62rem;
-    border-bottom-color: var(--border-strong);
-}
-
-#box6-stats-table td {
-    padding: 10px 7px;
-}
-
-/* ---------- Scrollbars ---------- */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-strong) transparent;
-}
-
-*::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-}
-
-*::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-    background: var(--border-strong);
-    border-radius: 999px;
-}
-
-/* ---------- Accessibility ---------- */
-button:focus-visible,
-.stat-box:focus-visible,
-input:focus-visible,
-select:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 4px var(--primary-soft), var(--shadow-subtle);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
+        el.innerText =
+            `BOX 6 HEUTE: ${state.box6Daily.count}/100`;
     }
 }
 
-/* ---------- Kleine Smartphones ---------- */
-@media (max-width: 390px) {
-    .container {
-        padding-left: 10px;
-        padding-right: 10px;
+
+
+/* ============================================================
+   BOX 6 STATISTICS
+   ============================================================ */
+
+
+function openBox6Stats() {
+
+
+    document
+        .getElementById(
+            'box6StatsModal'
+        )
+        .classList
+        .remove('hidden');
+
+
+    renderBox6StatsTable();
+}
+
+
+
+function closeBox6Stats() {
+
+
+    document
+        .getElementById(
+            'box6StatsModal'
+        )
+        .classList
+        .add('hidden');
+}
+
+
+
+function sortBox6Stats(column) {
+
+
+    if (
+        box6SortColumn === column
+    ) {
+
+
+        box6SortDirection =
+            box6SortDirection === 'asc'
+
+            ?
+
+            'desc'
+
+            :
+
+            'asc';
+
+
+    } else {
+
+
+        box6SortColumn =
+            column;
+
+
+        box6SortDirection =
+            column === 'hz'
+
+            ?
+
+            'asc'
+
+            :
+
+            'desc';
     }
 
-    .system-buttons,
-    .filter-buttons,
-    .stats,
-    .row-2,
-    .row-3 {
-        gap: 6px;
+
+    renderBox6StatsTable();
+}
+
+
+
+function renderBox6StatsTable() {
+
+
+    let data =
+        state.box6.map(c => {
+
+
+            let stats =
+                c.stats || {
+                    queries: 0,
+                    correct: 0
+                };
+
+
+            let queries =
+                stats.queries || 0;
+
+
+            let correct =
+                stats.correct || 0;
+
+
+            let wrong =
+                queries - correct;
+
+
+            let rate =
+                queries > 0
+
+                ?
+
+                (correct / queries) * 100
+
+                :
+
+                0;
+
+
+            let dueDays =
+                box6DueInDays(c);
+
+
+            return {
+
+                card: c,
+
+                hz: c.hz || '',
+
+                py: c.py || '',
+
+                de: c.de || '',
+
+                queries,
+
+                correct,
+
+                wrong,
+
+                rate,
+
+                dueDays
+            };
+        });
+
+
+
+    data.sort(
+        (a, b) => {
+
+
+            let valA =
+                a[box6SortColumn];
+
+
+            let valB =
+                b[box6SortColumn];
+
+
+            let cmp;
+
+
+            if (
+                typeof valA === 'string'
+            ) {
+
+
+                cmp =
+                    valA.localeCompare(
+                        valB,
+                        'zh'
+                    );
+
+
+            } else {
+
+
+                cmp =
+                    valA - valB;
+            }
+
+
+            return (
+                box6SortDirection === 'asc'
+            )
+
+                ?
+
+                cmp
+
+                :
+
+                -cmp;
+        }
+    );
+
+
+
+    let summaryEl =
+        document.getElementById(
+            'box6-stats-summary'
+        );
+
+
+    summaryEl.innerText =
+
+        `${data.length} Vokabel${
+            data.length === 1
+
+            ?
+
+            ''
+
+            :
+
+            'n'
+        } in Box 6`;
+
+
+
+    let tbody =
+        document.getElementById(
+            'box6-stats-body'
+        );
+
+
+
+    if (
+        data.length === 0
+    ) {
+
+
+        tbody.innerHTML =
+
+            `
+            <tr>
+
+                <td
+                    colspan="6"
+                    style="
+                        text-align:center;
+                        padding:20px;
+                        color:var(--text-muted);
+                    "
+                >
+                    Keine Vokabeln in Box 6
+                </td>
+
+            </tr>
+            `;
+
+
+    } else {
+
+
+        tbody.innerHTML =
+
+            data
+            .map(d => {
+
+
+                let dueLabel;
+
+
+                if (
+                    d.dueDays <= 0
+                ) {
+
+
+                    dueLabel =
+
+                        `
+                        <span
+                            style="
+                                color:var(--box6);
+                                font-weight:700;
+                            "
+                        >
+                            jetzt
+                        </span>
+                        `;
+
+
+                } else if (
+                    d.dueDays === 1
+                ) {
+
+
+                    dueLabel =
+                        `in 1 Tag`;
+
+
+                } else {
+
+
+                    dueLabel =
+                        `in ${d.dueDays} Tg.`;
+                }
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+
+                            <div
+                                style="
+                                    font-weight:700;
+                                    font-size:1rem;
+                                "
+                            >
+                                ${d.hz}
+                            </div>
+
+                            <div
+                                style="
+                                    color:var(--primary);
+                                    font-size:0.75rem;
+                                    font-weight:600;
+                                "
+                            >
+                                ${d.py}
+                            </div>
+
+                        </td>
+
+                        <td>
+                            ${d.queries}
+                        </td>
+
+                        <td
+                            style="
+                                color:var(--box5);
+                                font-weight:700;
+                            "
+                        >
+                            ${d.correct}
+                        </td>
+
+                        <td
+                            style="
+                                color:var(--box1);
+                                font-weight:700;
+                            "
+                        >
+                            ${d.wrong}
+                        </td>
+
+                        <td
+                            style="
+                                font-weight:600;
+                            "
+                        >
+
+                            ${
+                                d.queries > 0
+
+                                ?
+
+                                Math.round(d.rate)
+                                + '%'
+
+                                :
+
+                                '–'
+                            }
+
+                        </td>
+
+                        <td
+                            style="
+                                font-size:0.75rem;
+                            "
+                        >
+                            ${dueLabel}
+                        </td>
+
+                    </tr>
+
+                `;
+            })
+            .join('');
     }
 
-    .system-buttons button {
-        min-height: 40px;
-        font-size: 0.56rem;
-    }
 
-    .filter-buttons button {
-        font-size: 0.66rem;
-    }
 
-    .stats {
-        padding: 7px;
-    }
+    let columnIndex = {
 
-    .stat-box {
-        min-height: 44px;
-        font-size: 0.58rem;
-    }
+        hz: 0,
 
-    .card {
-        padding: 15px 14px 14px;
-        border-radius: 24px;
-    }
+        queries: 1,
 
-    .btn-grade,
-    .btn-large {
-        min-height: 48px;
-    }
+        correct: 2,
 
-    .btn-tool {
-        min-height: 45px;
-        font-size: 0.72rem;
+        wrong: 3,
+
+        rate: 4,
+
+        dueDays: 5
+    };
+
+
+
+    let ths =
+        document.querySelectorAll(
+            '#box6-stats-table th'
+        );
+
+
+    ths.forEach(
+        th =>
+            th.classList.remove(
+                'sorted-asc',
+                'sorted-desc'
+            )
+    );
+
+
+
+    let activeTh =
+        ths[
+            columnIndex[
+                box6SortColumn
+            ]
+        ];
+
+
+
+    if (activeTh) {
+
+
+        activeTh.classList.add(
+
+            box6SortDirection === 'asc'
+
+            ?
+
+            'sorted-asc'
+
+            :
+
+            'sorted-desc'
+        );
     }
 }
 
-/* ---------- Foldables / breite Phones ---------- */
-@media (min-width: 500px) and (max-width: 900px) {
-    .container {
-        max-width: 620px;
+
+
+/* ============================================================
+   HANZI WRITER
+   ============================================================ */
+
+
+function startQuizForCurrentChar() {
+
+
+    if (
+        currentQuizCharIndex
+        >=
+        currentQuizChars.length
+    ) {
+
+        return;
     }
 
-    .card {
-        padding-left: 22px;
-        padding-right: 22px;
+
+
+    if (currentWriter) {
+
+
+        try {
+
+            currentWriter.cancelQuiz();
+
+        } catch(e) {}
+
+
+        currentWriter = null;
+    }
+
+
+
+    let container =
+        document.getElementById(
+            'writer-container'
+        );
+
+
+    container.innerHTML = '';
+
+
+
+    singleCharBox =
+        document.createElement(
+            'div'
+        );
+
+
+    singleCharBox.className =
+        'char-box';
+
+
+    container.appendChild(
+        singleCharBox
+    );
+
+
+
+    let char =
+        currentQuizChars[
+            currentQuizCharIndex
+        ];
+
+
+
+    requestAnimationFrame(
+        () => {
+
+
+            let boxSize =
+                Math.min(
+                    window.innerHeight * 0.46,
+                    window.innerWidth * 0.86,
+                    390
+                );
+
+
+
+            currentWriter =
+                HanziWriter.create(
+
+                    singleCharBox,
+
+                    char,
+
+                    {
+
+                        width: boxSize,
+
+                        height: boxSize,
+
+                        showCharacter: false,
+
+                        showOutline: false,
+
+                        padding:
+                            Math.floor(
+                                boxSize * 0.05
+                            ),
+
+                        strokeColor:
+                            '#2563EB'
+                    }
+                );
+
+
+
+            currentWriter.quiz({
+
+                onComplete:
+                    function() {
+
+
+                        setTimeout(
+                            () => {
+
+
+                                currentQuizCharIndex++;
+
+
+                                if (
+
+                                    currentQuizCharIndex
+                                    <
+                                    currentQuizChars.length
+
+                                ) {
+
+
+                                    startQuizForCurrentChar();
+                                }
+
+                            },
+
+                            300
+                        );
+                    }
+            });
+        }
+    );
+}
+
+
+
+/* ============================================================
+   FOCUS
+   ============================================================ */
+
+
+function getFocusCount() {
+
+
+    let count = 0;
+
+
+    for (
+        let i = 1;
+        i <= 6;
+        i++
+    ) {
+
+
+        state[
+            'box' + i
+        ]
+        .forEach(c => {
+
+
+            if (c.inFocus) {
+
+                count++;
+            }
+        });
+    }
+
+
+    return count;
+}
+
+
+
+/* ============================================================
+   DICTIONARY
+   ============================================================ */
+
+
+function toggleDictMode() {
+
+
+    dictMode =
+        !dictMode;
+
+
+
+    let btn =
+        document.getElementById(
+            'btn-toggle-dict'
+        );
+
+
+    let dictView =
+        document.getElementById(
+            'dict-view'
+        );
+
+
+    let flashcardElements = [
+
+        'flashcard-content',
+
+        'drawing-controls',
+
+        'learning-tools',
+
+        'special-actions',
+
+        'controls'
+    ];
+
+
+
+    if (dictMode) {
+
+
+        btn.style.backgroundColor =
+            "var(--primary)";
+
+
+        btn.style.color =
+            "#FFFFFF";
+
+
+        dictView.classList.remove(
+            'hidden'
+        );
+
+
+
+        flashcardElements
+        .forEach(id => {
+
+
+            let el =
+                document.getElementById(
+                    id
+                );
+
+
+            if (el) {
+
+                el.classList.add(
+                    'hidden'
+                );
+            }
+        });
+
+
+
+        document
+            .getElementById(
+                'dict-search-input'
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                'dict-results'
+            )
+            .innerHTML = "";
+
+
+        document
+            .getElementById(
+                'dict-search-input'
+            )
+            .focus();
+
+
+    } else {
+
+
+        btn.style.backgroundColor =
+            "var(--card)";
+
+
+        btn.style.color =
+            "var(--text-main)";
+
+
+        dictView.classList.add(
+            'hidden'
+        );
+
+
+        document
+            .getElementById(
+                'flashcard-content'
+            )
+            .classList
+            .remove('hidden');
+
+
+        next();
     }
 }
 
-</style>
+
+
+function searchDict() {
+
+
+    let query =
+
+        document
+            .getElementById(
+                'dict-search-input'
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+
+    let resultsContainer =
+
+        document
+            .getElementById(
+                'dict-results'
+            );
+
+
+
+    resultsContainer.innerHTML =
+        "";
+
+
+
+    if (!query) {
+
+        return;
+    }
+
+
+
+    let allCards = [];
+
+
+
+    for (
+        let i = 1;
+        i <= 6;
+        i++
+    ) {
+
+
+        state[
+            'box' + i
+        ]
+        .forEach(c => {
+
+
+            allCards.push({
+
+                card: c,
+
+                boxNum: i
+            });
+        });
+    }
+
+
+
+    currentDictResults =
+
+        allCards.filter(
+            item =>
+
+
+                item.card.de
+                    .toLowerCase()
+                    .includes(query)
+
+                ||
+
+                item.card.py
+                    .toLowerCase()
+                    .includes(query)
+
+                ||
+
+                item.card.hz
+                    .includes(query)
+        );
+
+
+
+    if (
+        currentDictResults.length === 0
+    ) {
+
+
+        resultsContainer.innerHTML =
+
+            `
+            <p
+                style="
+                    color:var(--text-muted);
+                    text-align:center;
+                    font-size:0.95rem;
+                    margin-top:20px;
+                    font-weight:600;
+                "
+            >
+                Keine Ergebnisse gefunden.
+            </p>
+            `;
+
+
+        return;
+    }
+
+
+
+    currentDictResults
+    .forEach(
+        (item, index) => {
+
+
+            let c =
+                item.card;
+
+
+            let boxNum =
+                item.boxNum;
+
+
+            let div =
+                document.createElement(
+                    'div'
+                );
+
+
+
+            div.style.cssText =
+
+                `
+                background:var(--surface);
+                padding:15px;
+                border-radius:14px;
+                border:1px solid var(--border);
+                box-shadow:none;
+                `;
+
+
+
+            let focusBtnBg =
+                c.inFocus
+
+                ?
+
+                "var(--focus-color)"
+
+                :
+
+                "var(--card)";
+
+
+            let focusBtnColor =
+                c.inFocus
+
+                ?
+
+                "#FFFFFF"
+
+                :
+
+                "var(--text-main)";
+
+
+            let focusBtnBorder =
+                c.inFocus
+
+                ?
+
+                "transparent"
+
+                :
+
+                "var(--border)";
+
+
+            let focusBtnText =
+                c.inFocus
+
+                ?
+
+                "FOKUS AKTIV"
+
+                :
+
+                "FOKUS";
+
+
+
+            let html = `
+
+
+                <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        gap:10px;
+                        margin-bottom:8px;
+                    "
+                >
+
+
+                    <div
+                        style="
+                            font-size:1.5rem;
+                            font-weight:700;
+                        "
+                    >
+                        ${c.hz}
+                    </div>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            gap:6px;
+                        "
+                    >
+
+
+                        <button
+                            onclick="toggleDictFocus(${index})"
+
+                            style="
+                                padding:6px 9px;
+                                font-size:0.68rem;
+                                border-radius:10px;
+                                background-color:${focusBtnBg};
+                                color:${focusBtnColor};
+                                border:1px solid ${focusBtnBorder};
+                                box-shadow:var(--shadow-small);
+                                font-weight:800;
+                                min-height:34px;
+                            "
+                        >
+                            ${focusBtnText}
+                        </button>
+
+
+                        <select
+                            onchange="
+                                changeDictBox(
+                                    ${index},
+                                    this.value
+                                )
+                            "
+
+                            style="
+                                background:var(--box${boxNum});
+                                color:white;
+                                padding:6px 8px;
+                                border-radius:10px;
+                                font-size:0.75rem;
+                                font-weight:800;
+                                border:none;
+                                outline:none;
+                            "
+                        >
+
+
+                            <option
+                                value="1"
+                                style="
+                                    color:black;
+                                    background:white;
+                                "
+                                ${boxNum == 1 ? 'selected' : ''}
+                            >
+                                B1
+                            </option>
+
+
+                            <option
+                                value="2"
+                                style="
+                                    color:black;
+                                    background:white;
+                                "
+                                ${boxNum == 2 ? 'selected' : ''}
+                            >
+                                B2
+                            </option>
+
+
+                            <option
+                                value="3"
+                                style="
+                                    color:black;
+                                    background:white;
+                                "
+                                ${boxNum == 3 ? 'selected' : ''}
+                            >
+                                B3
+                            </option>
+
+
+                            <option
+                                value="4"
+                                style="
+                                    color:black;
+                                    background:white;
+                                "
+                                ${boxNum == 4 ? 'selected' : ''}
+                            >
+                                B4
+                            </option>
+
+
+                            <option
+                                value="5"
+                                style="
+                                    color:black;
+                                    background:white;
+                                "
+                                ${boxNum == 5 ? 'selected' : ''}
+                            >
+                                B5
+                            </option>
+
+
+                            <option
+                                value="6"
+                                style="
+                                    color:black;
+                                    background:white;
+                                "
+                                ${boxNum == 6 ? 'selected' : ''}
+                            >
+                                B6
+                            </option>
+
+
+                        </select>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div
+                    style="
+                        color:var(--primary);
+                        font-size:0.98rem;
+                        margin-bottom:5px;
+                        font-weight:700;
+                    "
+                >
+                    ${c.py}
+                </div>
+
+
+                <div
+                    style="
+                        font-size:1rem;
+                        font-weight:600;
+                    "
+                >
+                    ${c.de}
+                </div>
+
+            `;
+
+
+
+            if (c.sentenceHz) {
+
+
+                html += `
+
+
+                    <div
+                        style="
+                            border-top:1px solid var(--border);
+                            padding-top:10px;
+                            margin-top:10px;
+                            font-size:0.88rem;
+                        "
+                    >
+
+
+                        <div
+                            style="
+                                color:var(--text-main);
+                                font-weight:600;
+                            "
+                        >
+                            ${c.sentenceHz}
+                        </div>
+
+
+                        <div
+                            style="
+                                color:var(--primary);
+                                margin:4px 0;
+                                font-weight:700;
+                            "
+                        >
+                            ${c.sentencePy}
+                        </div>
+
+
+                        <div
+                            style="
+                                color:var(--text-muted);
+                                line-height:1.4;
+                            "
+                        >
+                            ${c.sentenceDe}
+                        </div>
+
+
+                    </div>
+
+                `;
+            }
+
+
+
+            div.innerHTML =
+                html;
+
+
+            resultsContainer
+                .appendChild(
+                    div
+                );
+        }
+    );
+}
+
+
+
+function toggleDictFocus(index) {
+
+
+    let item =
+        currentDictResults[
+            index
+        ];
+
+
+
+    if (
+        !item.card.inFocus
+        &&
+        getFocusCount() >= 150
+    ) {
+
+
+        alert(
+            "Das Limit von 150 Vokabeln im Fokus ist erreicht."
+        );
+
+
+        return;
+    }
+
+
+
+    item.card.inFocus =
+        !item.card.inFocus;
+
+
+
+    if (
+        item.card.inFocus
+    ) {
+
+
+        item.card.correctCount =
+            0;
+    }
+
+
+
+    sessionQueue = [];
+
+
+    updateUI();
+
+
+    searchDict();
+}
+
+
+
+function changeDictBox(
+    index,
+    newBoxLevel
+) {
+
+
+    let item =
+        currentDictResults[
+            index
+        ];
+
+
+    let oldBox =
+        'box' + item.boxNum;
+
+
+    let newBox =
+        'box' + newBoxLevel;
+
+
+
+    if (
+        oldBox === newBox
+    ) {
+
+        return;
+    }
+
+
+
+    state[
+        oldBox
+    ] =
+
+        state[
+            oldBox
+        ]
+        .filter(
+            c =>
+                c !== item.card
+        );
+
+
+
+    item.card.lastMovedDate =
+        new Date()
+            .toDateString();
+
+
+
+    if (
+        newBox === 'box5'
+    ) {
+
+
+        item.card.box5Streak =
+            0;
+
+
+        item.card.box5LastCorrectDate =
+            null;
+    }
+
+
+
+    state[
+        newBox
+    ].push(
+        item.card
+    );
+
+
+    sessionQueue = [];
+
+
+    updateUI();
+
+
+    searchDict();
+}
+
+
+
+/* ============================================================
+   UI UPDATE
+   ============================================================ */
+
+
+function updateUI() {
+
+
+    let today =
+        new Date()
+            .toDateString();
+
+
+
+    [1,2,3,4,5,6]
+    .forEach(i => {
+
+
+        let countSpan =
+            document.getElementById(
+                `stat-count-${i}`
+            );
+
+
+        if (countSpan) {
+
+
+            countSpan.innerText =
+                state[
+                    'box'+i
+                ].length;
+        }
+
+
+
+        if (
+            i >= 2
+            &&
+            i <= 5
+        ) {
+
+
+            let badge =
+                document.getElementById(
+                    `daily-count-${i}`
+                );
+
+
+
+            if (badge) {
+
+
+                let boxCards =
+                    state[
+                        'box'+i
+                    ];
+
+
+
+                if (
+                    boxCards.length === 0
+                ) {
+
+
+                    badge.innerText =
+                        0;
+
+
+                } else {
+
+
+                    let minRounds =
+                        Infinity;
+
+
+
+                    boxCards
+                    .forEach(c => {
+
+
+                        let rounds =
+
+                            (
+                                c.lastSeenDate === today
+
+                                &&
+
+                                typeof c.todayRounds === 'number'
+                            )
+
+                            ?
+
+                            c.todayRounds
+
+                            :
+
+                            0;
+
+
+
+                        if (
+                            rounds < minRounds
+                        ) {
+
+
+                            minRounds =
+                                rounds;
+                        }
+                    });
+
+
+
+                    badge.innerText =
+
+                        (
+                            minRounds === Infinity
+                        )
+
+                        ?
+
+                        0
+
+                        :
+
+                        minRounds;
+                }
+            }
+        }
+    });
+
+
+
+    localStorage.setItem(
+
+        'hsk_data',
+
+        JSON.stringify(
+            state
+        )
+    );
+
+
+
+    highlightActiveBox();
+
+
+    updateFocusButtonText();
+
+
+    updateBox6DailyDisplay();
+}
+
+
+
+/* ============================================================
+   BOX HIGHLIGHT
+   ============================================================ */
+
+
+function highlightActiveBox() {
+
+
+    [1,2,3,4,5,6]
+    .forEach(i => {
+
+
+        let element =
+            document.getElementById(
+                `stat-box-${i}`
+            );
+
+
+
+        if (element) {
+
+
+            element.classList.remove(
+
+                'active-box',
+
+                'inactive-box',
+
+                'selected-box'
+            );
+
+
+
+            if (
+                selectedBoxFilter === i
+            ) {
+
+
+                element.classList.add(
+                    'selected-box'
+                );
+
+
+            } else if (
+                selectedBoxFilter !== null
+            ) {
+
+
+                element.classList.add(
+                    'inactive-box'
+                );
+
+
+            } else if (
+                currentBoxName ===
+                'box' + i
+            ) {
+
+
+                element.classList.add(
+                    'active-box'
+                );
+
+
+            } else if (
+                currentBoxName !== ""
+            ) {
+
+
+                element.classList.add(
+                    'inactive-box'
+                );
+            }
+        }
+    });
+}
+
+
+
+/* ============================================================
+   FOCUS BUTTON
+   ============================================================ */
+
+
+function updateFocusButtonText() {
+
+
+    let btn =
+        document.getElementById(
+            'btn-toggle-only-focus'
+        );
+
+
+    let count =
+        getFocusCount();
+
+
+
+    btn.innerText =
+        `ALLE KARTEN (${count})`;
+
+
+
+    if (onlyFocusMode) {
+
+
+        btn.innerText =
+            `FOKUS AKTIV (${count})`;
+    }
+}
+
+
+
+/* ============================================================
+   MODES
+   ============================================================ */
+
+
+function toggleOnlyFocusMode() {
+
+
+    onlyFocusMode =
+        !onlyFocusMode;
+
+
+    sessionQueue = [];
+
+
+    let btn =
+        document.getElementById(
+            'btn-toggle-only-focus'
+        );
+
+
+
+    if (onlyFocusMode) {
+
+
+        btn.style.backgroundColor =
+            "var(--focus-color)";
+
+
+        btn.style.color =
+            "#FFFFFF";
+
+
+        selectedBoxFilter =
+            null;
+
+
+
+        if (
+            randomMode
+        ) {
+
+
+            toggleRandomMode();
+        }
+
+
+    } else {
+
+
+        btn.style.backgroundColor =
+            "var(--card)";
+
+
+        btn.style.color =
+            "var(--text-main)";
+    }
+
+
+
+    updateUI();
+
+
+    next();
+}
+
+
+
+function toggleRandomMode() {
+
+
+    randomMode =
+        !randomMode;
+
+
+    sessionQueue = [];
+
+
+    let btn =
+        document.getElementById(
+            'btn-toggle-random-mode'
+        );
+
+
+
+    if (randomMode) {
+
+
+        btn.innerText =
+            "ZUFALLSMODUS AKTIV";
+
+
+        btn.style.backgroundColor =
+            "var(--box4)";
+
+
+        btn.style.color =
+            "#FFFFFF";
+
+
+        selectedBoxFilter =
+            null;
+
+
+
+        if (
+            onlyFocusMode
+        ) {
+
+
+            toggleOnlyFocusMode();
+        }
+
+
+    } else {
+
+
+        btn.innerText =
+            "ZUFALLSMODUS AUS";
+
+
+        btn.style.backgroundColor =
+            "var(--card)";
+
+
+        btn.style.color =
+            "var(--text-main)";
+    }
+
+
+
+    updateUI();
+
+
+    next();
+}
+
+
+
+/* ============================================================
+   CSV PARSER
+   ============================================================ */
+
+
+function parseCSVLine(text) {
+
+
+    let fields = [];
+
+    let field = "";
+
+    let inQuotes = false;
+
+
+
+    for (
+        let i = 0;
+        i < text.length;
+        i++
+    ) {
+
+
+        let char =
+            text[i];
+
+
+
+        if (
+
+            char === '"'
+
+            ||
+
+            char === '„'
+
+            ||
+
+            char === '“'
+
+            ||
+
+            char === '”'
+
+        ) {
+
+
+            inQuotes =
+                !inQuotes;
+
+
+        } else if (
+
+            char === ','
+
+            &&
+
+            !inQuotes
+
+        ) {
+
+
+            fields.push(
+                cleanField(field)
+            );
+
+
+            field = "";
+
+
+        } else {
+
+
+            field +=
+                char;
+        }
+    }
+
+
+
+    fields.push(
+        cleanField(field)
+    );
+
+
+    return fields;
+}
+
+
+
+function cleanField(str) {
+
+
+    let t =
+        str.trim();
+
+
+
+    if (
+
+        (
+            t.startsWith('"')
+
+            &&
+
+            t.endsWith('"')
+        )
+
+        ||
+
+        (
+            t.startsWith('„')
+
+            &&
+
+            t.endsWith('“')
+        )
+
+    ) {
+
+
+        t =
+            t.substring(
+                1,
+                t.length - 1
+            );
+    }
+
+
+
+    return t.trim();
+}
+
+
+
+/* ============================================================
+   CSV IMPORT
+   ============================================================ */
+
+
+function importCSV(file) {
+
+
+    if (!file) {
+
+        return;
+    }
+
+
+
+    const targetBox =
+
+        confirm(
+
+            "Vokabeln als bereits bekannt markieren (Box 5)?\nWählen Sie 'Abbrechen' für neue Vokabeln (Box 1)."
+
+        )
+
+        ?
+
+        'box5'
+
+        :
+
+        'box1';
+
+
+
+    let detectedLevel =
+        "Import";
+
+
+
+    let match =
+
+        file.name
+            .toLowerCase()
+            .match(
+                /hsk\s*([1-6])/
+            );
+
+
+
+    if (match) {
+
+
+        detectedLevel =
+            "HSK " + match[1];
+    }
+
+
+
+    const reader =
+        new FileReader();
+
+
+
+    reader.onload =
+        (e) => {
+
+
+            const rows =
+
+                e.target.result
+                    .replace(/\r/g, "")
+                    .split('\n');
+
+
+
+            rows.forEach(r => {
+
+
+                if (!r.trim()) {
+
+                    return;
+                }
+
+
+
+                const p =
+                    parseCSVLine(r);
+
+
+
+                if (
+                    p.length >= 3
+                ) {
+
+
+                    state[
+                        targetBox
+                    ]
+                    .push({
+
+                        hz:
+                            p[0],
+
+                        py:
+                            p[1],
+
+                        de:
+                            p[2],
+
+                        sentenceHz:
+                            p[3] || '',
+
+                        sentencePy:
+                            p[4] || '',
+
+                        sentenceDe:
+                            p[5] || '',
+
+                        level:
+                            p[6]
+
+                            ?
+
+                            p[6].trim()
+
+                            :
+
+                            detectedLevel,
+
+                        inFocus:
+                            false,
+
+                        stats: {
+
+                            queries: 0,
+
+                            correct: 0
+                        }
+                    });
+                }
+            });
+
+
+
+            sessionQueue = [];
+
+
+            updateUI();
+
+
+            next();
+        };
+
+
+
+    reader.readAsText(
+        file
+    );
+}
+
+
+
+/* ============================================================
+   NEXT CARD
+   ============================================================ */
+
+
+function next() {
+
+
+    if (dictMode) {
+
+        return;
+    }
+
+
+
+    if (
+        sessionQueue.length === 0
+    ) {
+
+
+        let pool = [];
+
+
+        const boxWeights = [
+
+            0,
+
+            16,
+
+            8,
+
+            4,
+
+            2,
+
+            1,
+
+            1
+        ];
+
+
+
+        if (
+            selectedBoxFilter === 6
+        ) {
+
+
+            let cards =
+                [...state.box6];
+
+
+
+            cards.sort(
+                (a, b) => {
+
+
+                    let dateA =
+                        a.lastMovedDate
+
+                        ?
+
+                        new Date(
+                            a.lastMovedDate
+                        ).getTime()
+
+                        :
+
+                        0;
+
+
+                    let dateB =
+                        b.lastMovedDate
+
+                        ?
+
+                        new Date(
+                            b.lastMovedDate
+                        ).getTime()
+
+                        :
+
+                        0;
+
+
+                    return dateA - dateB;
+                }
+            );
+
+
+
+            let targetBatch =
+                cards.slice(
+                    0,
+                    100
+                );
+
+
+
+            targetBatch
+                .forEach(
+                    c =>
+                        pool.push({
+                            c,
+                            box: 'box6'
+                        })
+                );
+
+
+
+            for (
+
+                let i =
+                    pool.length - 1;
+
+                i > 0;
+
+                i--
+
+            ) {
+
+
+                const j =
+                    Math.floor(
+                        Math.random()
+                        *
+                        (i + 1)
+                    );
+
+
+
+                [
+                    pool[i],
+                    pool[j]
+                ]
+                =
+                [
+                    pool[j],
+                    pool[i]
+                ];
+            }
+
+
+
+            sessionQueue =
+                pool;
+
+
+        } else {
+
+
+            for (
+                let i = 1;
+                i <= 6;
+                i++
+            ) {
+
+
+                if (
+
+                    selectedBoxFilter !== null
+
+                    &&
+
+                    i !== selectedBoxFilter
+
+                ) {
+
+                    continue;
+                }
+
+
+
+                state[
+                    'box'+i
+                ]
+                .forEach(c => {
+
+
+                    if (
+
+                        onlyFocusMode
+
+                        &&
+
+                        !c.inFocus
+
+                    ) {
+
+                        return;
+                    }
+
+
+
+                    if (!c.stats) {
+
+
+                        c.stats = {
+
+                            queries: 0,
+
+                            correct: 0
+                        };
+                    }
+
+
+
+                    if (
+                        selectedBoxFilter !== null
+                    ) {
+
+
+                        pool.push({
+
+                            c,
+
+                            box:
+                                'box'+i
+                        });
+
+
+                    } else {
+
+
+                        let weight =
+                            1;
+
+
+
+                        if (!randomMode) {
+
+
+                            if (
+                                i === 6
+                            ) {
+
+
+                                if (
+                                    !isBox6CardDue(c)
+                                ) {
+
+
+                                    return;
+                                }
+
+
+                                weight =
+                                    1;
+
+
+                            } else {
+
+
+                                weight =
+                                    boxWeights[i];
+                            }
+                        }
+
+
+
+                        for (
+                            let j = 0;
+                            j < weight;
+                            j++
+                        ) {
+
+
+                            pool.push({
+
+                                c,
+
+                                box:
+                                    'box'+i
+                            });
+                        }
+
+
+
+                        if (
+
+                            c.inFocus
+
+                            &&
+
+                            !randomMode
+
+                        ) {
+
+
+                            let additionalTickets =
+                                7;
+
+
+
+                            for (
+                                let f = 0;
+                                f < additionalTickets;
+                                f++
+                            ) {
+
+
+                                pool.push({
+
+                                    c,
+
+                                    box:
+                                        'box'+i
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+
+
+
+            for (
+
+                let i =
+                    pool.length - 1;
+
+                i > 0;
+
+                i--
+
+            ) {
+
+
+                const j =
+                    Math.floor(
+                        Math.random()
+                        *
+                        (i + 1)
+                    );
+
+
+
+                [
+                    pool[i],
+                    pool[j]
+                ]
+                =
+                [
+                    pool[j],
+                    pool[i]
+                ];
+            }
+
+
+
+            sessionQueue =
+                pool;
+        }
+
+
+
+        if (
+            pool.length === 0
+        ) {
+
+
+            currentBoxName =
+                "";
+
+
+            currentCard =
+                null;
+
+
+
+            document
+                .getElementById(
+                    'v-box'
+                )
+                .innerText =
+                    "SYSTEMSTATUS";
+
+
+
+            if (
+                selectedBoxFilter !== null
+            ) {
+
+
+                document
+                    .getElementById(
+                        'v-de'
+                    )
+                    .innerText =
+
+                        `Box ${selectedBoxFilter} ist leer.`;
+
+
+            } else {
+
+
+                document
+                    .getElementById(
+                        'v-de'
+                    )
+                    .innerText =
+
+                        onlyFocusMode
+
+                        ?
+
+                        "Keine Fokus-Karten vorhanden"
+
+                        :
+
+                        "Bitte laden Sie eine CSV-Datei...";
+            }
+
+
+
+            document
+                .getElementById(
+                    'writer-container'
+                )
+                .classList
+                .add('hidden');
+
+
+
+            document
+                .getElementById(
+                    'drawing-controls'
+                )
+                .classList
+                .add('hidden');
+
+
+
+            document
+                .getElementById(
+                    'learning-tools'
+                )
+                .classList
+                .add('hidden');
+
+
+
+            document
+                .getElementById(
+                    'special-actions'
+                )
+                .classList
+                .add('hidden');
+
+
+
+            document
+                .getElementById(
+                    'controls'
+                )
+                .classList
+                .add('hidden');
+
+
+
+            document
+                .getElementById(
+                    'v-stats'
+                )
+                .classList
+                .add('hidden');
+
+
+
+            highlightActiveBox();
+
+
+            return;
+        }
+    }
+
+
+
+    let selection =
+        sessionQueue.pop();
+
+
+
+    currentCard =
+        selection.c;
+
+
+    currentBoxName =
+        selection.box;
+
+
+
+    let statsInfo =
+        "";
+
+
+
+    if (
+
+        currentBoxName === 'box6'
+
+        &&
+
+        currentCard.stats
+
+        &&
+
+        currentCard.stats.queries > 0
+
+    ) {
+
+
+        let percent =
+
+            Math.round(
+
+                (
+                    currentCard.stats.correct
+
+                    /
+
+                    currentCard.stats.queries
+                )
+
+                *
+
+                100
+            );
+
+
+        statsInfo =
+            ` • ${percent}% ERFOLG`;
+
+
+    } else if (
+
+        currentBoxName === 'box5'
+
+    ) {
+
+
+        let streak =
+            currentCard.box5Streak || 0;
+
+
+        statsInfo =
+            ` • STREAK: ${streak}/3 TAGEN`;
+    }
+
+
+
+    document
+        .getElementById(
+            'v-box'
+        )
+        .innerText =
+
+            (
+                currentCard.level
+                ||
+                "UNBEKANNT"
+            )
+
+            +
+
+            (
+                currentCard.inFocus
+
+                ?
+
+                " • FOKUS"
+
+                :
+
+                ""
+            )
+
+            +
+
+            statsInfo;
+
+
+
+    let hCount =
+        countHanzi(
+            currentCard.hz
+        );
+
+
+
+    let tagHtml =
+
+        hCount > 0
+
+        ?
+
+        `
+        <span class="char-tag">
+            (${hCount} ${hCount === 1 ? 'Zeichen' : 'Zeichen'})
+        </span>
+        `
+
+        :
+
+        '';
+
+
+
+    document
+        .getElementById(
+            'v-de'
+        )
+        .innerHTML =
+
+            currentCard.de
+
+            +
+
+            tagHtml;
+
+
+
+    highlightActiveBox();
+
+
+
+    document
+        .getElementById(
+            'writer-container'
+        )
+        .classList
+        .remove('hidden');
+
+
+
+    document
+        .getElementById(
+            'writer-container'
+        )
+        .innerHTML =
+            '';
+
+
+
+    currentWriter =
+        null;
+
+
+    singleCharBox =
+        null;
+
+
+    currentQuizChars =
+        [];
+
+
+
+    document
+        .getElementById(
+            'v-hz'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'v-hz'
+        )
+        .classList
+        .remove('long-char');
+
+
+
+    document
+        .getElementById(
+            'v-py'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'v-stats'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'drawing-controls'
+        )
+        .classList
+        .remove('hidden');
+
+
+
+    document
+        .getElementById(
+            'learning-tools'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'special-actions'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'controls'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    closeModal();
+
+
+
+    let cleanHz =
+
+        currentCard.hz
+
+        ?
+
+        currentCard.hz.replace(
+            /\s/g,
+            ''
+        )
+
+        :
+
+        '';
+
+
+
+    currentQuizChars =
+        [];
+
+
+
+    for (
+        let i = 0;
+        i < cleanHz.length;
+        i++
+    ) {
+
+
+        let code =
+            cleanHz.charCodeAt(i);
+
+
+
+        if (
+
+            (
+                code >= 0x4E00
+
+                &&
+
+                code <= 0x9FFF
+            )
+
+            ||
+
+            (
+                code >= 0x3400
+
+                &&
+
+                code <= 0x4DBF
+            )
+
+        ) {
+
+
+            currentQuizChars.push(
+                cleanHz[i]
+            );
+        }
+    }
+
+
+
+    currentQuizCharIndex =
+        0;
+
+
+
+    if (
+        currentQuizChars.length > 0
+    ) {
+
+
+        startQuizForCurrentChar();
+    }
+}
+
+
+
+/* ============================================================
+   FLIP
+   ============================================================ */
+
+
+function flip() {
+
+
+    if (!currentCard) {
+
+        return;
+    }
+
+
+
+    let statsInfo =
+        "";
+
+
+
+    if (
+
+        currentBoxName === 'box6'
+
+        &&
+
+        currentCard.stats
+
+        &&
+
+        currentCard.stats.queries > 0
+
+    ) {
+
+
+        let percent =
+
+            Math.round(
+
+                (
+                    currentCard.stats.correct
+
+                    /
+
+                    currentCard.stats.queries
+                )
+
+                *
+
+                100
+            );
+
+
+        statsInfo =
+            ` • ${percent}% ERFOLG`;
+
+
+    } else if (
+
+        currentBoxName === 'box5'
+
+    ) {
+
+
+        let streak =
+            currentCard.box5Streak || 0;
+
+
+        statsInfo =
+            ` • STREAK: ${streak}/3 TAGEN`;
+    }
+
+
+
+    document
+        .getElementById(
+            'v-box'
+        )
+        .innerText =
+
+            (
+                currentCard.level
+                ||
+                "UNBEKANNT"
+            )
+
+            +
+
+            (
+                currentCard.inFocus
+
+                ?
+
+                " • FOKUS"
+
+                :
+
+                ""
+            )
+
+            +
+
+            statsInfo;
+
+
+
+    document
+        .getElementById(
+            'v-de'
+        )
+        .innerText =
+            currentCard.de;
+
+
+
+    let hzElement =
+        document.getElementById(
+            'v-hz'
+        );
+
+
+
+    let cleanHz =
+
+        currentCard.hz
+
+        ?
+
+        currentCard.hz.replace(
+            /\s/g,
+            ''
+        )
+
+        :
+
+        '';
+
+
+
+    hzElement
+        .classList
+        .toggle(
+            'long-char',
+            cleanHz.length > 3
+        );
+
+
+
+    hzElement.innerText =
+        currentCard.hz;
+
+
+
+    document
+        .getElementById(
+            'v-py'
+        )
+        .innerText =
+            currentCard.py;
+
+
+
+    hzElement
+        .classList
+        .remove('hidden');
+
+
+
+    document
+        .getElementById(
+            'v-py'
+        )
+        .classList
+        .remove('hidden');
+
+
+
+    let statsElement =
+        document.getElementById(
+            'v-stats'
+        );
+
+
+
+    let statsText =
+        "";
+
+
+
+    if (
+
+        currentCard.stats
+
+        &&
+
+        currentCard.stats.queries > 0
+
+    ) {
+
+
+        let percent =
+
+            Math.round(
+
+                (
+                    currentCard.stats.correct
+
+                    /
+
+                    currentCard.stats.queries
+                )
+
+                *
+
+                100
+            );
+
+
+
+        statsText =
+
+            `
+            Abgefragt:
+            <b>
+                ${currentCard.stats.queries}x
+            </b>
+
+            &nbsp;|&nbsp;
+
+            Richtig:
+            <b>
+                ${currentCard.stats.correct}x
+            </b>
+
+            (${percent}%)
+            `;
+
+
+    } else {
+
+
+        statsText =
+
+            "<i>Noch keine Statistik vorhanden</i>";
+    }
+
+
+
+    if (
+        currentBoxName === 'box5'
+    ) {
+
+
+        let streak =
+            currentCard.box5Streak || 0;
+
+
+
+        statsText +=
+
+            `
+            <br>
+
+            <span
+                style="
+                    color:var(--box5);
+                    font-weight:700;
+                "
+            >
+                Box 6 Fortschritt:
+                ${streak}
+                von 3 Tagen in Folge richtig
+            </span>
+            `;
+    }
+
+
+
+    statsElement.innerHTML =
+        statsText;
+
+
+
+    statsElement
+        .classList
+        .remove('hidden');
+
+
+
+    let btnExample =
+        document.getElementById(
+            'btn-example-trigger'
+        );
+
+
+
+    if (
+        currentCard.sentenceHz
+    ) {
+
+
+        document
+            .getElementById(
+                'ex-hz'
+            )
+            .innerText =
+                currentCard.sentenceHz;
+
+
+
+        document
+            .getElementById(
+                'ex-py'
+            )
+            .innerText =
+                currentCard.sentencePy;
+
+
+
+        document
+            .getElementById(
+                'ex-de'
+            )
+            .innerText =
+                currentCard.sentenceDe;
+
+
+
+        btnExample.disabled =
+            false;
+
+
+    } else {
+
+
+        btnExample.disabled =
+            true;
+    }
+
+
+
+    let btnFocus =
+        document.getElementById(
+            'btn-focus'
+        );
+
+
+
+    if (
+        currentCard.inFocus
+    ) {
+
+
+        btnFocus.innerText =
+            "FOKUS AKTIV";
+
+
+        btnFocus.style.backgroundColor =
+            "var(--focus-color)";
+
+
+        btnFocus.style.color =
+            "#FFFFFF";
+
+
+    } else {
+
+
+        btnFocus.innerText =
+            "FOKUS AKTIVIEREN";
+
+
+        btnFocus.style.backgroundColor =
+            "var(--surface)";
+
+
+        btnFocus.style.color =
+            "var(--focus-color)";
+    }
+
+
+
+    document
+        .getElementById(
+            'writer-container'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'drawing-controls'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'learning-tools'
+        )
+        .classList
+        .remove('hidden');
+
+
+
+    document
+        .getElementById(
+            'special-actions'
+        )
+        .classList
+        .remove('hidden');
+
+
+
+    document
+        .getElementById(
+            'controls'
+        )
+        .classList
+        .remove('hidden');
+}
+
+
+
+/* ============================================================
+   RETRY WRITING
+   ============================================================ */
+
+
+function retryCurrentWordWriting() {
+
+
+    if (!currentCard) {
+
+        return;
+    }
+
+
+
+    let hCount =
+        countHanzi(
+            currentCard.hz
+        );
+
+
+
+    let tagHtml =
+
+        hCount > 0
+
+        ?
+
+        `
+        <span class="char-tag">
+            (${hCount} ${hCount === 1 ? 'Zeichen' : 'Zeichen'})
+        </span>
+        `
+
+        :
+
+        '';
+
+
+
+    document
+        .getElementById(
+            'v-de'
+        )
+        .innerHTML =
+
+            currentCard.de
+
+            +
+
+            tagHtml;
+
+
+
+    document
+        .getElementById(
+            'v-hz'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'v-py'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'v-stats'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'learning-tools'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'special-actions'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'controls'
+        )
+        .classList
+        .add('hidden');
+
+
+
+    document
+        .getElementById(
+            'drawing-controls'
+        )
+        .classList
+        .remove('hidden');
+
+
+
+    const container =
+        document.getElementById(
+            'writer-container'
+        );
+
+
+
+    container.innerHTML =
+        '';
+
+
+
+    container
+        .classList
+        .remove('hidden');
+
+
+
+    currentWriter =
+        null;
+
+
+    singleCharBox =
+        null;
+
+
+    currentQuizChars =
+        [];
+
+
+
+    let cleanHz =
+
+        currentCard.hz
+
+        ?
+
+        currentCard.hz.replace(
+            /\s/g,
+            ''
+        )
+
+        :
+
+        '';
+
+
+
+    for (
+        let i = 0;
+        i < cleanHz.length;
+        i++
+    ) {
+
+
+        let code =
+            cleanHz.charCodeAt(i);
+
+
+
+        if (
+
+            (
+                code >= 0x4E00
+
+                &&
+
+                code <= 0x9FFF
+            )
+
+            ||
+
+            (
+                code >= 0x3400
+
+                &&
+
+                code <= 0x4DBF
+            )
+
+        ) {
+
+
+            currentQuizChars.push(
+                cleanHz[i]
+            );
+        }
+    }
+
+
+
+    currentQuizCharIndex =
+        0;
+
+
+
+    if (
+        currentQuizChars.length > 0
+    ) {
+
+
+        startQuizForCurrentChar();
+    }
+}
+
+
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+
+
+function openModal() {
+
+
+    document
+        .getElementById(
+            'exampleModal'
+        )
+        .classList
+        .remove('hidden');
+}
+
+
+
+function closeModal() {
+
+
+    document
+        .getElementById(
+            'exampleModal'
+        )
+        .classList
+        .add('hidden');
+}
+
+
+
+/* ============================================================
+   TOGGLE FOCUS
+   ============================================================ */
+
+
+function toggleFocus() {
+
+
+    if (!currentCard) {
+
+        return;
+    }
+
+
+
+    if (
+
+        !currentCard.inFocus
+
+        &&
+
+        getFocusCount() >= 150
+
+    ) {
+
+
+        alert(
+            "Das Limit von 150 Vokabeln im Fokus ist erreicht."
+        );
+
+
+        return;
+    }
+
+
+
+    currentCard.inFocus =
+        !currentCard.inFocus;
+
+
+
+    if (
+        currentCard.inFocus
+    ) {
+
+
+        currentCard.correctCount =
+            0;
+    }
+
+
+
+    let btnFocus =
+        document.getElementById(
+            'btn-focus'
+        );
+
+
+
+    if (
+        currentCard.inFocus
+    ) {
+
+
+        btnFocus.innerText =
+            "FOKUS AKTIV";
+
+
+        btnFocus.style.backgroundColor =
+            "var(--focus-color)";
+
+
+        btnFocus.style.color =
+            "#FFFFFF";
+
+
+    } else {
+
+
+        btnFocus.innerText =
+            "FOKUS AKTIVIEREN";
+
+
+        btnFocus.style.backgroundColor =
+            "var(--surface)";
+
+
+        btnFocus.style.color =
+            "var(--focus-color)";
+    }
+
+
+
+    let statsInfo =
+        "";
+
+
+
+    if (
+
+        currentBoxName === 'box6'
+
+        &&
+
+        currentCard.stats
+
+        &&
+
+        currentCard.stats.queries > 0
+
+    ) {
+
+
+        let percent =
+
+            Math.round(
+
+                (
+                    currentCard.stats.correct
+
+                    /
+
+                    currentCard.stats.queries
+                )
+
+                *
+
+                100
+            );
+
+
+        statsInfo =
+            ` • ${percent}% ERFOLG`;
+
+
+    } else if (
+        currentBoxName === 'box5'
+    ) {
+
+
+        let streak =
+            currentCard.box5Streak || 0;
+
+
+        statsInfo =
+            ` • STREAK: ${streak}/3 TAGEN`;
+    }
+
+
+
+    document
+        .getElementById(
+            'v-box'
+        )
+        .innerText =
+
+            (
+                currentCard.level
+                ||
+                "UNBEKANNT"
+            )
+
+            +
+
+            (
+                currentCard.inFocus
+
+                ?
+
+                " • FOKUS"
+
+                :
+
+                ""
+            )
+
+            +
+
+            statsInfo;
+
+
+
+    sessionQueue = [];
+
+
+    updateUI();
+}
+
+
+
+/* ============================================================
+   MOVE CARD
+   ============================================================ */
+
+
+function move(step) {
+
+
+    if (!currentCard) {
+
+        return;
+    }
+
+
+
+    if (!currentCard.stats) {
+
+
+        currentCard.stats = {
+
+            queries: 0,
+
+            correct: 0
+        };
+    }
+
+
+
+    currentCard.stats.queries++;
+
+
+
+    if (
+        step === 1
+    ) {
+
+
+        currentCard.stats.correct++;
+    }
+
+
+
+    let oldBox =
+
+        Object
+            .keys(state)
+            .find(
+                k =>
+                    Array.isArray(state[k])
+                    &&
+                    state[k].includes(currentCard)
+            );
+
+
+
+    let today =
+        new Date()
+            .toDateString();
+
+
+
+    if (
+        currentCard.lastSeenDate !== today
+    ) {
+
+
+        currentCard.lastSeenDate =
+            today;
+
+
+        currentCard.todayRounds =
+            0;
+    }
+
+
+
+    currentCard.todayRounds++;
+
+
+
+    if (
+        oldBox === 'box6'
+    ) {
+
+
+        checkBox6DailyReset();
+
+
+        state.box6Daily.count++;
+    }
+
+
+
+    let level =
+        parseInt(
+            oldBox.replace(
+                'box',
+                ''
+            )
+        );
+
+
+
+    state[
+        oldBox
+    ] =
+
+        state[
+            oldBox
+        ]
+        .filter(
+            c =>
+                c !== currentCard
+        );
+
+
+
+    let effectiveStep =
+        step;
+
+
+
+    if (
+        currentCard.lastMovedDate === today
+    ) {
+
+
+        effectiveStep =
+            0;
+
+
+    } else {
+
+
+        currentCard.lastMovedDate =
+            today;
+    }
+
+
+
+    if (
+
+        effectiveStep === 1
+
+        &&
+
+        currentCard.inFocus
+
+    ) {
+
+
+        if (
+            !currentCard.correctCount
+        ) {
+
+
+            currentCard.correctCount =
+                0;
+        }
+
+
+
+        currentCard.correctCount++;
+
+
+
+        if (
+            currentCard.correctCount >= 20
+        ) {
+
+
+            currentCard.inFocus =
+                false;
+
+
+            currentCard.correctCount =
+                0;
+        }
+    }
+
+
+
+    let newLevel;
+
+
+
+    if (
+        oldBox === 'box5'
+    ) {
+
+
+        if (
+            step === 1
+        ) {
+
+
+            if (
+                !currentCard.box5Streak
+            ) {
+
+
+                currentCard.box5Streak =
+                    0;
+            }
+
+
+
+            let daysDiff =
+
+                currentCard.box5LastCorrectDate
+
+                ?
+
+                daysBetween(
+                    currentCard.box5LastCorrectDate,
+                    today
+                )
+
+                :
+
+                -1;
+
+
+
+            if (
+                daysDiff === 1
+            ) {
+
+
+                currentCard.box5Streak++;
+
+
+                currentCard.box5LastCorrectDate =
+                    today;
+
+
+            } else if (
+                daysDiff === 0
+            ) {
+
+
+                /* gleicher Tag */
+
+
+            } else {
+
+
+                currentCard.box5Streak =
+                    1;
+
+
+                currentCard.box5LastCorrectDate =
+                    today;
+            }
+
+
+
+            if (
+                currentCard.box5Streak >= 3
+            ) {
+
+
+                newLevel =
+                    6;
+
+
+                currentCard.box5Streak =
+                    0;
+
+
+                currentCard.box5LastCorrectDate =
+                    null;
+
+
+            } else {
+
+
+                newLevel =
+                    5;
+            }
+
+
+        } else {
+
+
+            currentCard.box5Streak =
+                0;
+
+
+            currentCard.box5LastCorrectDate =
+                null;
+
+
+
+            newLevel =
+
+                Math.min(
+
+                    Math.max(
+
+                        level
+                        +
+                        effectiveStep,
+
+                        1
+                    ),
+
+                    6
+                );
+        }
+
+
+    } else {
+
+
+        newLevel =
+
+            Math.min(
+
+                Math.max(
+
+                    level
+                    +
+                    effectiveStep,
+
+                    1
+                ),
+
+                6
+            );
+    }
+
+
+
+    if (
+        oldBox === 'box6'
+    ) {
+
+
+        if (
+            newLevel === 6
+        ) {
+
+
+            if (
+                effectiveStep === 1
+            ) {
+
+
+                currentCard.box6Interval =
+
+                    currentCard.box6Interval
+
+                    ?
+
+                    Math.min(
+                        currentCard.box6Interval * 2,
+                        60
+                    )
+
+                    :
+
+                    2;
+
+
+            } else if (
+                !currentCard.box6Interval
+            ) {
+
+
+                currentCard.box6Interval =
+                    1;
+            }
+
+
+
+            currentCard.nextReviewDate =
+
+                addDays(
+                    today,
+                    currentCard.box6Interval
+                );
+
+
+        } else {
+
+
+            currentCard.box6Interval =
+                0;
+
+
+            currentCard.nextReviewDate =
+                null;
+        }
+    }
+
+
+
+    state[
+        'box' + newLevel
+    ].push(
+        currentCard
+    );
+
+
+
+    updateUI();
+
+
+    next();
+}
+
+
+
+/* ============================================================
+   MOVE TO BOX 6
+   ============================================================ */
+
+
+function moveToBox6() {
+
+
+    if (!currentCard) {
+
+        return;
+    }
+
+
+
+    let oldBox =
+
+        Object
+            .keys(state)
+            .find(
+                k =>
+                    Array.isArray(state[k])
+                    &&
+                    state[k].includes(currentCard)
+            );
+
+
+
+    if (oldBox) {
+
+
+        state[
+            oldBox
+        ] =
+
+            state[
+                oldBox
+            ]
+            .filter(
+                c =>
+                    c !== currentCard
+            );
+    }
+
+
+
+    currentCard.lastMovedDate =
+        new Date()
+            .toDateString();
+
+
+
+    currentCard.box5Streak =
+        0;
+
+
+
+    currentCard.box5LastCorrectDate =
+        null;
+
+
+
+    currentCard.box6Interval =
+        1;
+
+
+
+    currentCard.nextReviewDate =
+        null;
+
+
+
+    state.box6.push(
+        currentCard
+    );
+
+
+
+    updateUI();
+
+
+    next();
+}
+
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+
+function resetSpeicher() {
+
+
+    if (
+
+        confirm(
+
+            "Möchten Sie den Lernstand wirklich vollständig löschen? Dieser Vorgang kann nicht rückgängig gemacht werden."
+
+        )
+
+    ) {
+
+
+        state = {
+
+            box1: [],
+
+            box2: [],
+
+            box3: [],
+
+            box4: [],
+
+            box5: [],
+
+            box6: []
+        };
+
+
+        sessionQueue = [];
+
+
+        updateUI();
+
+
+        location.reload();
+    }
+}
+
+
+
+/* ============================================================
+   BACKUP
+   ============================================================ */
+
+
+function exportProgress() {
+
+
+    const dataStr =
+
+        "data:text/json;charset=utf-8,"
+
+        +
+
+        encodeURIComponent(
+
+            JSON.stringify(
+                state
+            )
+        );
+
+
+
+    const dl =
+        document.createElement(
+            'a'
+        );
+
+
+
+    dl.setAttribute(
+
+        "href",
+
+        dataStr
+    );
+
+
+
+    dl.setAttribute(
+
+        "download",
+
+        "hsk_trainer_backup.json"
+    );
+
+
+
+    dl.click();
+}
+
+
+
+/* ============================================================
+   RESTORE BACKUP
+   ============================================================ */
+
+
+function importProgress(file) {
+
+
+    const reader =
+        new FileReader();
+
+
+
+    reader.onload =
+        (e) => {
+
+
+            state =
+                JSON.parse(
+                    e.target.result
+                );
+
+
+
+            if (!state.box6) {
+
+
+                state.box6 =
+                    [];
+            }
+
+
+
+            if (!state.box6Daily) {
+
+
+                state.box6Daily = {
+
+                    date:
+                        new Date()
+                            .toDateString(),
+
+                    count:
+                        0
+                };
+            }
+
+
+
+            sessionQueue =
+                [];
+
+
+            updateUI();
+
+
+            next();
+        };
+
+
+
+    reader.readAsText(
+        file
+    );
+}
+
+
+
+/* ============================================================
+   WRITER RESET
+   ============================================================ */
+
+
+function clearCanvas() {
+
+
+    if (currentWriter) {
+
+
+        try {
+
+            currentWriter.cancelQuiz();
+
+        } catch(e) {}
+    }
+
+
+
+    currentQuizCharIndex =
+        0;
+
+
+
+    startQuizForCurrentChar();
+}
+
+
+
+/* ============================================================
+   AUDIO
+   ============================================================ */
+
+
+function speak() {
+
+
+    if (!currentCard) {
+
+        return;
+    }
+
+
+
+    window
+        .speechSynthesis
+        .cancel();
+
+
+
+    const u =
+
+        new SpeechSynthesisUtterance(
+            currentCard.hz
+        );
+
+
+
+    u.lang =
+        'zh-CN';
+
+
+
+    window
+        .speechSynthesis
+        .speak(u);
+}
+
+
+
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+
+
+updateUI();
+
+next();
+
+
+</script>
+
+
+</body>
+</html>
