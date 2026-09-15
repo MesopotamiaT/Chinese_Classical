@@ -600,11 +600,12 @@
             font-weight: 300;
 
             font-family:
-                "Songti SC",
-                "STSong",
-                "Noto Serif CJK SC",
-                "SimSun",
-                serif;
+                "Noto Sans CJK SC",
+                "Noto Sans SC",
+                "PingFang SC",
+                "Microsoft YaHei",
+                "Heiti SC",
+                sans-serif;
 
             line-height: 0.98;
             letter-spacing: -0.055em;
@@ -2525,18 +2526,6 @@ function toggleDictMode() {
 }
 
 
-/* ============================================================
-   NEU: PINYIN NORMALISIERUNG
-
-   Beispiele:
-   nǐ hǎo  -> nihao
-   ni hao  -> nihao
-   ni-hao  -> nihao
-   xuéshēng -> xuesheng
-   nǚ -> nu
-   nv -> nu
-   ============================================================ */
-
 function normalizePinyin(text) {
 
     if (!text) {
@@ -2545,34 +2534,13 @@ function normalizePinyin(text) {
 
     return text
         .toLowerCase()
-
-        /*
-        "v" wird häufig als Ersatz für ü eingegeben.
-        Deshalb werden beide gleich behandelt.
-        */
-
         .replace(/ü/g, "u")
         .replace(/v/g, "u")
-
-        /*
-        Tonzeichen entfernen.
-        */
-
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
-
-        /*
-        Leerzeichen, Apostrophe, Bindestriche,
-        Punkte usw. entfernen.
-        */
-
         .replace(/[^a-z0-9]/g, "");
 }
 
-
-/* ============================================================
-   ERWEITERTE WÖRTERBUCHSUCHE
-   ============================================================ */
 
 function searchDict() {
 
@@ -2670,19 +2638,11 @@ function searchDict() {
 
                 return (
 
-                    /*
-                    Deutsche Suche
-                    */
-
                     german.includes(
                         query
                     )
 
                     ||
-
-                    /*
-                    Suche direkt nach Hanzi
-                    */
 
                     hanzi.includes(
                         rawQuery
@@ -2690,20 +2650,11 @@ function searchDict() {
 
                     ||
 
-                    /*
-                    Pinyin mit vorhandenen Tonzeichen
-                    */
-
                     originalPinyin.includes(
                         query
                     )
 
                     ||
-
-                    /*
-                    Pinyin ohne Tonzeichen,
-                    Leerzeichen oder Bindestriche
-                    */
 
                     (
                         pinyinQuery.length > 0
@@ -5143,8 +5094,6 @@ function move(step) {
             } else if (
                 daysDiff === 0
             ) {
-
-                // gleicher Tag
 
             } else {
 
