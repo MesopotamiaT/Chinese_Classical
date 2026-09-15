@@ -12,7 +12,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,500;1,8..60,600&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,500;1,8..60,600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
 
@@ -597,22 +598,23 @@
                     8.8rem
                 );
 
-            font-weight: 300;
-
             font-family:
-                "Noto Sans CJK SC",
                 "Noto Sans SC",
-                "PingFang SC",
                 "Microsoft YaHei",
-                "Heiti SC",
+                "PingFang SC",
                 sans-serif;
 
-            line-height: 0.98;
-            letter-spacing: -0.055em;
+            font-weight: 500;
+            font-style: normal;
+
+            line-height: 1.05;
+            letter-spacing: 0;
 
             color: var(--text-main);
 
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
         #v-hz.long-char {
@@ -623,9 +625,15 @@
                     5.7rem
                 );
 
-            font-weight: 300;
-            letter-spacing: -0.035em;
-            line-height: 1.05;
+            font-family:
+                "Noto Sans SC",
+                "Microsoft YaHei",
+                "PingFang SC",
+                sans-serif;
+
+            font-weight: 500;
+            letter-spacing: 0;
+            line-height: 1.1;
         }
 
         #v-py {
@@ -1109,7 +1117,7 @@
                         7.3rem
                     );
 
-                font-weight: 300;
+                font-weight: 500;
             }
 
             #v-hz.long-char {
@@ -1120,7 +1128,7 @@
                         4.7rem
                     );
 
-                font-weight: 300;
+                font-weight: 500;
             }
 
             #v-py {
@@ -2526,6 +2534,18 @@ function toggleDictMode() {
 }
 
 
+/* ============================================================
+   NEU: PINYIN NORMALISIERUNG
+
+   Beispiele:
+   nǐ hǎo  -> nihao
+   ni hao  -> nihao
+   ni-hao  -> nihao
+   xuéshēng -> xuesheng
+   nǚ -> nu
+   nv -> nu
+   ============================================================ */
+
 function normalizePinyin(text) {
 
     if (!text) {
@@ -2534,13 +2554,34 @@ function normalizePinyin(text) {
 
     return text
         .toLowerCase()
+
+        /*
+        "v" wird häufig als Ersatz für ü eingegeben.
+        Deshalb werden beide gleich behandelt.
+        */
+
         .replace(/ü/g, "u")
         .replace(/v/g, "u")
+
+        /*
+        Tonzeichen entfernen.
+        */
+
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
+
+        /*
+        Leerzeichen, Apostrophe, Bindestriche,
+        Punkte usw. entfernen.
+        */
+
         .replace(/[^a-z0-9]/g, "");
 }
 
+
+/* ============================================================
+   ERWEITERTE WÖRTERBUCHSUCHE
+   ============================================================ */
 
 function searchDict() {
 
@@ -2638,11 +2679,19 @@ function searchDict() {
 
                 return (
 
+                    /*
+                    Deutsche Suche
+                    */
+
                     german.includes(
                         query
                     )
 
                     ||
+
+                    /*
+                    Suche direkt nach Hanzi
+                    */
 
                     hanzi.includes(
                         rawQuery
@@ -2650,11 +2699,20 @@ function searchDict() {
 
                     ||
 
+                    /*
+                    Pinyin mit vorhandenen Tonzeichen
+                    */
+
                     originalPinyin.includes(
                         query
                     )
 
                     ||
+
+                    /*
+                    Pinyin ohne Tonzeichen,
+                    Leerzeichen oder Bindestriche
+                    */
 
                     (
                         pinyinQuery.length > 0
@@ -5094,6 +5152,8 @@ function move(step) {
             } else if (
                 daysDiff === 0
             ) {
+
+                // gleicher Tag
 
             } else {
 
