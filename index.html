@@ -1485,6 +1485,7 @@
             >
 
                 <button
+                    id="btn-box6-action"
                     class="btn-secondary btn-medium"
                     onclick="moveToBox6()"
                 >
@@ -1604,6 +1605,75 @@
 
 </div>
 
+
+<div id="box6SectionModal" class="modal-overlay hidden">
+
+    <div
+        class="modal-content"
+        style="max-width:380px;"
+    >
+
+        <h3
+            style="
+                margin-top:0;
+                color:var(--text-main);
+                font-size:1.1rem;
+                border-bottom:1px solid var(--border);
+                padding-bottom:12px;
+                margin-bottom:16px;
+                font-weight:800;
+                text-transform:uppercase;
+                letter-spacing:0.04em;
+            "
+        >
+            Box 6 auswählen
+        </h3>
+
+        <div
+            style="
+                color:var(--text-muted);
+                font-size:0.9rem;
+                line-height:1.5;
+                margin-bottom:16px;
+                text-align:center;
+            "
+        >
+            Welchen Bereich möchten Sie lernen?
+        </div>
+
+        <div
+            class="row-2"
+            style="margin-bottom:10px;"
+        >
+
+            <button
+                id="btn-box6-new"
+                class="btn-primary btn-large"
+                onclick="selectBox6Section('new')"
+            >
+                BOX 6 NEW
+            </button>
+
+            <button
+                id="btn-box6-old"
+                class="btn-secondary btn-large"
+                onclick="selectBox6Section('old')"
+            >
+                BOX 6 OLD
+            </button>
+
+        </div>
+
+        <button
+            class="btn-secondary btn-medium"
+            onclick="closeBox6SectionModal()"
+        >
+            ABBRECHEN
+        </button>
+
+    </div>
+</div>
+
 <div id="box6StatsModal" class="modal-overlay hidden">
 
     <div
@@ -1687,6 +1757,27 @@ if (!state.box6) {
     state.box6 = [];
 }
 
+function ensureBox6Sections() {
+
+    state.box6.forEach(c => {
+
+        if (
+            c.box6Section !== 'new'
+            &&
+            c.box6Section !== 'old'
+        ) {
+
+            /*
+             * Bestehende Box-6-Karten aus älteren Versionen
+             * gelten beim ersten Laden als "Old".
+             */
+            c.box6Section = 'old';
+        }
+    });
+}
+
+ensureBox6Sections();
+
 if (!state.box6Daily) {
     state.box6Daily = {
         date: new Date().toDateString(),
@@ -1705,6 +1796,7 @@ let singleCharBox = null;
 
 let randomMode = false;
 let selectedBoxFilter = null;
+let selectedBox6Section = null;
 let dictMode = false;
 let currentDictResults = [];
 
@@ -1765,6 +1857,14 @@ document.getElementById('stats').innerHTML =
 
                 sessionQueue = [];
 
+                if (i === 6) {
+
+                    openBox6SectionModal();
+                    return;
+                }
+
+                selectedBox6Section = null;
+
                 if (selectedBoxFilter === i) {
                     selectedBoxFilter = null;
                 } else {
@@ -1781,6 +1881,134 @@ document.getElementById('stats').innerHTML =
         );
 
 });
+
+
+
+function getBox6SectionCount(section) {
+
+    ensureBox6Sections();
+
+    return state.box6.filter(
+        c => c.box6Section === section
+    ).length;
+}
+
+
+function openBox6SectionModal() {
+
+    ensureBox6Sections();
+
+    let newCount =
+        getBox6SectionCount('new');
+
+    let oldCount =
+        getBox6SectionCount('old');
+
+    document
+        .getElementById(
+            'btn-box6-new'
+        )
+        .innerText =
+            `BOX 6 NEW (${newCount})`;
+
+    document
+        .getElementById(
+            'btn-box6-old'
+        )
+        .innerText =
+            `BOX 6 OLD (${oldCount})`;
+
+    document
+        .getElementById(
+            'box6SectionModal'
+        )
+        .classList
+        .remove('hidden');
+}
+
+
+function closeBox6SectionModal() {
+
+    document
+        .getElementById(
+            'box6SectionModal'
+        )
+        .classList
+        .add('hidden');
+}
+
+
+function selectBox6Section(section) {
+
+    if (
+        section !== 'new'
+        &&
+        section !== 'old'
+    ) {
+        return;
+    }
+
+    selectedBoxFilter =
+        6;
+
+    selectedBox6Section =
+        section;
+
+    sessionQueue =
+        [];
+
+    if (randomMode) {
+
+        randomMode =
+            false;
+
+        let randomButton =
+            document.getElementById(
+                'btn-toggle-random-mode'
+            );
+
+        randomButton.innerText =
+            "ZUFALLSMODUS AUS";
+
+        randomButton.style.backgroundColor =
+            "var(--card)";
+
+        randomButton.style.color =
+            "var(--text-main)";
+    }
+
+    closeBox6SectionModal();
+
+    updateUI();
+    next();
+}
+
+
+function toggleBox6Section() {
+
+    if (
+        !currentCard
+        ||
+        currentBoxName !== 'box6'
+    ) {
+        return;
+    }
+
+    ensureBox6Sections();
+
+    currentCard.box6Section =
+        currentCard.box6Section === 'new'
+        ?
+        'old'
+        :
+        'new';
+
+    sessionQueue =
+        [];
+
+    updateUI();
+    next();
+}
 
 
 function countHanzi(str) {
@@ -2068,6 +2296,12 @@ function renderBox6StatsTable() {
             'box6-stats-summary'
         );
 
+    let newCount =
+        getBox6SectionCount('new');
+
+    let oldCount =
+        getBox6SectionCount('old');
+
     summaryEl.innerText =
         `${data.length} Vokabel${
             data.length === 1
@@ -2075,7 +2309,7 @@ function renderBox6StatsTable() {
             ''
             :
             'n'
-        } in Box 6`;
+        } in Box 6 • ${newCount} New • ${oldCount} Old`;
 
 
     let tbody =
@@ -2943,6 +3177,16 @@ function changeDictBox(
             null;
     }
 
+    if (
+        newBox === 'box6'
+        &&
+        oldBox !== 'box6'
+    ) {
+
+        item.card.box6Section =
+            'new';
+    }
+
 
     state[
         newBox
@@ -3168,6 +3412,9 @@ function toggleRandomMode() {
             "#FFFFFF";
 
         selectedBoxFilter =
+            null;
+
+        selectedBox6Section =
             null;
 
     } else {
@@ -3439,8 +3686,14 @@ function next() {
             selectedBoxFilter === 6
         ) {
 
+            ensureBox6Sections();
+
             let cards =
-                [...state.box6];
+                state.box6.filter(
+                    c =>
+                        c.box6Section ===
+                        selectedBox6Section
+                );
 
 
             cards.sort(
@@ -3666,6 +3919,14 @@ function next() {
                     )
                     .innerText =
 
+                        (
+                            selectedBoxFilter === 6
+                            &&
+                            selectedBox6Section
+                        )
+                        ?
+                        `Box 6 ${selectedBox6Section === 'new' ? 'New' : 'Old'} ist leer.`
+                        :
                         `Box ${selectedBoxFilter} ist leer.`;
 
             } else {
@@ -3751,6 +4012,23 @@ function next() {
     if (
         currentBoxName === 'box6'
         &&
+        (
+            !currentCard.stats
+            ||
+            currentCard.stats.queries <= 0
+        )
+    ) {
+
+        statsInfo =
+            currentCard.box6Section === 'new'
+            ?
+            " • BOX 6 NEW"
+            :
+            " • BOX 6 OLD";
+
+    } else if (
+        currentBoxName === 'box6'
+        &&
         currentCard.stats
         &&
         currentCard.stats.queries > 0
@@ -3773,6 +4051,14 @@ function next() {
 
 
         statsInfo =
+            (
+                currentCard.box6Section === 'new'
+                ?
+                " • BOX 6 NEW"
+                :
+                " • BOX 6 OLD"
+            )
+            +
             ` • ${percent}% ERFOLG`;
 
     } else if (
@@ -3934,6 +4220,7 @@ function next() {
 
 
     closeModal();
+    closeBox6SectionModal();
 
 
     let cleanHz =
@@ -4010,6 +4297,23 @@ function flip() {
     if (
         currentBoxName === 'box6'
         &&
+        (
+            !currentCard.stats
+            ||
+            currentCard.stats.queries <= 0
+        )
+    ) {
+
+        statsInfo =
+            currentCard.box6Section === 'new'
+            ?
+            " • BOX 6 NEW"
+            :
+            " • BOX 6 OLD";
+
+    } else if (
+        currentBoxName === 'box6'
+        &&
         currentCard.stats
         &&
         currentCard.stats.queries > 0
@@ -4032,6 +4336,14 @@ function flip() {
 
 
         statsInfo =
+            (
+                currentCard.box6Section === 'new'
+                ?
+                " • BOX 6 NEW"
+                :
+                " • BOX 6 OLD"
+            )
+            +
             ` • ${percent}% ERFOLG`;
 
     } else if (
@@ -4257,6 +4569,37 @@ function flip() {
 
         btnExample.disabled =
             true;
+    }
+
+
+    let box6ActionButton =
+        document.getElementById(
+            'btn-box6-action'
+        );
+
+    if (
+        currentBoxName === 'box6'
+    ) {
+
+        ensureBox6Sections();
+
+        box6ActionButton.innerText =
+            currentCard.box6Section === 'new'
+            ?
+            "ZU BOX 6 OLD"
+            :
+            "ZU BOX 6 NEW";
+
+        box6ActionButton.onclick =
+            toggleBox6Section;
+
+    } else {
+
+        box6ActionButton.innerText =
+            "ZU BOX 6";
+
+        box6ActionButton.onclick =
+            moveToBox6;
     }
 
 
@@ -4792,6 +5135,17 @@ function move(step) {
     }
 
 
+    if (
+        newLevel === 6
+        &&
+        oldBox !== 'box6'
+    ) {
+
+        currentCard.box6Section =
+            'new';
+    }
+
+
     state[
         'box' + newLevel
     ].push(
@@ -4856,6 +5210,9 @@ function moveToBox6() {
 
     currentCard.nextReviewDate =
         null;
+
+    currentCard.box6Section =
+        'new';
 
 
     state.box6.push(
@@ -4953,6 +5310,8 @@ function importProgress(file) {
                 state.box6 =
                     [];
             }
+
+            ensureBox6Sections();
 
 
             if (!state.box6Daily) {
