@@ -297,7 +297,7 @@
 
         .filter-buttons {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 6px;
             width: 100%;
         }
@@ -1316,13 +1316,6 @@
         <div class="filter-buttons">
 
             <button
-                id="btn-toggle-only-focus"
-                onclick="toggleOnlyFocusMode()"
-            >
-                ALLE KARTEN (0)
-            </button>
-
-            <button
                 id="btn-toggle-random-mode"
                 onclick="toggleRandomMode()"
             >
@@ -1488,16 +1481,8 @@
             <div
                 id="special-actions"
                 class="row-2 hidden"
+                style="grid-template-columns: 1fr;"
             >
-
-                <button
-                    id="btn-focus"
-                    class="btn-secondary btn-medium"
-                    style="color:var(--focus-color);"
-                    onclick="toggleFocus()"
-                >
-                    FOKUS AKTIVIEREN
-                </button>
 
                 <button
                     class="btn-secondary btn-medium"
@@ -1718,7 +1703,6 @@ let currentQuizCharIndex = 0;
 let currentWriter = null;
 let singleCharBox = null;
 
-let onlyFocusMode = false;
 let randomMode = false;
 let selectedBoxFilter = null;
 let dictMode = false;
@@ -1788,10 +1772,6 @@ document.getElementById('stats').innerHTML =
 
                     if (randomMode) {
                         toggleRandomMode();
-                    }
-
-                    if (onlyFocusMode) {
-                        toggleOnlyFocusMode();
                     }
                 }
 
@@ -2408,31 +2388,6 @@ function startQuizForCurrentChar() {
 }
 
 
-function getFocusCount() {
-
-    let count = 0;
-
-    for (
-        let i = 1;
-        i <= 6;
-        i++
-    ) {
-
-        state[
-            'box' + i
-        ]
-        .forEach(c => {
-
-            if (c.inFocus) {
-                count++;
-            }
-        });
-    }
-
-    return count;
-}
-
-
 function toggleDictMode() {
 
     dictMode =
@@ -2781,38 +2736,6 @@ function searchDict() {
                 `;
 
 
-            let focusBtnBg =
-                c.inFocus
-                ?
-                "var(--focus-color)"
-                :
-                "var(--card)";
-
-
-            let focusBtnColor =
-                c.inFocus
-                ?
-                "#FFFFFF"
-                :
-                "var(--text-main)";
-
-
-            let focusBtnBorder =
-                c.inFocus
-                ?
-                "transparent"
-                :
-                "var(--border)";
-
-
-            let focusBtnText =
-                c.inFocus
-                ?
-                "FOKUS AKTIV"
-                :
-                "FOKUS";
-
-
             let html = `
 
                 <div
@@ -2842,25 +2765,6 @@ function searchDict() {
                             gap:6px;
                         "
                     >
-
-                        <button
-                            onclick="toggleDictFocus(${index})"
-
-                            style="
-                                padding:6px 9px;
-                                font-size:0.75rem;
-                                border-radius:10px;
-                                background-color:${focusBtnBg};
-                                color:${focusBtnColor};
-                                border:1px solid ${focusBtnBorder};
-                                box-shadow:var(--shadow-small);
-                                font-weight:800;
-                                min-height:36px;
-                            "
-                        >
-                            ${focusBtnText}
-                        </button>
-
 
                         <select
                             onchange="
@@ -2981,49 +2885,6 @@ function searchDict() {
                 );
         }
     );
-}
-
-
-function toggleDictFocus(index) {
-
-    let item =
-        currentDictResults[
-            index
-        ];
-
-
-    if (
-        !item.card.inFocus
-        &&
-        getFocusCount() >= 150
-    ) {
-
-        alert(
-            "Das Limit von 150 Vokabeln im Fokus ist erreicht."
-        );
-
-        return;
-    }
-
-
-    item.card.inFocus =
-        !item.card.inFocus;
-
-
-    if (
-        item.card.inFocus
-    ) {
-
-        item.card.correctCount =
-            0;
-    }
-
-
-    sessionQueue = [];
-
-    updateUI();
-
-    searchDict();
 }
 
 
@@ -3219,8 +3080,6 @@ function updateUI() {
 
     highlightActiveBox();
 
-    updateFocusButtonText();
-
     updateBox6DailyDisplay();
 }
 
@@ -3283,78 +3142,6 @@ function highlightActiveBox() {
 }
 
 
-function updateFocusButtonText() {
-
-    let btn =
-        document.getElementById(
-            'btn-toggle-only-focus'
-        );
-
-    let count =
-        getFocusCount();
-
-
-    btn.innerText =
-        `ALLE KARTEN (${count})`;
-
-
-    if (onlyFocusMode) {
-
-        btn.innerText =
-            `FOKUS AKTIV (${count})`;
-    }
-}
-
-
-function toggleOnlyFocusMode() {
-
-    onlyFocusMode =
-        !onlyFocusMode;
-
-    sessionQueue = [];
-
-
-    let btn =
-        document.getElementById(
-            'btn-toggle-only-focus'
-        );
-
-
-    if (onlyFocusMode) {
-
-        btn.style.backgroundColor =
-            "var(--focus-color)";
-
-        btn.style.color =
-            "#FFFFFF";
-
-        selectedBoxFilter =
-            null;
-
-
-        if (
-            randomMode
-        ) {
-
-            toggleRandomMode();
-        }
-
-    } else {
-
-        btn.style.backgroundColor =
-            "var(--card)";
-
-        btn.style.color =
-            "var(--text-main)";
-    }
-
-
-    updateUI();
-
-    next();
-}
-
-
 function toggleRandomMode() {
 
     randomMode =
@@ -3382,14 +3169,6 @@ function toggleRandomMode() {
 
         selectedBoxFilter =
             null;
-
-
-        if (
-            onlyFocusMode
-        ) {
-
-            toggleOnlyFocusMode();
-        }
 
     } else {
 
@@ -3608,9 +3387,6 @@ function importCSV(file) {
 
                             detectedLevel,
 
-                        inFocus:
-                            false,
-
                         stats: {
                             queries: 0,
                             correct: 0
@@ -3763,14 +3539,6 @@ function next() {
                 ]
                 .forEach(c => {
 
-                    if (
-                        onlyFocusMode
-                        &&
-                        !c.inFocus
-                    ) {
-                        return;
-                    }
-
 
                     if (!c.stats) {
 
@@ -3831,31 +3599,6 @@ function next() {
                                 box:
                                     'box'+i
                             });
-                        }
-
-
-                        if (
-                            c.inFocus
-                            &&
-                            !randomMode
-                        ) {
-
-                            let additionalTickets =
-                                7;
-
-
-                            for (
-                                let f = 0;
-                                f < additionalTickets;
-                                f++
-                            ) {
-
-                                pool.push({
-                                    c,
-                                    box:
-                                        'box'+i
-                                });
-                            }
                         }
                     }
                 });
@@ -3931,17 +3674,7 @@ function next() {
                     .getElementById(
                         'v-de'
                     )
-                    .innerText =
-
-                        onlyFocusMode
-
-                        ?
-
-                        "Keine Fokus-Karten vorhanden"
-
-                        :
-
-                        "Bitte laden Sie eine CSV-Datei...";
+                    .innerText = "Bitte laden Sie eine CSV-Datei...";
             }
 
 
@@ -4064,16 +3797,6 @@ function next() {
                 currentCard.level
                 ||
                 "UNBEKANNT"
-            )
-
-            +
-
-            (
-                currentCard.inFocus
-                ?
-                " • FOKUS"
-                :
-                ""
             )
 
             +
@@ -4337,16 +4060,6 @@ function flip() {
 
             +
 
-            (
-                currentCard.inFocus
-                ?
-                " • FOKUS"
-                :
-                ""
-            )
-
-            +
-
             statsInfo;
 
 
@@ -4544,38 +4257,6 @@ function flip() {
 
         btnExample.disabled =
             true;
-    }
-
-
-    let btnFocus =
-        document.getElementById(
-            'btn-focus'
-        );
-
-
-    if (
-        currentCard.inFocus
-    ) {
-
-        btnFocus.innerText =
-            "FOKUS AKTIV";
-
-        btnFocus.style.backgroundColor =
-            "var(--focus-color)";
-
-        btnFocus.style.color =
-            "#FFFFFF";
-
-    } else {
-
-        btnFocus.innerText =
-            "FOKUS AKTIVIEREN";
-
-        btnFocus.style.backgroundColor =
-            "var(--surface)";
-
-        btnFocus.style.color =
-            "var(--focus-color)";
     }
 
 
@@ -4822,148 +4503,6 @@ function closeModal() {
 }
 
 
-function toggleFocus() {
-
-    if (!currentCard) {
-        return;
-    }
-
-
-    if (
-        !currentCard.inFocus
-        &&
-        getFocusCount() >= 150
-    ) {
-
-        alert(
-            "Das Limit von 150 Vokabeln im Fokus ist erreicht."
-        );
-
-        return;
-    }
-
-
-    currentCard.inFocus =
-        !currentCard.inFocus;
-
-
-    if (
-        currentCard.inFocus
-    ) {
-
-        currentCard.correctCount =
-            0;
-    }
-
-
-    let btnFocus =
-        document.getElementById(
-            'btn-focus'
-        );
-
-
-    if (
-        currentCard.inFocus
-    ) {
-
-        btnFocus.innerText =
-            "FOKUS AKTIV";
-
-        btnFocus.style.backgroundColor =
-            "var(--focus-color)";
-
-        btnFocus.style.color =
-            "#FFFFFF";
-
-    } else {
-
-        btnFocus.innerText =
-            "FOKUS AKTIVIEREN";
-
-        btnFocus.style.backgroundColor =
-            "var(--surface)";
-
-        btnFocus.style.color =
-            "var(--focus-color)";
-    }
-
-
-    let statsInfo =
-        "";
-
-
-    if (
-        currentBoxName === 'box6'
-        &&
-        currentCard.stats
-        &&
-        currentCard.stats.queries > 0
-    ) {
-
-        let percent =
-
-            Math.round(
-
-                (
-                    currentCard.stats.correct
-                    /
-                    currentCard.stats.queries
-                )
-
-                *
-
-                100
-            );
-
-
-        statsInfo =
-            ` • ${percent}% ERFOLG`;
-
-    } else if (
-        currentBoxName === 'box5'
-    ) {
-
-        let streak =
-            currentCard.box5Streak || 0;
-
-        statsInfo =
-            ` • STREAK: ${streak}/3 TAGEN`;
-    }
-
-
-    document
-        .getElementById(
-            'v-box'
-        )
-        .innerText =
-
-            (
-                currentCard.level
-                ||
-                "UNBEKANNT"
-            )
-
-            +
-
-            (
-                currentCard.inFocus
-                ?
-                " • FOKUS"
-                :
-                ""
-            )
-
-            +
-
-            statsInfo;
-
-
-    sessionQueue = [];
-
-    updateUI();
-}
-
-
 function move(step) {
 
     if (!currentCard) {
@@ -5070,37 +4609,6 @@ function move(step) {
 
         currentCard.lastMovedDate =
             today;
-    }
-
-
-    if (
-        effectiveStep === 1
-        &&
-        currentCard.inFocus
-    ) {
-
-        if (
-            !currentCard.correctCount
-        ) {
-
-            currentCard.correctCount =
-                0;
-        }
-
-
-        currentCard.correctCount++;
-
-
-        if (
-            currentCard.correctCount >= 20
-        ) {
-
-            currentCard.inFocus =
-                false;
-
-            currentCard.correctCount =
-                0;
-        }
     }
 
 
