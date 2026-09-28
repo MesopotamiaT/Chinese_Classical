@@ -1812,6 +1812,7 @@ document.getElementById('stats').innerHTML =
             <div
                 id="stat-box-${i}"
                 class="stat-box"
+                onclick="handleStatBoxClick(${i})"
             >
 
                 BOX ${i}
@@ -1843,45 +1844,35 @@ document.getElementById('stats').innerHTML =
         .join('');
 
 
-[1,2,3,4,5,6].forEach(i => {
+function handleStatBoxClick(i) {
 
-    document
-        .getElementById(`stat-box-${i}`)
-        .addEventListener(
-            'click',
-            () => {
+    if (dictMode) {
+        toggleDictMode();
+    }
 
-                if (dictMode) {
-                    toggleDictMode();
-                }
+    sessionQueue = [];
 
-                sessionQueue = [];
+    if (i === 6) {
 
-                if (i === 6) {
+        openBox6SectionModal();
+        return;
+    }
 
-                    openBox6SectionModal();
-                    return;
-                }
+    selectedBox6Section = null;
 
-                selectedBox6Section = null;
+    if (selectedBoxFilter === i) {
+        selectedBoxFilter = null;
+    } else {
+        selectedBoxFilter = i;
 
-                if (selectedBoxFilter === i) {
-                    selectedBoxFilter = null;
-                } else {
-                    selectedBoxFilter = i;
+        if (randomMode) {
+            toggleRandomMode();
+        }
+    }
 
-                    if (randomMode) {
-                        toggleRandomMode();
-                    }
-                }
-
-                updateUI();
-                next();
-            }
-        );
-
-});
-
+    updateUI();
+    next();
+}
 
 
 function getBox6SectionCount(section) {
@@ -1918,23 +1909,41 @@ function openBox6SectionModal() {
         .innerText =
             `BOX 6 OLD (${oldCount})`;
 
-    document
-        .getElementById(
+    let modal =
+        document.getElementById(
             'box6SectionModal'
-        )
-        .classList
-        .remove('hidden');
+        );
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove(
+        'hidden'
+    );
+
+    modal.style.display =
+        'flex';
 }
 
 
 function closeBox6SectionModal() {
 
-    document
-        .getElementById(
+    let modal =
+        document.getElementById(
             'box6SectionModal'
-        )
-        .classList
-        .add('hidden');
+        );
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.add(
+        'hidden'
+    );
+
+    modal.style.display =
+        '';
 }
 
 
