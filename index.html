@@ -44,6 +44,8 @@
             --box4: #8b5cf6;
             --box5: #27a65a;
             --box6: #df3f7d;
+            --box7: #14a6a6;
+            --box8: #5b6ee1;
 
             --shadow-small:
                 0 1px 2px rgba(16, 24, 40, 0.04),
@@ -106,6 +108,8 @@
                 --box4: #a68bfa;
                 --box5: #46bd74;
                 --box6: #ee6a9c;
+                --box7: #35c4c4;
+                --box8: #8190ff;
 
                 --shadow-small:
                     0 2px 7px rgba(0,0,0,0.22);
@@ -381,7 +385,7 @@
             flex-shrink: 0;
 
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(8, 1fr);
 
             gap: 6px;
             padding: 7px;
@@ -440,6 +444,8 @@
         #stat-box-4 { color: var(--box4); }
         #stat-box-5 { color: var(--box5); }
         #stat-box-6 { color: var(--box6); }
+        #stat-box-7 { color: var(--box7); }
+        #stat-box-8 { color: var(--box8); }
 
         .stat-box.active-box {
             border-color: var(--border);
@@ -1276,6 +1282,8 @@
             --box4: #8b6cf6;
             --box5: #31a86b;
             --box6: #d8558a;
+            --box7: #159a9a;
+            --box8: #5867d8;
 
             --shadow-small:
                 0 1px 2px rgba(16,24,40,0.04),
@@ -1318,6 +1326,8 @@
                 --box4: #aa91ff;
                 --box5: #50c184;
                 --box6: #ec78a6;
+                --box7: #45c3c3;
+                --box8: #8491ff;
 
                 --shadow-small:
                     0 2px 8px rgba(0,0,0,0.24);
@@ -2588,11 +2598,21 @@ let state =
         box3: [],
         box4: [],
         box5: [],
-        box6: []
+        box6: [],
+        box7: [],
+        box8: []
     };
 
 if (!state.box6) {
     state.box6 = [];
+}
+
+if (!state.box7) {
+    state.box7 = [];
+}
+
+if (!state.box8) {
+    state.box8 = [];
 }
 
 function ensureBox6Sections() {
@@ -2619,7 +2639,18 @@ ensureBox6Sections();
 if (!state.box6Daily) {
     state.box6Daily = {
         date: new Date().toDateString(),
-        count: 0
+        newCount: 0,
+        oldCount: 0
+    };
+} else if (
+    typeof state.box6Daily.newCount !== 'number'
+    ||
+    typeof state.box6Daily.oldCount !== 'number'
+) {
+    state.box6Daily = {
+        date: state.box6Daily.date || new Date().toDateString(),
+        newCount: 0,
+        oldCount: 0
     };
 }
 
@@ -2643,7 +2674,7 @@ let box6SortDirection = 'desc';
 
 
 document.getElementById('stats').innerHTML =
-    [1,2,3,4,5,6]
+    [1,2,3,4,5,6,7,8]
         .map(i =>
 
             `
@@ -2979,7 +3010,8 @@ function checkBox6DailyReset() {
 
         state.box6Daily = {
             date: today,
-            count: 0
+            newCount: 0,
+            oldCount: 0
         };
     }
 }
@@ -2997,7 +3029,7 @@ function updateBox6DailyDisplay() {
     if (el) {
 
         el.innerText =
-            `BOX 6 HEUTE: ${state.box6Daily.count}/100`;
+            `BOX 6 HEUTE · NEW: ${state.box6Daily.newCount}/100 · OLD: ${state.box6Daily.oldCount}/100`;
     }
 }
 
@@ -3661,7 +3693,7 @@ function searchDict() {
 
     for (
         let i = 1;
-        i <= 6;
+        i <= 8;
         i++
     ) {
 
@@ -3873,6 +3905,8 @@ function searchDict() {
                             <option value="4" style="color:black;background:white;" ${boxNum == 4 ? 'selected' : ''}>B4</option>
                             <option value="5" style="color:black;background:white;" ${boxNum == 5 ? 'selected' : ''}>B5</option>
                             <option value="6" style="color:black;background:white;" ${boxNum == 6 ? 'selected' : ''}>B6</option>
+                            <option value="7" style="color:black;background:white;" ${boxNum == 7 ? 'selected' : ''}>B7</option>
+                            <option value="8" style="color:black;background:white;" ${boxNum == 8 ? 'selected' : ''}>B8</option>
 
                         </select>
 
@@ -4057,7 +4091,7 @@ function updateUI() {
             .toDateString();
 
 
-    [1,2,3,4,5,6]
+    [1,2,3,4,5,6,7,8]
     .forEach(i => {
 
         let countSpan =
@@ -4177,7 +4211,7 @@ function updateUI() {
 
 function highlightActiveBox() {
 
-    [1,2,3,4,5,6]
+    [1,2,3,4,5,6,7,8]
     .forEach(i => {
 
         let element =
@@ -4525,6 +4559,8 @@ function next() {
             4,
             2,
             1,
+            1,
+            1,
             1
         ];
 
@@ -4621,7 +4657,7 @@ function next() {
 
             for (
                 let i = 1;
-                i <= 6;
+                i <= 8;
                 i++
             ) {
 
@@ -5758,7 +5794,15 @@ function move(step) {
 
         checkBox6DailyReset();
 
-        state.box6Daily.count++;
+        ensureBox6Sections();
+
+        if (
+            currentCard.box6Section === 'new'
+        ) {
+            state.box6Daily.newCount++;
+        } else {
+            state.box6Daily.oldCount++;
+        }
     }
 
 
@@ -5904,7 +5948,7 @@ function move(step) {
                         1
                     ),
 
-                    6
+                    8
                 );
         }
 
@@ -5923,7 +5967,7 @@ function move(step) {
                     1
                 ),
 
-                6
+                8
             );
     }
 
@@ -6087,7 +6131,9 @@ function resetSpeicher() {
             box3: [],
             box4: [],
             box5: [],
-            box6: []
+            box6: [],
+            box7: [],
+            box8: []
         };
 
         sessionQueue = [];
@@ -6158,6 +6204,18 @@ function importProgress(file) {
                     [];
             }
 
+            if (!state.box7) {
+
+                state.box7 =
+                    [];
+            }
+
+            if (!state.box8) {
+
+                state.box8 =
+                    [];
+            }
+
             ensureBox6Sections();
 
 
@@ -6168,7 +6226,30 @@ function importProgress(file) {
                         new Date()
                             .toDateString(),
 
-                    count:
+                    newCount:
+                        0,
+
+                    oldCount:
+                        0
+                };
+
+            } else if (
+                typeof state.box6Daily.newCount !== 'number'
+                ||
+                typeof state.box6Daily.oldCount !== 'number'
+            ) {
+
+                state.box6Daily = {
+                    date:
+                        state.box6Daily.date
+                        ||
+                        new Date()
+                            .toDateString(),
+
+                    newCount:
+                        0,
+
+                    oldCount:
                         0
                 };
             }
