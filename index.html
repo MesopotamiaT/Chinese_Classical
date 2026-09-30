@@ -39,13 +39,13 @@
             --focus-soft: #f2eafe;
 
             --box1: #e5484d;
-            --box2: #e99a14;
-            --box3: #3b82f6;
-            --box4: #8b5cf6;
-            --box5: #27a65a;
-            --box6: #df3f7d;
-            --box7: #14a6a6;
-            --box8: #5b6ee1;
+            --box2: #14a6a6;
+            --box3: #5b6ee1;
+            --box4: #e99a14;
+            --box5: #3b82f6;
+            --box6: #8b5cf6;
+            --box7: #27a65a;
+            --box8: #df3f7d;
 
             --shadow-small:
                 0 1px 2px rgba(16, 24, 40, 0.04),
@@ -103,13 +103,13 @@
                 --focus-soft: #291f3c;
 
                 --box1: #f06166;
-                --box2: #f0aa34;
-                --box3: #64a2ff;
-                --box4: #a68bfa;
-                --box5: #46bd74;
-                --box6: #ee6a9c;
-                --box7: #35c4c4;
-                --box8: #8190ff;
+                --box2: #35c4c4;
+                --box3: #8190ff;
+                --box4: #f0aa34;
+                --box5: #64a2ff;
+                --box6: #a68bfa;
+                --box7: #46bd74;
+                --box8: #ee6a9c;
 
                 --shadow-small:
                     0 2px 7px rgba(0,0,0,0.22);
@@ -292,7 +292,7 @@
         }
 
         .system-buttons .btn-stats {
-            color: var(--box6);
+            color: var(--box8);
         }
 
         .system-buttons .btn-danger {
@@ -343,7 +343,7 @@
             border-radius: var(--radius-button);
 
             background: var(--card);
-            color: var(--box6);
+            color: var(--box8);
 
             box-shadow: var(--shadow-small);
 
@@ -371,7 +371,7 @@
 
             border-radius: 50%;
 
-            background: var(--box6);
+            background: var(--box8);
             color: white;
 
             font-size: 0.70rem;
@@ -1277,13 +1277,13 @@
             --primary-soft: #eef2ff;
 
             --box1: #e85d67;
-            --box2: #e7a437;
-            --box3: #4d8df7;
-            --box4: #8b6cf6;
-            --box5: #31a86b;
-            --box6: #d8558a;
-            --box7: #159a9a;
-            --box8: #5867d8;
+            --box2: #159a9a;
+            --box3: #5867d8;
+            --box4: #e7a437;
+            --box5: #4d8df7;
+            --box6: #8b6cf6;
+            --box7: #31a86b;
+            --box8: #d8558a;
 
             --shadow-small:
                 0 1px 2px rgba(16,24,40,0.04),
@@ -1321,13 +1321,13 @@
                 --primary-soft: #20284d;
 
                 --box1: #f06b74;
-                --box2: #efb454;
-                --box3: #6ea4ff;
-                --box4: #aa91ff;
-                --box5: #50c184;
-                --box6: #ec78a6;
-                --box7: #45c3c3;
-                --box8: #8491ff;
+                --box2: #45c3c3;
+                --box3: #8491ff;
+                --box4: #efb454;
+                --box5: #6ea4ff;
+                --box6: #aa91ff;
+                --box7: #50c184;
+                --box8: #ec78a6;
 
                 --shadow-small:
                     0 2px 8px rgba(0,0,0,0.24);
@@ -1473,7 +1473,7 @@
         }
 
         .system-buttons .btn-stats {
-            color: var(--box6);
+            color: var(--box8);
             background:
                 linear-gradient(
                     180deg,
@@ -2129,7 +2129,7 @@
                     class="btn-stats"
                     onclick="openBox6Stats()"
                 >
-                    BOX 6 STATS
+                    BOX 8 STATS
                 </button>
 
                 <button onclick="exportProgress()">
@@ -2180,7 +2180,7 @@
         </div>
 
         <div id="box6-daily-progress">
-            BOX 6 HEUTE: 0/100
+            BOX 8 HEUTE: 0/100
         </div>
 
     </div>
@@ -2337,7 +2337,7 @@
                     class="btn-secondary btn-medium"
                     onclick="moveToBox6()"
                 >
-                    ZU BOX 6
+                    ZU BOX 8
                 </button>
 
             </div>
@@ -2365,7 +2365,7 @@
 
                 <button
                     class="btn-grade"
-                    style="background-color:var(--box5);"
+                    style="background-color:var(--box7);"
                     onclick="move(1)"
                 >
                     RICHTIG
@@ -2474,7 +2474,7 @@
                 letter-spacing:0.04em;
             "
         >
-            Box 6 auswählen
+            Box 8 auswählen
         </h3>
 
         <div
@@ -2499,7 +2499,7 @@
                 class="btn-primary btn-large"
                 onclick="selectBox6Section('new')"
             >
-                BOX 6 NEW
+                BOX 8 NEW
             </button>
 
             <button
@@ -2507,7 +2507,7 @@
                 class="btn-secondary btn-large"
                 onclick="selectBox6Section('old')"
             >
-                BOX 6 OLD
+                BOX 8 OLD
             </button>
 
         </div>
@@ -2542,7 +2542,7 @@
                 letter-spacing:0.04em;
             "
         >
-            Box 6 Statistik
+            Box 8 Statistik
         </h3>
 
         <div id="box6-stats-summary"></div>
@@ -2600,24 +2600,88 @@ let state =
         box5: [],
         box6: [],
         box7: [],
-        box8: []
+        box8: [],
+        boxLayoutVersion: 2
     };
 
-if (!state.box6) {
-    state.box6 = [];
+
+function migrateBoxLayout() {
+
+    if (
+        state.boxLayoutVersion === 2
+    ) {
+
+        for (
+            let i = 1;
+            i <= 8;
+            i++
+        ) {
+
+            if (
+                !Array.isArray(
+                    state['box' + i]
+                )
+            ) {
+                state[
+                    'box' + i
+                ] = [];
+            }
+        }
+
+        return;
+    }
+
+
+    /*
+     * Neue Reihenfolge:
+     * alte Box 1 -> neue Box 1
+     * bisherige zusätzliche Box 7 -> neue Box 2
+     * bisherige zusätzliche Box 8 -> neue Box 3
+     * alte Box 2 -> neue Box 4
+     * alte Box 3 -> neue Box 5
+     * alte Box 4 -> neue Box 8
+     * alte Box 5 -> neue Box 7
+     * alte Box 8 -> neue Box 8
+     */
+    let oldBoxes = {};
+
+    for (
+        let i = 1;
+        i <= 8;
+        i++
+    ) {
+
+        oldBoxes[i] =
+            Array.isArray(
+                state['box' + i]
+            )
+            ?
+            state['box' + i]
+            :
+            [];
+    }
+
+
+    state.box1 = oldBoxes[1];
+    state.box2 = oldBoxes[7];
+    state.box3 = oldBoxes[8];
+    state.box4 = oldBoxes[2];
+    state.box5 = oldBoxes[3];
+    state.box6 = oldBoxes[4];
+    state.box7 = oldBoxes[5];
+    state.box8 = oldBoxes[6];
+
+    state.boxLayoutVersion =
+        2;
 }
 
-if (!state.box7) {
-    state.box7 = [];
-}
 
-if (!state.box8) {
-    state.box8 = [];
-}
+migrateBoxLayout();
+
 
 function ensureBox6Sections() {
 
-    state.box6.forEach(c => {
+    state.box8.forEach(c => {
 
         if (
             c.box6Section !== 'new'
@@ -2626,8 +2690,8 @@ function ensureBox6Sections() {
         ) {
 
             /*
-             * Bestehende Box-6-Karten aus älteren Versionen
-             * gelten beim ersten Laden als "Old".
+             * Die ursprüngliche Box 8 ist jetzt Box 8.
+             * Bestehende Karten ohne Kennzeichnung gelten als "Old".
              */
             c.box6Section = 'old';
         }
@@ -2693,7 +2757,7 @@ document.getElementById('stats').innerHTML =
                 </span>
 
                 ${
-                    (i >= 2 && i <= 5)
+                    (i >= 4 && i <= 7)
                     ?
                     `
                     <div
@@ -2721,7 +2785,7 @@ function handleStatBoxClick(i) {
 
     sessionQueue = [];
 
-    if (i === 6) {
+    if (i === 8) {
 
         openBox6SectionModal();
         return;
@@ -2748,7 +2812,7 @@ function getBox6SectionCount(section) {
 
     ensureBox6Sections();
 
-    return state.box6.filter(
+    return state.box8.filter(
         c => c.box6Section === section
     ).length;
 }
@@ -2769,14 +2833,14 @@ function openBox6SectionModal() {
             'btn-box6-new'
         )
         .innerText =
-            `BOX 6 NEW (${newCount})`;
+            `BOX 8 NEW (${newCount})`;
 
     document
         .getElementById(
             'btn-box6-old'
         )
         .innerText =
-            `BOX 6 OLD (${oldCount})`;
+            `BOX 8 OLD (${oldCount})`;
 
     let modal =
         document.getElementById(
@@ -2827,7 +2891,7 @@ function selectBox6Section(section) {
     }
 
     selectedBoxFilter =
-        6;
+        8;
 
     selectedBox6Section =
         section;
@@ -2867,7 +2931,7 @@ function toggleBox6Section() {
     if (
         !currentCard
         ||
-        currentBoxName !== 'box6'
+        currentBoxName !== 'box8'
     ) {
         return;
     }
@@ -3029,7 +3093,7 @@ function updateBox6DailyDisplay() {
     if (el) {
 
         el.innerText =
-            `BOX 6 HEUTE · NEW: ${state.box6Daily.newCount}/100 · OLD: ${state.box6Daily.oldCount}/100`;
+            `BOX 8 HEUTE · NEW: ${state.box6Daily.newCount}/100 · OLD: ${state.box6Daily.oldCount}/100`;
     }
 }
 
@@ -3091,7 +3155,7 @@ function sortBox6Stats(column) {
 function renderBox6StatsTable() {
 
     let data =
-        state.box6.map(c => {
+        state.box8.map(c => {
 
             let stats =
                 c.stats || {
@@ -3188,7 +3252,7 @@ function renderBox6StatsTable() {
             ''
             :
             'n'
-        } in Box 6 • ${newCount} New • ${oldCount} Old`;
+        } in Box 8 • ${newCount} New • ${oldCount} Old`;
 
 
     let tbody =
@@ -3214,7 +3278,7 @@ function renderBox6StatsTable() {
                         color:var(--text-muted);
                     "
                 >
-                    Keine Vokabeln in Box 6
+                    Keine Vokabeln in Box 8
                 </td>
 
             </tr>
@@ -3238,7 +3302,7 @@ function renderBox6StatsTable() {
                         `
                         <span
                             style="
-                                color:var(--box6);
+                                color:var(--box8);
                                 font-weight:700;
                             "
                         >
@@ -3293,7 +3357,7 @@ function renderBox6StatsTable() {
 
                         <td
                             style="
-                                color:var(--box5);
+                                color:var(--box7);
                                 font-weight:700;
                             "
                         >
@@ -4048,7 +4112,7 @@ function changeDictBox(
 
 
     if (
-        newBox === 'box5'
+        newBox === 'box7'
     ) {
 
         item.card.box5Streak =
@@ -4059,9 +4123,9 @@ function changeDictBox(
     }
 
     if (
-        newBox === 'box6'
+        newBox === 'box8'
         &&
-        oldBox !== 'box6'
+        oldBox !== 'box8'
     ) {
 
         item.card.box6Section =
@@ -4110,9 +4174,9 @@ function updateUI() {
 
 
         if (
-            i >= 2
+            i >= 4
             &&
-            i <= 5
+            i <= 7
         ) {
 
             let badge =
@@ -4287,7 +4351,7 @@ function toggleRandomMode() {
             "ZUFALLSMODUS AKTIV";
 
         btn.style.backgroundColor =
-            "var(--box4)";
+            "var(--box6)";
 
         btn.style.color =
             "#FFFFFF";
@@ -4419,13 +4483,13 @@ function importCSV(file) {
 
         confirm(
 
-            "Vokabeln als bereits bekannt markieren (Box 5)?\nWählen Sie 'Abbrechen' für neue Vokabeln (Box 1)."
+            "Vokabeln als bereits bekannt markieren (Box 7)?\nWählen Sie 'Abbrechen' für neue Vokabeln (Box 1)."
 
         )
 
         ?
 
-        'box5'
+        'box7'
 
         :
 
@@ -4555,24 +4619,24 @@ function next() {
         const boxWeights = [
             0,
             16,
+            12,
+            10,
             8,
             4,
             2,
-            1,
-            1,
             1,
             1
         ];
 
 
         if (
-            selectedBoxFilter === 6
+            selectedBoxFilter === 8
         ) {
 
             ensureBox6Sections();
 
             let cards =
-                state.box6.filter(
+                state.box8.filter(
                     c =>
                         c.box6Section ===
                         selectedBox6Section
@@ -4617,7 +4681,7 @@ function next() {
                     c =>
                         pool.push({
                             c,
-                            box: 'box6'
+                            box: 'box8'
                         })
                 );
 
@@ -4704,7 +4768,7 @@ function next() {
                         if (!randomMode) {
 
                             if (
-                                i === 6
+                                i === 8
                             ) {
 
                                 if (
@@ -4803,12 +4867,12 @@ function next() {
                     .innerText =
 
                         (
-                            selectedBoxFilter === 6
+                            selectedBoxFilter === 8
                             &&
                             selectedBox6Section
                         )
                         ?
-                        `Box 6 ${selectedBox6Section === 'new' ? 'New' : 'Old'} ist leer.`
+                        `Box 8 ${selectedBox6Section === 'new' ? 'New' : 'Old'} ist leer.`
                         :
                         `Box ${selectedBoxFilter} ist leer.`;
 
@@ -4893,7 +4957,7 @@ function next() {
 
 
     if (
-        currentBoxName === 'box6'
+        currentBoxName === 'box8'
         &&
         (
             !currentCard.stats
@@ -4905,12 +4969,12 @@ function next() {
         statsInfo =
             currentCard.box6Section === 'new'
             ?
-            " • BOX 6 NEW"
+            " • BOX 8 NEW"
             :
-            " • BOX 6 OLD";
+            " • BOX 8 OLD";
 
     } else if (
-        currentBoxName === 'box6'
+        currentBoxName === 'box8'
         &&
         currentCard.stats
         &&
@@ -4937,15 +5001,15 @@ function next() {
             (
                 currentCard.box6Section === 'new'
                 ?
-                " • BOX 6 NEW"
+                " • BOX 8 NEW"
                 :
-                " • BOX 6 OLD"
+                " • BOX 8 OLD"
             )
             +
             ` • ${percent}% ERFOLG`;
 
     } else if (
-        currentBoxName === 'box5'
+        currentBoxName === 'box7'
     ) {
 
         let streak =
@@ -5178,7 +5242,7 @@ function flip() {
 
 
     if (
-        currentBoxName === 'box6'
+        currentBoxName === 'box8'
         &&
         (
             !currentCard.stats
@@ -5190,12 +5254,12 @@ function flip() {
         statsInfo =
             currentCard.box6Section === 'new'
             ?
-            " • BOX 6 NEW"
+            " • BOX 8 NEW"
             :
-            " • BOX 6 OLD";
+            " • BOX 8 OLD";
 
     } else if (
-        currentBoxName === 'box6'
+        currentBoxName === 'box8'
         &&
         currentCard.stats
         &&
@@ -5222,15 +5286,15 @@ function flip() {
             (
                 currentCard.box6Section === 'new'
                 ?
-                " • BOX 6 NEW"
+                " • BOX 8 NEW"
                 :
-                " • BOX 6 OLD"
+                " • BOX 8 OLD"
             )
             +
             ` • ${percent}% ERFOLG`;
 
     } else if (
-        currentBoxName === 'box5'
+        currentBoxName === 'box7'
     ) {
 
         let streak =
@@ -5376,7 +5440,7 @@ function flip() {
 
 
     if (
-        currentBoxName === 'box5'
+        currentBoxName === 'box7'
     ) {
 
         let streak =
@@ -5390,11 +5454,11 @@ function flip() {
 
             <span
                 style="
-                    color:var(--box5);
+                    color:var(--box7);
                     font-weight:700;
                 "
             >
-                Box 6 Fortschritt:
+                Box 8 Fortschritt:
                 ${streak}
                 von 3 Tagen in Folge richtig
             </span>
@@ -5461,7 +5525,7 @@ function flip() {
         );
 
     if (
-        currentBoxName === 'box6'
+        currentBoxName === 'box8'
     ) {
 
         ensureBox6Sections();
@@ -5469,9 +5533,9 @@ function flip() {
         box6ActionButton.innerText =
             currentCard.box6Section === 'new'
             ?
-            "ZU BOX 6 OLD"
+            "ZU BOX 8 OLD"
             :
-            "ZU BOX 6 NEW";
+            "ZU BOX 8 NEW";
 
         box6ActionButton.onclick =
             toggleBox6Section;
@@ -5479,7 +5543,7 @@ function flip() {
     } else {
 
         box6ActionButton.innerText =
-            "ZU BOX 6";
+            "ZU BOX 8";
 
         box6ActionButton.onclick =
             moveToBox6;
@@ -5789,7 +5853,7 @@ function move(step) {
 
 
     if (
-        oldBox === 'box6'
+        oldBox === 'box8'
     ) {
 
         checkBox6DailyReset();
@@ -5850,7 +5914,7 @@ function move(step) {
 
 
     if (
-        oldBox === 'box5'
+        oldBox === 'box7'
     ) {
 
         if (
@@ -5912,7 +5976,7 @@ function move(step) {
             ) {
 
                 newLevel =
-                    6;
+                    8;
 
                 currentCard.box5Streak =
                     0;
@@ -5923,7 +5987,7 @@ function move(step) {
             } else {
 
                 newLevel =
-                    5;
+                    7;
             }
 
         } else {
@@ -5973,11 +6037,11 @@ function move(step) {
 
 
     if (
-        oldBox === 'box6'
+        oldBox === 'box8'
     ) {
 
         if (
-            newLevel === 6
+            newLevel === 8
         ) {
 
             if (
@@ -6027,9 +6091,9 @@ function move(step) {
 
 
     if (
-        newLevel === 6
+        newLevel === 8
         &&
-        oldBox !== 'box6'
+        oldBox !== 'box8'
     ) {
 
         currentCard.box6Section =
@@ -6106,7 +6170,7 @@ function moveToBox6() {
         'new';
 
 
-    state.box6.push(
+    state.box8.push(
         currentCard
     );
 
@@ -6133,7 +6197,8 @@ function resetSpeicher() {
             box5: [],
             box6: [],
             box7: [],
-            box8: []
+            box8: [],
+            boxLayoutVersion: 2
         };
 
         sessionQueue = [];
@@ -6198,23 +6263,7 @@ function importProgress(file) {
                 );
 
 
-            if (!state.box6) {
-
-                state.box6 =
-                    [];
-            }
-
-            if (!state.box7) {
-
-                state.box7 =
-                    [];
-            }
-
-            if (!state.box8) {
-
-                state.box8 =
-                    [];
-            }
+            migrateBoxLayout();
 
             ensureBox6Sections();
 
@@ -6253,7 +6302,6 @@ function importProgress(file) {
                         0
                 };
             }
-
 
             sessionQueue =
                 [];
