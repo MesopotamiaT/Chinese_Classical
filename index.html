@@ -3122,8 +3122,29 @@ function updateBox6DailyDisplay() {
                 'old'
             );
 
+        let oldDailyTarget =
+            Math.min(
+                100,
+                oldTotal
+            );
+
+        let today =
+            new Date()
+                .toDateString();
+
+        let oldAskedToday =
+            state.box8.filter(
+                c =>
+                    c.box6Section === 'old'
+                    &&
+                    c.box8OldLastAskedDate === today
+            ).length;
+
+        state.box6Daily.oldCount =
+            oldAskedToday;
+
         el.innerText =
-            `BOX 8 HEUTE · NEW: ${Math.min(state.box6Daily.newCount, newTotal)}/${newTotal} · OLD: ${Math.min(state.box6Daily.oldCount, oldTotal)}/${oldTotal}`;
+            `BOX 8 HEUTE · NEW: ${Math.min(state.box6Daily.newCount, newTotal)}/${newTotal} · OLD: ${oldAskedToday}/${oldDailyTarget}`;
     }
 }
 
@@ -4647,12 +4668,50 @@ function showBox8RunComplete() {
         .innerText =
             `BOX 8 ${selectedBox6Section === 'new' ? 'NEW' : 'OLD'}`;
 
+    let completionText;
+
+    if (
+        selectedBox6Section === 'old'
+    ) {
+
+        let oldTotal =
+            getBox6SectionCount(
+                'old'
+            );
+
+        let dailyTarget =
+            Math.min(
+                100,
+                oldTotal
+            );
+
+        let today =
+            new Date()
+                .toDateString();
+
+        let askedToday =
+            state.box8.filter(
+                c =>
+                    c.box6Section === 'old'
+                    &&
+                    c.box8OldLastAskedDate === today
+            ).length;
+
+        completionText =
+            `Tagesdurchlauf abgeschlossen. Heute wurden ${askedToday} von ${dailyTarget} Old-Vokabeln abgefragt.`;
+
+    } else {
+
+        completionText =
+            `Durchlauf abgeschlossen. Alle ${box8RunTotal} Vokabeln wurden genau einmal abgefragt.`;
+    }
+
     document
         .getElementById(
             'v-de'
         )
         .innerText =
-            `Durchlauf abgeschlossen. Alle ${box8RunTotal} Vokabeln wurden genau einmal abgefragt.`;
+            completionText;
 
     [
         'writer-container',
@@ -4750,30 +4809,96 @@ function next() {
                 );
 
 
-            cards.sort(
-                (a, b) => {
+            if (
+                selectedBox6Section === 'old'
+            ) {
 
-                    let dateA =
-                        a.lastMovedDate
-                        ?
-                        new Date(
+                let today =
+                    new Date()
+                        .toDateString();
+
+                let alreadyAskedToday =
+                    cards.filter(
+                        c =>
+                            c.box8OldLastAskedDate === today
+                    ).length;
+
+                let dailyTarget =
+                    Math.min(
+                        100,
+                        cards.length
+                    );
+
+                let remainingToday =
+                    Math.max(
+                        0,
+                        dailyTarget
+                        -
+                        alreadyAskedToday
+                    );
+
+                cards =
+                    cards
+                    .filter(
+                        c =>
+                            c.box8OldLastAskedDate !== today
+                    )
+                    .sort(
+                        (a, b) => {
+
+                            let dateA =
+                                a.box8OldLastAskedDate
+                                ?
+                                new Date(
+                                    a.box8OldLastAskedDate
+                                ).getTime()
+                                :
+                                0;
+
+                            let dateB =
+                                b.box8OldLastAskedDate
+                                ?
+                                new Date(
+                                    b.box8OldLastAskedDate
+                                ).getTime()
+                                :
+                                0;
+
+                            return dateA - dateB;
+                        }
+                    )
+                    .slice(
+                        0,
+                        remainingToday
+                    );
+
+            } else {
+
+                cards.sort(
+                    (a, b) => {
+
+                        let dateA =
                             a.lastMovedDate
-                        ).getTime()
-                        :
-                        0;
+                            ?
+                            new Date(
+                                a.lastMovedDate
+                            ).getTime()
+                            :
+                            0;
 
-                    let dateB =
-                        b.lastMovedDate
-                        ?
-                        new Date(
+                        let dateB =
                             b.lastMovedDate
-                        ).getTime()
-                        :
-                        0;
+                            ?
+                            new Date(
+                                b.lastMovedDate
+                            ).getTime()
+                            :
+                            0;
 
-                    return dateA - dateB;
-                }
-            );
+                        return dateA - dateB;
+                    }
+                );
+            }
 
 
             box8RunTotal =
@@ -4951,6 +5076,49 @@ function next() {
         if (
             pool.length === 0
         ) {
+
+            if (
+                selectedBoxFilter === 8
+                &&
+                selectedBox6Section === 'old'
+            ) {
+
+                let oldTotal =
+                    getBox6SectionCount(
+                        'old'
+                    );
+
+                let dailyTarget =
+                    Math.min(
+                        100,
+                        oldTotal
+                    );
+
+                let today =
+                    new Date()
+                        .toDateString();
+
+                let askedToday =
+                    state.box8.filter(
+                        c =>
+                            c.box6Section === 'old'
+                            &&
+                            c.box8OldLastAskedDate === today
+                    ).length;
+
+                if (
+                    dailyTarget > 0
+                    &&
+                    askedToday >= dailyTarget
+                ) {
+
+                    box8RunTotal =
+                        dailyTarget;
+
+                    showBox8RunComplete();
+                    return;
+                }
+            }
 
             currentBoxName =
                 "";
@@ -5990,6 +6158,9 @@ function move(step) {
                 state.box6Daily.newCount++;
             } else {
                 state.box6Daily.oldCount++;
+
+                currentCard.box8OldLastAskedDate =
+                    today;
             }
 
             currentCard.box8DailyCountedDate =
