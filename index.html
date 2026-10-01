@@ -2730,6 +2730,8 @@ let singleCharBox = null;
 let randomMode = false;
 let selectedBoxFilter = null;
 let selectedBox6Section = null;
+let box8RunStarted = false;
+let box8RunTotal = 0;
 let dictMode = false;
 let currentDictResults = [];
 
@@ -2786,6 +2788,12 @@ function handleStatBoxClick(i) {
     sessionQueue = [];
 
     if (i === 8) {
+
+        box8RunStarted =
+            false;
+
+        box8RunTotal =
+            0;
 
         openBox6SectionModal();
         return;
@@ -2896,6 +2904,12 @@ function selectBox6Section(section) {
     selectedBox6Section =
         section;
 
+    box8RunStarted =
+        false;
+
+    box8RunTotal =
+        0;
+
     sessionQueue =
         [];
 
@@ -2947,6 +2961,12 @@ function toggleBox6Section() {
 
     sessionQueue =
         [];
+
+    box8RunStarted =
+        false;
+
+    box8RunTotal =
+        0;
 
     updateUI();
     next();
@@ -3092,8 +3112,18 @@ function updateBox6DailyDisplay() {
 
     if (el) {
 
+        let newTotal =
+            getBox6SectionCount(
+                'new'
+            );
+
+        let oldTotal =
+            getBox6SectionCount(
+                'old'
+            );
+
         el.innerText =
-            `BOX 8 HEUTE · NEW: ${state.box6Daily.newCount}/100 · OLD: ${state.box6Daily.oldCount}/100`;
+            `BOX 8 HEUTE · NEW: ${Math.min(state.box6Daily.newCount, newTotal)}/${newTotal} · OLD: ${Math.min(state.box6Daily.oldCount, oldTotal)}/${oldTotal}`;
     }
 }
 
@@ -4602,9 +4632,86 @@ function importCSV(file) {
 }
 
 
+function showBox8RunComplete() {
+
+    currentBoxName =
+        "";
+
+    currentCard =
+        null;
+
+    document
+        .getElementById(
+            'v-box'
+        )
+        .innerText =
+            `BOX 8 ${selectedBox6Section === 'new' ? 'NEW' : 'OLD'}`;
+
+    document
+        .getElementById(
+            'v-de'
+        )
+        .innerText =
+            `Durchlauf abgeschlossen. Alle ${box8RunTotal} Vokabeln wurden genau einmal abgefragt.`;
+
+    [
+        'writer-container',
+        'drawing-controls',
+        'learning-tools',
+        'special-actions',
+        'controls',
+        'v-stats'
+    ]
+    .forEach(id => {
+
+        let el =
+            document.getElementById(
+                id
+            );
+
+        if (el) {
+            el.classList.add(
+                'hidden'
+            );
+        }
+    });
+
+    document
+        .getElementById(
+            'v-hz'
+        )
+        .classList
+        .add('hidden');
+
+    document
+        .getElementById(
+            'v-py'
+        )
+        .classList
+        .add('hidden');
+
+    highlightActiveBox();
+    updateBox6DailyDisplay();
+}
+
+
 function next() {
 
     if (dictMode) {
+        return;
+    }
+
+    if (
+        selectedBoxFilter === 8
+        &&
+        selectedBox6Section
+        &&
+        box8RunStarted
+        &&
+        sessionQueue.length === 0
+    ) {
+
+        showBox8RunComplete();
         return;
     }
 
@@ -4669,14 +4776,10 @@ function next() {
             );
 
 
-            let targetBatch =
-                cards.slice(
-                    0,
-                    100
-                );
+            box8RunTotal =
+                cards.length;
 
-
-            targetBatch
+            cards
                 .forEach(
                     c =>
                         pool.push({
@@ -4712,6 +4815,14 @@ function next() {
                 ];
             }
 
+
+            if (
+                pool.length > 0
+            ) {
+
+                box8RunStarted =
+                    true;
+            }
 
             sessionQueue =
                 pool;
@@ -5860,12 +5971,32 @@ function move(step) {
 
         ensureBox6Sections();
 
-        if (
+        let countedKey =
             currentCard.box6Section === 'new'
+            ?
+            'new'
+            :
+            'old';
+
+        if (
+            currentCard.box8DailyCountedDate !== today
+            ||
+            currentCard.box8DailyCountedSection !== countedKey
         ) {
-            state.box6Daily.newCount++;
-        } else {
-            state.box6Daily.oldCount++;
+
+            if (
+                countedKey === 'new'
+            ) {
+                state.box6Daily.newCount++;
+            } else {
+                state.box6Daily.oldCount++;
+            }
+
+            currentCard.box8DailyCountedDate =
+                today;
+
+            currentCard.box8DailyCountedSection =
+                countedKey;
         }
     }
 
