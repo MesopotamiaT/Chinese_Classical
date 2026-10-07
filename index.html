@@ -6317,6 +6317,24 @@ function move(step) {
             :
             'old';
 
+        /*
+         * Wichtig:
+         * Die Zugehörigkeit zum laufenden Box-8-New-Durchlauf
+         * muss unabhängig vom Tageszähler gespeichert werden.
+         * Sonst kann eine bereits heute gezählte Karte nach einem
+         * App-Neustart erneut erscheinen, ohne den Run-Fortschritt
+         * weiterzuzählen.
+         */
+        if (
+            countedKey === 'new'
+        ) {
+
+            ensureBox8NewRun();
+
+            currentCard.box8NewRunId =
+                state.box8NewRun.id;
+        }
+
         if (
             currentCard.box8DailyCountedDate !== today
             ||
@@ -6327,13 +6345,10 @@ function move(step) {
                 countedKey === 'new'
             ) {
 
-                ensureBox8NewRun();
-
-                currentCard.box8NewRunId =
-                    state.box8NewRun.id;
-
                 state.box6Daily.newCount++;
+
             } else {
+
                 state.box6Daily.oldCount++;
 
                 currentCard.box8OldLastAskedDate =
