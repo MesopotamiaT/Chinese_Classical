@@ -2721,7 +2721,8 @@ if (!state.box6Daily) {
 if (!state.box8NewRun) {
     state.box8NewRun = {
         id: null,
-        active: false
+        active: false,
+        date: null
     };
 }
 
@@ -2738,12 +2739,19 @@ function startNewBox8NewRun() {
                 .toString(36)
                 .slice(2),
         active:
-            true
+            true,
+        date:
+            new Date()
+                .toDateString()
     };
 }
 
 
 function ensureBox8NewRun() {
+
+    let today =
+        new Date()
+            .toDateString();
 
     if (
         !state.box8NewRun
@@ -2751,6 +2759,8 @@ function ensureBox8NewRun() {
         !state.box8NewRun.id
         ||
         !state.box8NewRun.active
+        ||
+        state.box8NewRun.date !== today
     ) {
 
         startNewBox8NewRun();
@@ -2765,10 +2775,16 @@ function getBox8NewRunProgress() {
             'new'
         );
 
+    let today =
+        new Date()
+            .toDateString();
+
     if (
         !state.box8NewRun
         ||
         !state.box8NewRun.id
+        ||
+        state.box8NewRun.date !== today
     ) {
 
         return {
@@ -2991,6 +3007,10 @@ function selectBox6Section(section) {
             !state.box8NewRun
             ||
             !state.box8NewRun.active
+            ||
+            state.box8NewRun.date !==
+                new Date()
+                    .toDateString()
             ||
             (
                 progress.total > 0
@@ -4866,6 +4886,30 @@ function next() {
 
     if (dictMode) {
         return;
+    }
+
+    if (
+        selectedBoxFilter === 8
+        &&
+        selectedBox6Section === 'new'
+        &&
+        state.box8NewRun
+        &&
+        state.box8NewRun.date !==
+            new Date()
+                .toDateString()
+    ) {
+
+        startNewBox8NewRun();
+
+        sessionQueue =
+            [];
+
+        box8RunStarted =
+            false;
+
+        box8RunTotal =
+            0;
     }
 
     if (
@@ -6765,7 +6809,8 @@ function importProgress(file) {
 
                 state.box8NewRun = {
                     id: null,
-                    active: false
+                    active: false,
+                    date: null
                 };
             }
 
