@@ -2718,6 +2718,82 @@ if (!state.box6Daily) {
     };
 }
 
+if (!state.box8NewRun) {
+    state.box8NewRun = {
+        id: null,
+        active: false
+    };
+}
+
+
+function startNewBox8NewRun() {
+
+    state.box8NewRun = {
+        id:
+            Date.now().toString()
+            +
+            '-'
+            +
+            Math.random()
+                .toString(36)
+                .slice(2),
+        active:
+            true
+    };
+}
+
+
+function ensureBox8NewRun() {
+
+    if (
+        !state.box8NewRun
+        ||
+        !state.box8NewRun.id
+        ||
+        !state.box8NewRun.active
+    ) {
+
+        startNewBox8NewRun();
+    }
+}
+
+
+function getBox8NewRunProgress() {
+
+    let total =
+        getBox6SectionCount(
+            'new'
+        );
+
+    if (
+        !state.box8NewRun
+        ||
+        !state.box8NewRun.id
+    ) {
+
+        return {
+            done: 0,
+            total
+        };
+    }
+
+    let done =
+        state.box8.filter(
+            c =>
+                c.box6Section === 'new'
+                &&
+                c.box8NewRunId ===
+                    state.box8NewRun.id
+        ).length;
+
+    return {
+        done,
+        total
+    };
+}
+
+
+
 let sessionQueue = [];
 let currentCard = null;
 let currentBoxName = "";
@@ -2903,6 +2979,29 @@ function selectBox6Section(section) {
 
     selectedBox6Section =
         section;
+
+    if (
+        section === 'new'
+    ) {
+
+        let progress =
+            getBox8NewRunProgress();
+
+        if (
+            !state.box8NewRun
+            ||
+            !state.box8NewRun.active
+            ||
+            (
+                progress.total > 0
+                &&
+                progress.done >= progress.total
+            )
+        ) {
+
+            startNewBox8NewRun();
+        }
+    }
 
     box8RunStarted =
         false;
@@ -3112,10 +3211,11 @@ function updateBox6DailyDisplay() {
 
     if (el) {
 
+        let newProgress =
+            getBox8NewRunProgress();
+
         let newTotal =
-            getBox6SectionCount(
-                'new'
-            );
+            newProgress.total;
 
         let oldTotal =
             getBox6SectionCount(
@@ -3144,7 +3244,7 @@ function updateBox6DailyDisplay() {
             oldAskedToday;
 
         el.innerText =
-            `BOX 8 HEUTE · NEW: ${Math.min(state.box6Daily.newCount, newTotal)}/${newTotal} · OLD: ${oldAskedToday}/${oldDailyTarget}`;
+            `BOX 8 · NEW: ${Math.min(newProgress.done, newTotal)}/${newTotal} · OLD HEUTE: ${oldAskedToday}/${oldDailyTarget}`;
     }
 }
 
@@ -4702,6 +4802,14 @@ function showBox8RunComplete() {
 
     } else {
 
+        if (
+            state.box8NewRun
+        ) {
+
+            state.box8NewRun.active =
+                false;
+        }
+
         completionText =
             `Durchlauf abgeschlossen. Alle ${box8RunTotal} Vokabeln wurden genau einmal abgefragt.`;
     }
@@ -4770,8 +4878,32 @@ function next() {
         sessionQueue.length === 0
     ) {
 
-        showBox8RunComplete();
-        return;
+        if (
+            selectedBox6Section === 'new'
+        ) {
+
+            let progress =
+                getBox8NewRunProgress();
+
+            if (
+                progress.done <
+                progress.total
+            ) {
+
+                box8RunStarted =
+                    false;
+
+            } else {
+
+                showBox8RunComplete();
+                return;
+            }
+
+        } else {
+
+            showBox8RunComplete();
+            return;
+        }
     }
 
 
@@ -4874,6 +5006,15 @@ function next() {
 
             } else {
 
+                ensureBox8NewRun();
+
+                cards =
+                    cards.filter(
+                        c =>
+                            c.box8NewRunId !==
+                            state.box8NewRun.id
+                    );
+
                 cards.sort(
                     (a, b) => {
 
@@ -4902,6 +5043,12 @@ function next() {
 
 
             box8RunTotal =
+                selectedBox6Section === 'new'
+                ?
+                getBox6SectionCount(
+                    'new'
+                )
+                :
                 cards.length;
 
             cards
@@ -5076,6 +5223,30 @@ function next() {
         if (
             pool.length === 0
         ) {
+
+            if (
+                selectedBoxFilter === 8
+                &&
+                selectedBox6Section === 'new'
+            ) {
+
+                let progress =
+                    getBox8NewRunProgress();
+
+                if (
+                    progress.total > 0
+                    &&
+                    progress.done >=
+                        progress.total
+                ) {
+
+                    box8RunTotal =
+                        progress.total;
+
+                    showBox8RunComplete();
+                    return;
+                }
+            }
 
             if (
                 selectedBoxFilter === 8
@@ -6155,6 +6326,12 @@ function move(step) {
             if (
                 countedKey === 'new'
             ) {
+
+                ensureBox8NewRun();
+
+                currentCard.box8NewRunId =
+                    state.box8NewRun.id;
+
                 state.box6Daily.newCount++;
             } else {
                 state.box6Daily.oldCount++;
@@ -6568,6 +6745,14 @@ function importProgress(file) {
             migrateBoxLayout();
 
             ensureBox6Sections();
+
+            if (!state.box8NewRun) {
+
+                state.box8NewRun = {
+                    id: null,
+                    active: false
+                };
+            }
 
 
             if (!state.box6Daily) {
