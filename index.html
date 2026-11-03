@@ -3071,12 +3071,38 @@ function toggleBox6Section() {
 
     ensureBox6Sections();
 
+    let previousSection =
+        currentCard.box6Section;
+
     currentCard.box6Section =
         currentCard.box6Section === 'new'
         ?
         'old'
         :
         'new';
+
+    if (
+        previousSection === 'old'
+        &&
+        currentCard.box6Section === 'new'
+    ) {
+
+        currentCard.box8ReturnToOldCorrect =
+            0;
+
+        currentCard.box8ReturnToOldActive =
+            true;
+
+    } else if (
+        currentCard.box6Section === 'old'
+    ) {
+
+        currentCard.box8ReturnToOldCorrect =
+            0;
+
+        currentCard.box8ReturnToOldActive =
+            false;
+    }
 
     sessionQueue =
         [];
@@ -4301,6 +4327,12 @@ function changeDictBox(
 
         item.card.box6Section =
             'new';
+
+        item.card.box8ReturnToOldCorrect =
+            0;
+
+        item.card.box8ReturnToOldActive =
+            false;
     }
 
 
@@ -6350,6 +6382,38 @@ function move(step) {
         oldBox === 'box8'
     ) {
 
+        if (
+            currentCard.box6Section === 'new'
+            &&
+            currentCard.box8ReturnToOldActive === true
+            &&
+            step === 1
+        ) {
+
+            currentCard.box8ReturnToOldCorrect =
+                (
+                    currentCard.box8ReturnToOldCorrect
+                    ||
+                    0
+                )
+                +
+                1;
+
+            if (
+                currentCard.box8ReturnToOldCorrect >= 5
+            ) {
+
+                currentCard.box6Section =
+                    'old';
+
+                currentCard.box8ReturnToOldCorrect =
+                    0;
+
+                currentCard.box8ReturnToOldActive =
+                    false;
+            }
+        }
+
         checkBox6DailyReset();
 
         ensureBox6Sections();
@@ -6636,6 +6700,12 @@ function move(step) {
 
         currentCard.box6Section =
             'new';
+
+        currentCard.box8ReturnToOldCorrect =
+            0;
+
+        currentCard.box8ReturnToOldActive =
+            false;
     }
 
 
@@ -6706,6 +6776,12 @@ function moveToBox6() {
 
     currentCard.box6Section =
         'new';
+
+    currentCard.box8ReturnToOldCorrect =
+        0;
+
+    currentCard.box8ReturnToOldActive =
+        false;
 
 
     state.box8.push(
