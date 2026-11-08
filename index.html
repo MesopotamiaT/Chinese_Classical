@@ -385,7 +385,7 @@
             flex-shrink: 0;
 
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
+            grid-template-columns: repeat(14, 1fr);
 
             gap: 6px;
             padding: 7px;
@@ -445,7 +445,49 @@
         #stat-box-5 { color: var(--box5); }
         #stat-box-6 { color: var(--box6); }
         #stat-box-7 { color: var(--box7); }
-        #stat-box-8 { color: var(--box8); }
+        #stat-box-lt-review,
+        #stat-box-lt-stable { color: var(--box8); }
+
+        .stats > .stat-box {
+            grid-column: span 2;
+        }
+
+        .stats > .stat-box.long-term-box {
+            grid-column: span 7;
+            min-height: 58px;
+            border-color:
+                color-mix(
+                    in srgb,
+                    var(--box8) 34%,
+                    var(--border)
+                );
+            background:
+                linear-gradient(
+                    180deg,
+                    color-mix(
+                        in srgb,
+                        var(--box8) 12%,
+                        transparent
+                    ),
+                    color-mix(
+                        in srgb,
+                        var(--box8) 4%,
+                        transparent
+                    )
+                );
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.20);
+        }
+
+        .stats > .stat-box.long-term-box::before {
+            content: "LONG-TERM MEMORY";
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.48rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            opacity: 0.72;
+        }
 
         .stat-box.active-box {
             border-color: var(--border);
@@ -2831,8 +2873,26 @@ let box6SortColumn = 'queries';
 let box6SortDirection = 'desc';
 
 
+function getVisibleBoxName(internalBox) {
+
+    if (internalBox === 1) {
+        return 'POOL';
+    }
+
+    if (
+        internalBox >= 2
+        &&
+        internalBox <= 7
+    ) {
+        return 'BOX ' + (internalBox - 1);
+    }
+
+    return 'LONG-TERM';
+}
+
+
 document.getElementById('stats').innerHTML =
-    [1,2,3,4,5,6,7,8]
+    [1,2,3,4,5,6,7]
         .map(i =>
 
             `
@@ -2842,7 +2902,7 @@ document.getElementById('stats').innerHTML =
                 onclick="handleStatBoxClick(${i})"
             >
 
-                ${i === 8 ? 'LONG-TERM' : 'BOX ' + i}
+                ${getVisibleBoxName(i)}
 
                 <br>
 
@@ -2868,8 +2928,29 @@ document.getElementById('stats').innerHTML =
             </div>
             `
         )
-        .join('');
+        .join('')
+    +
+    `
+    <div
+        id="stat-box-lt-review"
+        class="stat-box long-term-box"
+        onclick="selectBox6Section('new')"
+    >
+        REVIEW
+        <br>
+        <span id="stat-count-lt-review">0</span>
+    </div>
 
+    <div
+        id="stat-box-lt-stable"
+        class="stat-box long-term-box"
+        onclick="selectBox6Section('old')"
+    >
+        STABLE
+        <br>
+        <span id="stat-count-lt-stable">0</span>
+    </div>
+    `;
 
 function handleStatBoxClick(i) {
 
@@ -4358,7 +4439,7 @@ function updateUI() {
             .toDateString();
 
 
-    [1,2,3,4,5,6,7,8]
+    [1,2,3,4,5,6,7]
     .forEach(i => {
 
         let countSpan =
@@ -4460,6 +4541,30 @@ function updateUI() {
     });
 
 
+    let longTermReviewCount =
+        document.getElementById(
+            'stat-count-lt-review'
+        );
+
+    if (longTermReviewCount) {
+        longTermReviewCount.innerText =
+            getBox6SectionCount(
+                'new'
+            );
+    }
+
+    let longTermStableCount =
+        document.getElementById(
+            'stat-count-lt-stable'
+        );
+
+    if (longTermStableCount) {
+        longTermStableCount.innerText =
+            getBox6SectionCount(
+                'old'
+            );
+    }
+
     localStorage.setItem(
 
         'hsk_data',
@@ -4478,14 +4583,13 @@ function updateUI() {
 
 function highlightActiveBox() {
 
-    [1,2,3,4,5,6,7,8]
+    [1,2,3,4,5,6,7]
     .forEach(i => {
 
         let element =
             document.getElementById(
                 `stat-box-${i}`
             );
-
 
         if (element) {
 
@@ -4494,7 +4598,6 @@ function highlightActiveBox() {
                 'inactive-box',
                 'selected-box'
             );
-
 
             if (
                 selectedBoxFilter === i
@@ -4531,8 +4634,74 @@ function highlightActiveBox() {
             }
         }
     });
-}
 
+    [
+        {
+            id: 'stat-box-lt-review',
+            section: 'new'
+        },
+        {
+            id: 'stat-box-lt-stable',
+            section: 'old'
+        }
+    ]
+    .forEach(item => {
+
+        let element =
+            document.getElementById(
+                item.id
+            );
+
+        if (!element) {
+            return;
+        }
+
+        element.classList.remove(
+            'active-box',
+            'inactive-box',
+            'selected-box'
+        );
+
+        if (
+            selectedBoxFilter === 8
+            &&
+            selectedBox6Section === item.section
+        ) {
+
+            element.classList.add(
+                'selected-box'
+            );
+
+        } else if (
+            selectedBoxFilter !== null
+        ) {
+
+            element.classList.add(
+                'inactive-box'
+            );
+
+        } else if (
+            currentBoxName === 'box8'
+            &&
+            currentCard
+            &&
+            currentCard.box6Section === item.section
+        ) {
+
+            element.classList.add(
+                'active-box'
+            );
+
+        } else if (
+            currentBoxName !== ""
+        ) {
+
+            element.classList.add(
+                'inactive-box'
+            );
+        }
+    });
+}
 
 function toggleRandomMode() {
 
@@ -4686,7 +4855,7 @@ function importCSV(file) {
 
         confirm(
 
-            "Vokabeln als bereits bekannt markieren (Box 7)?\nWählen Sie 'Abbrechen' für neue Vokabeln (Box 1)."
+            "Vokabeln als bereits bekannt markieren (Box 6)?\nWählen Sie 'Abbrechen' für neue Vokabeln (Pool)."
 
         )
 
@@ -5400,7 +5569,7 @@ function next() {
                         ?
                         `Long-Term · ${selectedBox6Section === 'new' ? 'Review' : 'Stable'} ist leer.`
                         :
-                        `Box ${selectedBoxFilter} ist leer.`;
+                        `${getVisibleBoxName(selectedBoxFilter)} ist leer.`;
 
             } else {
 
