@@ -2129,7 +2129,7 @@
                     class="btn-stats"
                     onclick="openBox6Stats()"
                 >
-                    BOX 8 STATS
+                    LONG-TERM STATS
                 </button>
 
                 <button onclick="exportProgress()">
@@ -2180,7 +2180,7 @@
         </div>
 
         <div id="box6-daily-progress">
-            BOX 8 HEUTE: 0/100
+            LONG-TERM · REVIEW: 0/0 · STABLE TODAY: 0/200
         </div>
 
     </div>
@@ -2337,7 +2337,7 @@
                     class="btn-secondary btn-medium"
                     onclick="moveToBox6()"
                 >
-                    ZU BOX 8
+                    ZU LONG-TERM · REVIEW
                 </button>
 
             </div>
@@ -2474,7 +2474,7 @@
                 letter-spacing:0.04em;
             "
         >
-            Box 8 auswählen
+            Long-Term Memory
         </h3>
 
         <div
@@ -2542,7 +2542,7 @@
                 letter-spacing:0.04em;
             "
         >
-            Box 8 Statistik
+            Long-Term Memory Statistik
         </h3>
 
         <div id="box6-stats-summary"></div>
@@ -2842,7 +2842,7 @@ document.getElementById('stats').innerHTML =
                 onclick="handleStatBoxClick(${i})"
             >
 
-                BOX ${i}
+                ${i === 8 ? 'LONG-TERM' : 'BOX ' + i}
 
                 <br>
 
@@ -3290,7 +3290,7 @@ function updateBox6DailyDisplay() {
             oldAskedToday;
 
         el.innerText =
-            `BOX 8 · REVIEW: ${Math.min(newProgress.done, newTotal)}/${newTotal} · STABLE HEUTE: ${oldAskedToday}/${oldDailyTarget}`;
+            `LONG-TERM · REVIEW: ${Math.min(newProgress.done, newTotal)}/${newTotal} · STABLE TODAY: ${oldAskedToday}/${oldDailyTarget}`;
     }
 }
 
@@ -3449,7 +3449,7 @@ function renderBox6StatsTable() {
             ''
             :
             'n'
-        } in Box 8 • ${newCount} Review • ${oldCount} Stable`;
+        } in Long-Term Memory • ${newCount} Review • ${oldCount} Stable`;
 
 
     let tbody =
@@ -3475,7 +3475,7 @@ function renderBox6StatsTable() {
                         color:var(--text-muted);
                     "
                 >
-                    Keine Vokabeln in Box 8
+                    Keine Vokabeln im Long-Term Memory
                 </td>
 
             </tr>
@@ -4818,7 +4818,7 @@ function showBox8RunComplete() {
             'v-box'
         )
         .innerText =
-            `BOX 8 · ${selectedBox6Section === 'new' ? 'REVIEW' : 'STABLE'}`;
+            `LONG-TERM · ${selectedBox6Section === 'new' ? 'REVIEW' : 'STABLE'}`;
 
     let completionText;
 
@@ -5398,7 +5398,7 @@ function next() {
                             selectedBox6Section
                         )
                         ?
-                        `Box 8 ${selectedBox6Section === 'new' ? 'Review' : 'Stable'} ist leer.`
+                        `Long-Term · ${selectedBox6Section === 'new' ? 'Review' : 'Stable'} ist leer.`
                         :
                         `Box ${selectedBoxFilter} ist leer.`;
 
@@ -5984,7 +5984,7 @@ function flip() {
                     font-weight:700;
                 "
             >
-                Box 8 Fortschritt:
+                Long-Term Fortschritt:
                 ${streak}
                 von 3 Tagen in Folge richtig
             </span>
@@ -6069,7 +6069,7 @@ function flip() {
     } else {
 
         box6ActionButton.innerText =
-            "ZU BOX 8";
+            "ZU LONG-TERM · REVIEW";
 
         box6ActionButton.onclick =
             moveToBox6;
