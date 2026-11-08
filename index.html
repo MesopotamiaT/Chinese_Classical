@@ -385,7 +385,7 @@
             flex-shrink: 0;
 
             display: grid;
-            grid-template-columns: repeat(14, 1fr);
+            grid-template-columns: repeat(9, 1fr);
 
             gap: 6px;
             padding: 7px;
@@ -449,12 +449,10 @@
         #stat-box-lt-stable { color: var(--box8); }
 
         .stats > .stat-box {
-            grid-column: span 2;
+            grid-column: span 1;
         }
 
         .stats > .stat-box.long-term-box {
-            grid-column: span 7;
-            min-height: 58px;
             border-color:
                 color-mix(
                     in srgb,
@@ -477,16 +475,6 @@
                 );
             box-shadow:
                 inset 0 1px 0 rgba(255,255,255,0.20);
-        }
-
-        .stats > .stat-box.long-term-box::before {
-            content: "LONG-TERM MEMORY";
-            display: block;
-            margin-bottom: 2px;
-            font-size: 0.48rem;
-            font-weight: 900;
-            letter-spacing: 0.12em;
-            opacity: 0.72;
         }
 
         .stat-box.active-box {
@@ -2936,7 +2924,7 @@ document.getElementById('stats').innerHTML =
         class="stat-box long-term-box"
         onclick="selectBox6Section('new')"
     >
-        REVIEW
+        LTR
         <br>
         <span id="stat-count-lt-review">0</span>
     </div>
@@ -2946,7 +2934,7 @@ document.getElementById('stats').innerHTML =
         class="stat-box long-term-box"
         onclick="selectBox6Section('old')"
     >
-        STABLE
+        LTS
         <br>
         <span id="stat-count-lt-stable">0</span>
     </div>
