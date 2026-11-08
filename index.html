@@ -2499,7 +2499,7 @@
                 class="btn-primary btn-large"
                 onclick="selectBox6Section('new')"
             >
-                BOX 8 NEW
+                LONG-TERM · REVIEW
             </button>
 
             <button
@@ -2507,7 +2507,7 @@
                 class="btn-secondary btn-large"
                 onclick="selectBox6Section('old')"
             >
-                BOX 8 OLD
+                LONG-TERM · STABLE
             </button>
 
         </div>
@@ -2933,14 +2933,14 @@ function openBox6SectionModal() {
             'btn-box6-new'
         )
         .innerText =
-            `BOX 8 NEW (${newCount})`;
+            `LONG-TERM · REVIEW (${newCount})`;
 
     document
         .getElementById(
             'btn-box6-old'
         )
         .innerText =
-            `BOX 8 OLD (${oldCount})`;
+            `LONG-TERM · STABLE (${oldCount})`;
 
     let modal =
         document.getElementById(
@@ -3290,7 +3290,7 @@ function updateBox6DailyDisplay() {
             oldAskedToday;
 
         el.innerText =
-            `BOX 8 · NEW: ${Math.min(newProgress.done, newTotal)}/${newTotal} · OLD HEUTE: ${oldAskedToday}/${oldDailyTarget}`;
+            `BOX 8 · REVIEW: ${Math.min(newProgress.done, newTotal)}/${newTotal} · STABLE HEUTE: ${oldAskedToday}/${oldDailyTarget}`;
     }
 }
 
@@ -3449,7 +3449,7 @@ function renderBox6StatsTable() {
             ''
             :
             'n'
-        } in Box 8 • ${newCount} New • ${oldCount} Old`;
+        } in Box 8 • ${newCount} Review • ${oldCount} Stable`;
 
 
     let tbody =
@@ -4818,7 +4818,7 @@ function showBox8RunComplete() {
             'v-box'
         )
         .innerText =
-            `BOX 8 ${selectedBox6Section === 'new' ? 'NEW' : 'OLD'}`;
+            `BOX 8 · ${selectedBox6Section === 'new' ? 'REVIEW' : 'STABLE'}`;
 
     let completionText;
 
@@ -5398,7 +5398,7 @@ function next() {
                             selectedBox6Section
                         )
                         ?
-                        `Box 8 ${selectedBox6Section === 'new' ? 'New' : 'Old'} ist leer.`
+                        `Box 8 ${selectedBox6Section === 'new' ? 'Review' : 'Stable'} ist leer.`
                         :
                         `Box ${selectedBoxFilter} ist leer.`;
 
@@ -5495,9 +5495,9 @@ function next() {
         statsInfo =
             currentCard.box6Section === 'new'
             ?
-            " • BOX 8 NEW"
+            " • LONG-TERM · REVIEW"
             :
-            " • BOX 8 OLD";
+            " • LONG-TERM · STABLE";
 
     } else if (
         currentBoxName === 'box8'
@@ -5527,9 +5527,9 @@ function next() {
             (
                 currentCard.box6Section === 'new'
                 ?
-                " • BOX 8 NEW"
+                " • LONG-TERM · REVIEW"
                 :
-                " • BOX 8 OLD"
+                " • LONG-TERM · STABLE"
             )
             +
             ` • ${percent}% ERFOLG`;
@@ -5780,9 +5780,9 @@ function flip() {
         statsInfo =
             currentCard.box6Section === 'new'
             ?
-            " • BOX 8 NEW"
+            " • LONG-TERM · REVIEW"
             :
-            " • BOX 8 OLD";
+            " • LONG-TERM · STABLE";
 
     } else if (
         currentBoxName === 'box8'
@@ -5812,9 +5812,9 @@ function flip() {
             (
                 currentCard.box6Section === 'new'
                 ?
-                " • BOX 8 NEW"
+                " • LONG-TERM · REVIEW"
                 :
-                " • BOX 8 OLD"
+                " • LONG-TERM · STABLE"
             )
             +
             ` • ${percent}% ERFOLG`;
@@ -6059,9 +6059,9 @@ function flip() {
         box6ActionButton.innerText =
             currentCard.box6Section === 'new'
             ?
-            "ZU BOX 8 OLD"
+            "ZU LONG-TERM · STABLE"
             :
-            "ZU BOX 8 NEW";
+            "ZU LONG-TERM · REVIEW";
 
         box6ActionButton.onclick =
             toggleBox6Section;
