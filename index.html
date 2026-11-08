@@ -354,6 +354,7 @@
             font-weight: 800;
 
             letter-spacing: 0.045em;
+            white-space: nowrap;
         }
 
         #box6-daily-progress::before {
@@ -1105,7 +1106,7 @@
 
             #box6-daily-progress {
                 min-height: 38px;
-                font-size: 0.71rem;
+                font-size: 0.64rem;
             }
 
             .stats {
@@ -2068,6 +2069,7 @@
             #box6-daily-progress {
                 min-height: 39px;
                 border-radius: 13px;
+                font-size: 0.64rem;
             }
 
             .stats {
@@ -2213,7 +2215,7 @@
         </div>
 
         <div id="box6-daily-progress">
-            LONG-TERM · REVIEW: 0/0 · STABLE TODAY: 0/200
+            LTR: 0/0 · LTS TODAY: 0/200
         </div>
 
     </div>
@@ -3362,7 +3364,7 @@ function updateBox6DailyDisplay() {
             oldAskedToday;
 
         el.innerText =
-            `LONG-TERM · REVIEW: ${Math.min(newProgress.done, newTotal)}/${newTotal} · STABLE TODAY: ${oldAskedToday}/${oldDailyTarget}`;
+            `LTR: ${Math.min(newProgress.done, newTotal)}/${newTotal} · LTS TODAY: ${oldAskedToday}/${oldDailyTarget}`;
     }
 }
 
