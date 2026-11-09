@@ -6,7 +6,7 @@
 
     <script>
         (() => {
-            const appVersion = '20261109-lt-total-visible-v5';
+            const appVersion = '20261109-lt-group-total-v6';
             const url = new URL(window.location.href);
 
             if (url.searchParams.get('v') !== appVersion) {
@@ -469,7 +469,18 @@
             grid-column: span 1;
         }
 
-        .stats > .stat-box.long-term-box {
+        .long-term-group {
+            position: relative;
+            grid-column: span 2;
+
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px;
+
+            padding-top: 15px;
+        }
+
+        .long-term-group .long-term-box {
             border-color:
                 color-mix(
                     in srgb,
@@ -495,28 +506,37 @@
         }
 
         .lt-pair-total {
-            margin-top: 3px;
-            padding: 2px 5px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            z-index: 6;
+
+            transform: translateX(-50%);
+
+            min-width: 82px;
+            height: 22px;
+            padding: 0 9px;
 
             display: inline-flex;
             align-items: center;
             justify-content: center;
 
+            border: 2px solid var(--card);
             border-radius: 999px;
 
             background: var(--box8);
             color: #ffffff;
 
-            font-size: 0.50rem;
+            font-size: 0.58rem;
             font-weight: 900;
-            letter-spacing: 0.035em;
-            line-height: 1.1;
+            letter-spacing: 0.045em;
+            line-height: 1;
 
             box-shadow:
-                0 3px 8px
+                0 4px 12px
                 color-mix(
                     in srgb,
-                    var(--box8) 22%,
+                    var(--box8) 30%,
                     transparent
                 );
 
@@ -2967,30 +2987,33 @@ document.getElementById('stats').innerHTML =
         .join('')
     +
     `
-    <div
-        id="stat-box-lt-review"
-        class="stat-box long-term-box"
-        onclick="selectBox6Section('new')"
-    >
-        LTR
-        <br>
-        <span id="stat-count-lt-review">0</span>
-    </div>
-
-    <div
-        id="stat-box-lt-stable"
-        class="stat-box long-term-box"
-        onclick="selectBox6Section('old')"
-    >
-        LTS
-        <br>
-        <span id="stat-count-lt-stable">0</span>
+    <div class="long-term-group">
         <div
             id="stat-count-lt-total"
             class="lt-pair-total"
             title="LTR + LTS"
         >
-            TOTAL: 0
+            TOTAL 0
+        </div>
+
+        <div
+            id="stat-box-lt-review"
+            class="stat-box long-term-box"
+            onclick="selectBox6Section('new')"
+        >
+            LTR
+            <br>
+            <span id="stat-count-lt-review">0</span>
+        </div>
+
+        <div
+            id="stat-box-lt-stable"
+            class="stat-box long-term-box"
+            onclick="selectBox6Section('old')"
+        >
+            LTS
+            <br>
+            <span id="stat-count-lt-stable">0</span>
         </div>
     </div>
     `;
@@ -4621,7 +4644,7 @@ function updateUI() {
 
     if (longTermCombinedCount) {
         longTermCombinedCount.innerText =
-            'TOTAL: '
+            'TOTAL '
             +
             (
                 longTermReviewTotal
