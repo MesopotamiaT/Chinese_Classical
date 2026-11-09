@@ -6,7 +6,7 @@
 
     <script>
         (() => {
-            const appVersion = '20261110-remove-status-circle-v7';
+            const appVersion = '20261110-overview-5boxes-v8';
             const url = new URL(window.location.href);
 
             if (url.searchParams.get('v') !== appVersion) {
@@ -374,7 +374,7 @@
             flex-shrink: 0;
 
             display: grid;
-            grid-template-columns: repeat(9, 1fr);
+            grid-template-columns: repeat(8, 1fr);
 
             gap: 6px;
             padding: 7px;
@@ -449,10 +449,12 @@
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 6px;
 
-            padding-top: 15px;
+            align-items: stretch;
         }
 
         .long-term-group .long-term-box {
+            min-height: 50px;
+
             border-color:
                 color-mix(
                     in srgb,
@@ -479,7 +481,7 @@
 
         .lt-pair-total {
             position: absolute;
-            top: 0;
+            top: -11px;
             left: 50%;
             z-index: 6;
 
@@ -2901,7 +2903,7 @@ function getVisibleBoxName(internalBox) {
     if (
         internalBox >= 2
         &&
-        internalBox <= 7
+        internalBox <= 6
     ) {
         return 'BOX ' + (internalBox - 1);
     }
@@ -2911,7 +2913,7 @@ function getVisibleBoxName(internalBox) {
 
 
 document.getElementById('stats').innerHTML =
-    [1,2,3,4,5,6,7]
+    [1,2,3,4,5,6]
         .map(i =>
 
             `
@@ -2930,7 +2932,7 @@ document.getElementById('stats').innerHTML =
                 </span>
 
                 ${
-                    (i >= 2 && i <= 7)
+                    (i >= 2 && i <= 6)
                     ?
                     `
                     <div
@@ -4468,7 +4470,7 @@ function updateUI() {
             .toDateString();
 
 
-    [1,2,3,4,5,6,7]
+    [1,2,3,4,5,6]
     .forEach(i => {
 
         let countSpan =
@@ -4489,7 +4491,7 @@ function updateUI() {
         if (
             i >= 2
             &&
-            i <= 7
+            i <= 6
         ) {
 
             let badge =
@@ -4634,7 +4636,7 @@ function updateUI() {
 
 function highlightActiveBox() {
 
-    [1,2,3,4,5,6,7]
+    [1,2,3,4,5,6]
     .forEach(i => {
 
         let element =
