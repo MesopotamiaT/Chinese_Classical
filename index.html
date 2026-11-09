@@ -6,7 +6,7 @@
 
     <script>
         (() => {
-            const appVersion = '20261110-compact-status-taller-overview-v9';
+            const appVersion = '20261110-status-today-both-v10';
             const url = new URL(window.location.href);
 
             if (url.searchParams.get('v') !== appVersion) {
@@ -2249,7 +2249,7 @@
         </div>
 
         <div id="box6-daily-progress">
-            LTR: 0/0 · LTS TODAY: 0/200
+            TODAY · LTR: 0/0 · LTS: 0/200
         </div>
 
     </div>
@@ -3408,7 +3408,7 @@ function updateBox6DailyDisplay() {
             oldAskedToday;
 
         el.innerText =
-            `LTR: ${Math.min(newProgress.done, newTotal)}/${newTotal} · LTS TODAY: ${oldAskedToday}/${oldDailyTarget}`;
+            `TODAY · LTR: ${Math.min(newProgress.done, newTotal)}/${newTotal} · LTS: ${oldAskedToday}/${oldDailyTarget}`;
     }
 }
 
