@@ -6,7 +6,7 @@
 
     <script>
         (() => {
-            const appVersion = '20261109-revert-lt-total-v3';
+            const appVersion = '20261109-lt-pair-total-v4';
             const url = new URL(window.location.href);
 
             if (url.searchParams.get('v') !== appVersion) {
@@ -492,6 +492,42 @@
                 );
             box-shadow:
                 inset 0 1px 0 rgba(255,255,255,0.20);
+        }
+
+        .lt-pair-total {
+            position: absolute;
+            top: -9px;
+            right: -8px;
+            z-index: 4;
+
+            min-width: 34px;
+            height: 20px;
+            padding: 0 6px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 2px solid var(--card);
+            border-radius: 999px;
+
+            background: var(--box8);
+            color: #ffffff;
+
+            font-size: 0.58rem;
+            font-weight: 900;
+            letter-spacing: 0.01em;
+            line-height: 1;
+
+            box-shadow:
+                0 4px 10px
+                color-mix(
+                    in srgb,
+                    var(--box8) 28%,
+                    transparent
+                );
+
+            pointer-events: none;
         }
 
         .stat-box.active-box {
@@ -2945,6 +2981,13 @@ document.getElementById('stats').innerHTML =
         LTR
         <br>
         <span id="stat-count-lt-review">0</span>
+        <div
+            id="stat-count-lt-total"
+            class="lt-pair-total"
+            title="LTR + LTS"
+        >
+            Σ 0
+        </div>
     </div>
 
     <div
@@ -4547,6 +4590,16 @@ function updateUI() {
     });
 
 
+    let longTermReviewTotal =
+        getBox6SectionCount(
+            'new'
+        );
+
+    let longTermStableTotal =
+        getBox6SectionCount(
+            'old'
+        );
+
     let longTermReviewCount =
         document.getElementById(
             'stat-count-lt-review'
@@ -4554,9 +4607,7 @@ function updateUI() {
 
     if (longTermReviewCount) {
         longTermReviewCount.innerText =
-            getBox6SectionCount(
-                'new'
-            );
+            longTermReviewTotal;
     }
 
     let longTermStableCount =
@@ -4566,8 +4617,22 @@ function updateUI() {
 
     if (longTermStableCount) {
         longTermStableCount.innerText =
-            getBox6SectionCount(
-                'old'
+            longTermStableTotal;
+    }
+
+    let longTermCombinedCount =
+        document.getElementById(
+            'stat-count-lt-total'
+        );
+
+    if (longTermCombinedCount) {
+        longTermCombinedCount.innerText =
+            'Σ '
+            +
+            (
+                longTermReviewTotal
+                +
+                longTermStableTotal
             );
     }
 
