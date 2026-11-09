@@ -6,7 +6,7 @@
 
     <script>
         (() => {
-            const appVersion = '20261109-ltr-lts-row-v2';
+            const appVersion = '20261109-lt-total-v1';
             const url = new URL(window.location.href);
 
             if (url.searchParams.get('v') !== appVersion) {
@@ -368,6 +368,31 @@
 
             letter-spacing: 0.045em;
             white-space: nowrap;
+        }
+
+        #box6-daily-progress .lt-total {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 7px;
+            margin-right: 6px;
+            border-radius: 999px;
+            background:
+                color-mix(
+                    in srgb,
+                    var(--box8) 15%,
+                    transparent
+                );
+            border:
+                1px solid
+                color-mix(
+                    in srgb,
+                    var(--box8) 28%,
+                    transparent
+                );
+            color: var(--box8);
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            flex-shrink: 0;
         }
 
         #box6-daily-progress::before {
@@ -2228,6 +2253,7 @@
         </div>
 
         <div id="box6-daily-progress">
+            <span class="lt-total">LT TOTAL: 0</span>
             LTR: 0/0 · LTS TODAY: 0/200
         </div>
 
@@ -3376,8 +3402,13 @@ function updateBox6DailyDisplay() {
         state.box6Daily.oldCount =
             oldAskedToday;
 
-        el.innerText =
-            `LTR: ${Math.min(newProgress.done, newTotal)}/${newTotal} · LTS TODAY: ${oldAskedToday}/${oldDailyTarget}`;
+        let longTermTotal =
+            newTotal
+            +
+            oldTotal;
+
+        el.innerHTML =
+            `<span class="lt-total">LT TOTAL: ${longTermTotal}</span> LTR: ${Math.min(newProgress.done, newTotal)}/${newTotal} · LTS TODAY: ${oldAskedToday}/${oldDailyTarget}`;
     }
 }
 
