@@ -222,7 +222,8 @@
                 max(12px, env(safe-area-inset-bottom))
                 max(12px, env(safe-area-inset-left));
 
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         .header {
@@ -569,6 +570,22 @@
             background: var(--card);
 
             box-shadow: var(--shadow-card);
+        }
+
+        .card.solution-expanded {
+            flex: 0 0 auto;
+            min-height: auto;
+            overflow: visible;
+        }
+
+        .card.solution-expanded .card-content {
+            min-height: auto;
+            flex-grow: 0;
+            justify-content: flex-start;
+        }
+
+        .card.solution-expanded .action-area {
+            margin-top: 0;
         }
 
         .card-content {
@@ -5374,9 +5391,28 @@ function showBox8RunComplete() {
 }
 
 
+function setSolutionExpanded(active) {
+
+    let card =
+        document.querySelector(
+            '.card'
+        );
+
+    if (!card) {
+        return;
+    }
+
+    card.classList.toggle(
+        'solution-expanded',
+        !!active
+    );
+}
+
+
 function next() {
 
     hideMnemonic();
+    setSolutionExpanded(false);
 
     if (dictMode) {
         return;
@@ -6346,6 +6382,8 @@ function toggleMnemonic() {
         return;
     }
 
+    setSolutionExpanded(true);
+
     let panel =
         document.getElementById(
             'mnemonic-panel'
@@ -6627,6 +6665,8 @@ function flip() {
     if (!currentCard) {
         return;
     }
+
+    setSolutionExpanded(true);
 
 
     let statsInfo =
@@ -6988,6 +7028,9 @@ function retryCurrentWordWriting() {
     if (!currentCard) {
         return;
     }
+
+    hideMnemonic();
+    setSolutionExpanded(false);
 
 
     let hCount =
