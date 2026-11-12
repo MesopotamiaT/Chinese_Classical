@@ -807,6 +807,8 @@
         }
 
         .mnemonic-action-btn {
+            width: 100%;
+            min-width: 0;
             min-height: 38px;
             padding: 7px 6px;
 
@@ -927,6 +929,24 @@
             grid-template-columns: repeat(3, 1fr);
 
             gap: 8px;
+        }
+
+        .learning-tools-grid {
+            width: 100%;
+
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 8px;
+        }
+
+        .learning-tools-grid .btn-tool {
+            width: 100%;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .btn-large {
@@ -1220,8 +1240,20 @@
             .filter-buttons,
             .stats,
             .row-2,
-            .row-3 {
+            .row-3,
+            .learning-tools-grid,
+            .mnemonic-actions {
                 gap: 5px;
+            }
+
+            .learning-tools-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .mnemonic-actions {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
             }
 
             .system-buttons button {
@@ -2175,8 +2207,20 @@
             .filter-buttons,
             .stats,
             .row-2,
-            .row-3 {
+            .row-3,
+            .learning-tools-grid,
+            .mnemonic-actions {
                 gap: 5px;
+            }
+
+            .learning-tools-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .mnemonic-actions {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
             }
 
             .system-buttons button {
@@ -2521,8 +2565,7 @@
 
             <div
                 id="learning-tools"
-                class="row-3 hidden"
-                style="grid-template-columns:repeat(4,1fr);"
+                class="learning-tools-grid hidden"
             >
 
                 <button
