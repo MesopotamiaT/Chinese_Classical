@@ -574,18 +574,26 @@
 
         .card.solution-expanded {
             flex: 0 0 auto;
-            min-height: auto;
+            height: auto;
+            min-height: max-content;
             overflow: visible;
         }
 
         .card.solution-expanded .card-content {
-            min-height: auto;
-            flex-grow: 0;
+            flex: 0 0 auto;
+            min-height: max-content;
+            height: auto;
             justify-content: flex-start;
+            overflow: visible;
+            padding-bottom: 18px;
         }
 
         .card.solution-expanded .action-area {
+            position: relative;
+            flex: 0 0 auto;
             margin-top: 0;
+            padding-top: 0;
+            clear: both;
         }
 
         .card-content {
@@ -1399,6 +1407,10 @@
 
             .mnemonic-panel {
                 padding: 10px 10px;
+            }
+
+            .card.solution-expanded .card-content {
+                padding-bottom: 14px;
             }
 
             .mnemonic-image {
