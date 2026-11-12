@@ -722,6 +722,8 @@
         .mnemonic-panel {
             width: 100%;
             max-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
 
             margin-top: 6px;
             padding: 12px 13px;
@@ -900,7 +902,7 @@
 
         .action-area {
             position: relative;
-            z-index: 1;
+            z-index: 2;
 
             flex-shrink: 0;
             margin-top: auto;
@@ -911,6 +913,10 @@
             flex-direction: column;
 
             gap: 8px;
+        }
+
+        .action-area > * {
+            flex-shrink: 0;
         }
 
         .row-2 {
@@ -1373,6 +1379,20 @@
                 min-height: 49px;
                 font-size: 0.78rem;
             }
+
+            .mnemonic-panel {
+                padding: 10px 10px;
+            }
+
+            .mnemonic-image {
+                max-height: 180px;
+            }
+
+            .mnemonic-edit,
+            .mnemonic-action-btn {
+                font-size: 0.66rem;
+            }
+
         }
 
         @media (max-height: 760px) {
@@ -2473,6 +2493,15 @@
             ></div>
 
             <div
+                id="writer-container"
+                class="writer-grid hidden"
+            ></div>
+
+        </div>
+
+        <div class="action-area">
+
+            <div
                 id="mnemonic-panel"
                 class="mnemonic-panel hidden"
             >
@@ -2531,14 +2560,6 @@
                 >
             </div>
 
-            <div
-                id="writer-container"
-                class="writer-grid hidden"
-            ></div>
-
-        </div>
-
-        <div class="action-area">
 
             <div
                 id="drawing-controls"
