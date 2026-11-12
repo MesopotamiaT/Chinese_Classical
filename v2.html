@@ -718,6 +718,85 @@
             color: var(--primary);
         }
 
+
+        .mnemonic-panel {
+            width: 100%;
+            max-width: 100%;
+
+            margin-top: 6px;
+            padding: 12px 13px;
+
+            border: 1px solid
+                color-mix(
+                    in srgb,
+                    var(--box4) 30%,
+                    var(--border)
+                );
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    color-mix(
+                        in srgb,
+                        var(--box4) 9%,
+                        transparent
+                    ),
+                    color-mix(
+                        in srgb,
+                        var(--box4) 3%,
+                        transparent
+                    )
+                ),
+                var(--surface);
+
+            color: var(--text-main);
+            box-shadow: var(--shadow-small);
+        }
+
+        .mnemonic-title {
+            margin-bottom: 7px;
+            color: var(--box4);
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .mnemonic-image {
+            width: 100%;
+            max-height: 220px;
+            margin: 2px 0 9px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: var(--card);
+        }
+
+        .mnemonic-text {
+            font-size: 0.90rem;
+            font-weight: 700;
+            line-height: 1.45;
+        }
+
+        .mnemonic-empty {
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            line-height: 1.4;
+        }
+
+        .mnemonic-edit {
+            width: 100%;
+            margin-top: 9px;
+            min-height: 38px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: var(--card);
+            color: var(--text-main);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
         #v-stats {
             max-width: 100%;
 
@@ -2322,6 +2401,40 @@
             ></div>
 
             <div
+                id="mnemonic-panel"
+                class="mnemonic-panel hidden"
+            >
+                <div class="mnemonic-title">
+                    VISUAL MNEMONIC
+                </div>
+
+                <img
+                    id="mnemonic-image"
+                    class="mnemonic-image hidden"
+                    alt="Visual mnemonic"
+                >
+
+                <div
+                    id="mnemonic-text"
+                    class="mnemonic-text"
+                ></div>
+
+                <div
+                    id="mnemonic-empty"
+                    class="mnemonic-empty hidden"
+                >
+                    Noch keine Eselsbrücke gespeichert.
+                </div>
+
+                <button
+                    class="mnemonic-edit"
+                    onclick="editMnemonic()"
+                >
+                    BEARBEITEN
+                </button>
+            </div>
+
+            <div
                 id="writer-container"
                 class="writer-grid hidden"
             ></div>
@@ -2356,6 +2469,7 @@
             <div
                 id="learning-tools"
                 class="row-3 hidden"
+                style="grid-template-columns:repeat(4,1fr);"
             >
 
                 <button
@@ -2378,6 +2492,14 @@
                     onclick="openModal()"
                 >
                     BEISPIEL
+                </button>
+
+                <button
+                    id="btn-mnemonic"
+                    class="btn-tool"
+                    onclick="toggleMnemonic()"
+                >
+                    MNEMONIC
                 </button>
 
             </div>
@@ -4986,6 +5108,12 @@ function importCSV(file) {
                         sentenceDe:
                             p[5] || '',
 
+                        mnemonicText:
+                            p[7] || '',
+
+                        mnemonicImage:
+                            p[8] || '',
+
                         level:
                             p[6]
 
@@ -5130,6 +5258,8 @@ function showBox8RunComplete() {
 
 
 function next() {
+
+    hideMnemonic();
 
     if (dictMode) {
         return;
@@ -5971,7 +6101,205 @@ function next() {
 }
 
 
+
+function hideMnemonic() {
+
+    let panel =
+        document.getElementById(
+            'mnemonic-panel'
+        );
+
+    if (panel) {
+        panel.classList.add(
+            'hidden'
+        );
+    }
+}
+
+
+function renderMnemonic() {
+
+    if (!currentCard) {
+        return;
+    }
+
+    let panel =
+        document.getElementById(
+            'mnemonic-panel'
+        );
+
+    let textEl =
+        document.getElementById(
+            'mnemonic-text'
+        );
+
+    let emptyEl =
+        document.getElementById(
+            'mnemonic-empty'
+        );
+
+    let imageEl =
+        document.getElementById(
+            'mnemonic-image'
+        );
+
+    if (
+        !panel
+        ||
+        !textEl
+        ||
+        !emptyEl
+        ||
+        !imageEl
+    ) {
+        return;
+    }
+
+    let mnemonicText =
+        (
+            currentCard.mnemonicText
+            ||
+            ''
+        ).trim();
+
+    let mnemonicImage =
+        (
+            currentCard.mnemonicImage
+            ||
+            ''
+        ).trim();
+
+    textEl.innerText =
+        mnemonicText;
+
+    textEl.classList.toggle(
+        'hidden',
+        !mnemonicText
+    );
+
+    emptyEl.classList.toggle(
+        'hidden',
+        !!mnemonicText
+        ||
+        !!mnemonicImage
+    );
+
+    if (mnemonicImage) {
+
+        imageEl.src =
+            mnemonicImage;
+
+        imageEl.classList.remove(
+            'hidden'
+        );
+
+        imageEl.onerror =
+            () => {
+                imageEl.classList.add(
+                    'hidden'
+                );
+            };
+
+    } else {
+
+        imageEl.removeAttribute(
+            'src'
+        );
+
+        imageEl.classList.add(
+            'hidden'
+        );
+    }
+}
+
+
+function toggleMnemonic() {
+
+    if (!currentCard) {
+        return;
+    }
+
+    let panel =
+        document.getElementById(
+            'mnemonic-panel'
+        );
+
+    if (!panel) {
+        return;
+    }
+
+    if (
+        panel.classList.contains(
+            'hidden'
+        )
+    ) {
+
+        renderMnemonic();
+
+        panel.classList.remove(
+            'hidden'
+        );
+
+    } else {
+
+        panel.classList.add(
+            'hidden'
+        );
+    }
+}
+
+
+function editMnemonic() {
+
+    if (!currentCard) {
+        return;
+    }
+
+    let mnemonicText =
+        prompt(
+            'Merksatz / visuelle Eselsbrücke:',
+            currentCard.mnemonicText
+            ||
+            ''
+        );
+
+    if (mnemonicText === null) {
+        return;
+    }
+
+    let mnemonicImage =
+        prompt(
+            'Optionale Bild-URL (leer lassen, wenn kein Bild verwendet werden soll):',
+            currentCard.mnemonicImage
+            ||
+            ''
+        );
+
+    if (mnemonicImage === null) {
+        return;
+    }
+
+    currentCard.mnemonicText =
+        mnemonicText.trim();
+
+    currentCard.mnemonicImage =
+        mnemonicImage.trim();
+
+    updateUI();
+    renderMnemonic();
+
+    document
+        .getElementById(
+            'mnemonic-panel'
+        )
+        .classList
+        .remove('hidden');
+}
+
+
 function flip() {
+
+    hideMnemonic();
 
     if (!currentCard) {
         return;
