@@ -797,6 +797,34 @@
             letter-spacing: 0.04em;
         }
 
+        .mnemonic-actions {
+            width: 100%;
+            margin-top: 9px;
+
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 7px;
+        }
+
+        .mnemonic-action-btn {
+            min-height: 38px;
+            padding: 7px 6px;
+
+            border: 1px solid var(--border);
+            border-radius: 11px;
+
+            background: var(--card);
+            color: var(--text-main);
+
+            font-size: 0.70rem;
+            font-weight: 800;
+            letter-spacing: 0.035em;
+        }
+
+        .mnemonic-action-btn.danger {
+            color: var(--box1);
+        }
+
         #v-stats {
             max-width: 100%;
 
@@ -2428,10 +2456,35 @@
 
                 <button
                     class="mnemonic-edit"
-                    onclick="editMnemonic()"
+                    onclick="editMnemonicText()"
                 >
-                    BEARBEITEN
+                    MERKSATZ BEARBEITEN
                 </button>
+
+                <div class="mnemonic-actions">
+                    <button
+                        class="mnemonic-action-btn"
+                        onclick="openMnemonicImagePicker()"
+                    >
+                        BILD AUSWÄHLEN
+                    </button>
+
+                    <button
+                        id="btn-remove-mnemonic-image"
+                        class="mnemonic-action-btn danger"
+                        onclick="removeMnemonicImage()"
+                    >
+                        BILD ENTFERNEN
+                    </button>
+                </div>
+
+                <input
+                    id="mnemonic-image-input"
+                    type="file"
+                    accept="image/*"
+                    class="hidden"
+                    onchange="handleMnemonicImageUpload(this.files[0]); this.value='';"
+                >
             </div>
 
             <div
@@ -5112,7 +5165,7 @@ function importCSV(file) {
                             p[7] || '',
 
                         mnemonicImage:
-                            p[8] || '',
+                            '',
 
                         level:
                             p[6]
@@ -6184,6 +6237,16 @@ function renderMnemonic() {
         !!mnemonicImage
     );
 
+    let removeButton =
+        document.getElementById(
+            'btn-remove-mnemonic-image'
+        );
+
+    if (removeButton) {
+        removeButton.disabled =
+            !mnemonicImage;
+    }
+
     if (mnemonicImage) {
 
         imageEl.src =
@@ -6249,7 +6312,7 @@ function toggleMnemonic() {
 }
 
 
-function editMnemonic() {
+function editMnemonicText() {
 
     if (!currentCard) {
         return;
@@ -6267,23 +6330,8 @@ function editMnemonic() {
         return;
     }
 
-    let mnemonicImage =
-        prompt(
-            'Optionale Bild-URL (leer lassen, wenn kein Bild verwendet werden soll):',
-            currentCard.mnemonicImage
-            ||
-            ''
-        );
-
-    if (mnemonicImage === null) {
-        return;
-    }
-
     currentCard.mnemonicText =
         mnemonicText.trim();
-
-    currentCard.mnemonicImage =
-        mnemonicImage.trim();
 
     updateUI();
     renderMnemonic();
@@ -6294,6 +6342,217 @@ function editMnemonic() {
         )
         .classList
         .remove('hidden');
+}
+
+
+function openMnemonicImagePicker() {
+
+    if (!currentCard) {
+        return;
+    }
+
+    let input =
+        document.getElementById(
+            'mnemonic-image-input'
+        );
+
+    if (input) {
+        input.click();
+    }
+}
+
+
+function compressMnemonicImage(file) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            let reader =
+                new FileReader();
+
+            reader.onload =
+                (event) => {
+
+                    let img =
+                        new Image();
+
+                    img.onload =
+                        () => {
+
+                            const maxDimension =
+                                1200;
+
+                            let width =
+                                img.width;
+
+                            let height =
+                                img.height;
+
+                            let scale =
+                                Math.min(
+                                    1,
+                                    maxDimension
+                                    /
+                                    Math.max(
+                                        width,
+                                        height
+                                    )
+                                );
+
+                            width =
+                                Math.max(
+                                    1,
+                                    Math.round(
+                                        width * scale
+                                    )
+                                );
+
+                            height =
+                                Math.max(
+                                    1,
+                                    Math.round(
+                                        height * scale
+                                    )
+                                );
+
+                            let canvas =
+                                document.createElement(
+                                    'canvas'
+                                );
+
+                            canvas.width =
+                                width;
+
+                            canvas.height =
+                                height;
+
+                            let ctx =
+                                canvas.getContext(
+                                    '2d'
+                                );
+
+                            ctx.drawImage(
+                                img,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+                            let dataUrl =
+                                canvas.toDataURL(
+                                    'image/jpeg',
+                                    0.82
+                                );
+
+                            resolve(
+                                dataUrl
+                            );
+                        };
+
+                    img.onerror =
+                        () => reject(
+                            new Error(
+                                'Bild konnte nicht gelesen werden.'
+                            )
+                        );
+
+                    img.src =
+                        event.target.result;
+                };
+
+            reader.onerror =
+                () => reject(
+                    new Error(
+                        'Datei konnte nicht gelesen werden.'
+                    )
+                );
+
+            reader.readAsDataURL(
+                file
+            );
+        }
+    );
+}
+
+
+async function handleMnemonicImageUpload(file) {
+
+    if (
+        !currentCard
+        ||
+        !file
+    ) {
+        return;
+    }
+
+    if (
+        !file.type
+        ||
+        !file.type.startsWith(
+            'image/'
+        )
+    ) {
+        alert(
+            'Bitte eine Bilddatei auswählen.'
+        );
+        return;
+    }
+
+    try {
+
+        let dataUrl =
+            await compressMnemonicImage(
+                file
+            );
+
+        currentCard.mnemonicImage =
+            dataUrl;
+
+        updateUI();
+        renderMnemonic();
+
+        document
+            .getElementById(
+                'mnemonic-panel'
+            )
+            .classList
+            .remove('hidden');
+
+    } catch (error) {
+
+        alert(
+            'Das Bild konnte nicht gespeichert werden.'
+        );
+    }
+}
+
+
+function removeMnemonicImage() {
+
+    if (!currentCard) {
+        return;
+    }
+
+    if (
+        !currentCard.mnemonicImage
+    ) {
+        return;
+    }
+
+    if (
+        !confirm(
+            'Gespeichertes Mnemonic-Bild entfernen?'
+        )
+    ) {
+        return;
+    }
+
+    currentCard.mnemonicImage =
+        '';
+
+    updateUI();
+    renderMnemonic();
 }
 
 
@@ -7369,39 +7628,51 @@ function resetSpeicher() {
 
 function exportProgress() {
 
-    const dataStr =
-
-        "data:text/json;charset=utf-8,"
-
-        +
-
-        encodeURIComponent(
-
-            JSON.stringify(
-                state
-            )
+    const blob =
+        new Blob(
+            [
+                JSON.stringify(
+                    state
+                )
+            ],
+            {
+                type:
+                    'application/json;charset=utf-8'
+            }
         );
 
+    const url =
+        URL.createObjectURL(
+            blob
+        );
 
     const dl =
         document.createElement(
             'a'
         );
 
+    dl.href =
+        url;
 
-    dl.setAttribute(
-        "href",
-        dataStr
+    dl.download =
+        'hsk_trainer_backup.json';
+
+    document.body.appendChild(
+        dl
     );
-
-
-    dl.setAttribute(
-        "download",
-        "hsk_trainer_backup.json"
-    );
-
 
     dl.click();
+
+    dl.remove();
+
+    setTimeout(
+        () => {
+            URL.revokeObjectURL(
+                url
+            );
+        },
+        1000
+    );
 }
 
 
